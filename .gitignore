@@ -1,0 +1,9 @@
+# Binaries
+**/*.class
+
+# User-specific stuff
+**/.idea/**/workspace.xml
+**/.idea/**/tasks.xml
+
+.gradle
+/build
