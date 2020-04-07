@@ -15,8 +15,9 @@ public class Post {
     @Column(name = "text")
     private String text;
 
-//    @Column(name = "created_by")
-//    private User createdBy;
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
     @Column(name = "is_public")
     private boolean isPublic;
@@ -43,13 +44,13 @@ public class Post {
         this.text = text;
     }
 
-//    public User getCreatedBy() {
-//        return createdBy;
-//    }
-//
-//    public void setCreatedBy(User createdBy) {
-//        this.createdBy = createdBy;
-//    }
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public boolean getIsPublic() {
         return isPublic;
