@@ -52,7 +52,7 @@ public class CommentsRestController {
         }
     }
 
-    @PostMapping("/add")
+    @RequestMapping("/add")
     public Comments createComment(@RequestBody CommentsDTO commentsDto, @RequestHeader String requestUser) {
         Comments comment = new Comments();
         User user = userService.getByUsername(requestUser);
@@ -65,7 +65,7 @@ public class CommentsRestController {
     }
 
     @PutMapping("/update/{commentId}")
-    public Comments updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable int commentId) {
+    public Comments updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable int commentId, @RequestHeader String requestUser) {
         Comments comment = commentService.getById(commentId);
         try {
             comment.setDescription(commentDTO.getDescription());

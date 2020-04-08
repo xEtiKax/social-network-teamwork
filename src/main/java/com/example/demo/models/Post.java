@@ -2,6 +2,8 @@ package com.example.demo.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -19,6 +21,12 @@ public class Post {
     @JoinColumn(name = "created_by")
     private User createdBy;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "comments",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "post_id")})
+    private List<Comments> comments;
+
     @Column(name = "is_public")
     private boolean isPublic;
 
@@ -27,6 +35,13 @@ public class Post {
 
     @Column(name = "picture")
     Byte[] picture;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "likes",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "post_id")})
+    private Set<User> postLikers;
+
 
     public int getId() {
         return id;
@@ -66,5 +81,21 @@ public class Post {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+//    public Set<User> getPostLikers() {
+//        return postLikers;
+//    }
+//
+//    public void setPostLikers(Set<User> postLikers) {
+//        this.postLikers = postLikers;
+//    }
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
     }
 }

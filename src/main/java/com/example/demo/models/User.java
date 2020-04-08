@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -36,8 +37,20 @@ public class User {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "is_public")
-    private boolean isPublic;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_friends",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "friend_id")})
+    private Set<User> friends;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "requests",
+            joinColumns = {@JoinColumn(name = "sender_id")},
+            inverseJoinColumns = {@JoinColumn(name = "receiver_id")})
+    private Set<User> requests;
+
+    //    @Column(name = "is_public")
+//    private boolean isPublic;
 
     public User() {
     }
@@ -106,13 +119,13 @@ public class User {
         this.age = age;
     }
 
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
-    }
+//    public boolean isPublic() {
+//        return isPublic;
+//    }
+//
+//    public void setPublic(boolean aPublic) {
+//        isPublic = aPublic;
+//    }
 
     public int getEnabled() {
         return enabled;
@@ -120,5 +133,21 @@ public class User {
 
     public void setEnabled(int enabled) {
         this.enabled = enabled;
+    }
+
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public Set<User> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(Set<User> requests) {
+        this.requests = requests;
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -18,6 +19,10 @@ public class Comments {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+
+    @Column(name = "created_at")
+    private LocalDateTime dateTime;
 
     @Column(name = "description")
     private String description;
@@ -56,5 +61,13 @@ public class Comments {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

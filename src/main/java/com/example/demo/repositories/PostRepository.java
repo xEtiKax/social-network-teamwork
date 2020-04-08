@@ -1,4 +1,4 @@
-package com.example.demo.repositrories;
+package com.example.demo.repositories;
 
 import com.example.demo.models.Post;
 import org.springframework.data.jpa.repository.Query;
