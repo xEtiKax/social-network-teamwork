@@ -1,53 +1,22 @@
-package com.example.demo.models;
+package com.example.demo.models.DTO;
 
-import org.hibernate.annotations.Where;
+import com.example.demo.models.Comments;
+import com.example.demo.models.Like;
+import com.example.demo.models.User;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "posts")
-@Where(clause = "enabled != 0")
-public class Post {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "text")
+public class PostDTO {
     private String text;
-
-    @ManyToOne
-    @JoinColumn(name = "created_by")
     private User createdBy;
-
-    @Column(name = "is_public")
     private boolean isPublic;
-
-    @Column(name = "created_at")
     private LocalDateTime dateTime;
-
-//    @Column(name = "picture")
-//    private Byte[] picture;
-
-    @Column(name = "enabled")
-    private int enabled = 1;
-
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL)
     private Set<Comments> comments = new HashSet<>();
 
-    public Post() {
-    }
-
-
-    public int getId() {
-        return id;
+    public PostDTO() {
     }
 
     public String getText() {
@@ -82,14 +51,6 @@ public class Post {
         this.dateTime = dateTime;
     }
 
-    public int getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(int enable) {
-        this.enabled = enable;
-    }
-
     public Set<Like> getLikes() {
         return likes;
     }
@@ -97,14 +58,6 @@ public class Post {
     public void setLikes(Set<Like> likes) {
         this.likes = likes;
     }
-//
-//    public Byte[] getPicture() {
-//        return picture;
-//    }
-//
-//    public void setPicture(Byte[] picture) {
-//        this.picture = picture;
-//    }
 
     public Set<Comments> getComments() {
         return comments;

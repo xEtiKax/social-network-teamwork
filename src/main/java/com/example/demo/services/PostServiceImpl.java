@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostServiceImpl implements PostService {
-    public static final String POST_WITH_ID_DOES_NOT_EXISTS = "Post with %d does not exists.";
+    public static final String POST_WITH_ID_DOES_NOT_EXISTS = "Post does not exists.";
     private PostRepository postRepository;
 
     @Autowired
@@ -17,10 +18,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void createPost(Post post) {
+    public void createPost(PostDTO postDTO) {
         Post newPost = new Post();
-        postMerge(newPost, post);
-        postRepository.save(post);
+        postMerge(newPost, postDTO);
+        postRepository.save(newPost);
     }
 
 
@@ -30,10 +31,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(int id, Post post) {
+    public Post updatePost(int id, PostDTO postDTO) {
         throwIfPostDoesNotExists(id);
         Post postToUpdate = getPostById(id);
-        postMerge(postToUpdate, post);
+        postMerge(postToUpdate, postDTO);
         postRepository.save(postToUpdate);
         return postToUpdate;
     }
@@ -41,7 +42,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(int id) {
         throwIfPostDoesNotExists(id);
-        postRepository.deleteById(id);
+        Post post = postRepository.getPostById(id);
+        post.setEnabled(0);
+        postRepository.save(post);
     }
 
     @Override
@@ -49,10 +52,10 @@ public class PostServiceImpl implements PostService {
         return postRepository.existsById(id);
     }
 
-    private Post postMerge(Post post, Post newPost) {
-        post.setText(newPost.getText());
-        post.setDateTime(newPost.getDateTime());
-        post.setIsPublic(newPost.getIsPublic());
+    private Post postMerge(Post post, PostDTO postDTO) {
+        post.setText(postDTO.getText());
+        post.setDateTime(postDTO.getDateTime());
+        post.setIsPublic(postDTO.getIsPublic());
         return post;
     }
 
