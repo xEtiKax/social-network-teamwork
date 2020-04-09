@@ -1,9 +1,11 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,10 +16,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -59,6 +63,17 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public void changePassword(String username, String oldPassword, String newPassword) {
+        User user = getByUsername(username);
+        boolean passMatched = passwordEncoder.matches(oldPassword, user.getPassword());
+        if (passMatched) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            throw new WrongPasswordException("Wrong old password");
+        }
+    }
 
     @Override
     public void deleteUser(int id) {

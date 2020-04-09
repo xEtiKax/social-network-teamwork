@@ -9,13 +9,15 @@ import java.util.List;
 public interface CommentService {
     Comments getById(int commentId);
 
-    List<Comments>getCommentsByPostId(int postId);
+    List<Comments> getCommentsByPostId(int postId);
 
     Comments createComment(Comments comments);
 
+    List<Comments> getCommentsByUserId(int userId);
+
     Comments updateComment(Comments comments);
 
-    void deleteComment(int id);
+    void deleteComment(int id, String username);
 
 
 }

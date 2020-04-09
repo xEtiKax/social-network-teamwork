@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -36,9 +37,11 @@ public class Post {
     @Column(name = "enabled")
     private int enabled = 1;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL)
     private Set<Comments> comments = new HashSet<>();
 
