@@ -30,8 +30,8 @@ public class Post {
     @Column(name = "created_at")
     private LocalDateTime dateTime;
 
-//    @Column(name = "picture")
-//    private Byte[] picture;
+    @Column(name = "picture")
+    private Byte[] picture;
 
     @Column(name = "enabled")
     private int enabled = 1;
@@ -97,14 +97,14 @@ public class Post {
     public void setLikes(Set<Like> likes) {
         this.likes = likes;
     }
-//
-//    public Byte[] getPicture() {
-//        return picture;
-//    }
-//
-//    public void setPicture(Byte[] picture) {
-//        this.picture = picture;
-//    }
+
+    public Byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Byte[] picture) {
+        this.picture = picture;
+    }
 
     public Set<Comments> getComments() {
         return comments;

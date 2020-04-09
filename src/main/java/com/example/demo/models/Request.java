@@ -22,9 +22,6 @@ public class Request {
     @Column(name = "isAccepted")
     private boolean isAccepted;
 
-    @Column(name = "isPending")
-    private boolean isPending;
-
     public int getId() {
         return id;
     }
@@ -51,13 +48,5 @@ public class Request {
 
     public void setAccepted(boolean accepted) {
         isAccepted = accepted;
-    }
-
-    public boolean isPending() {
-        return isPending;
-    }
-
-    public void setPending(boolean pending) {
-        isPending = pending;
     }
 }

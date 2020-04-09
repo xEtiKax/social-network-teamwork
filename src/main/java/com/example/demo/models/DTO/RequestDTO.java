@@ -1,9 +1,25 @@
 package com.example.demo.models.DTO;
 
-import com.example.demo.models.User;
-
 public class RequestDTO {
-    private User sender;
-    private User receiver;
+    private int sender;
+    private int receiver;
 
+    public RequestDTO() {
+    }
+
+    public int getSender() {
+        return sender;
+    }
+
+    public void setSender(int sender) {
+        this.sender = sender;
+    }
+
+    public int getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(int receiver) {
+        this.receiver = receiver;
+    }
 }

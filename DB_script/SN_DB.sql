@@ -2,14 +2,15 @@ create table users
 (
     id         int auto_increment
         primary key,
-    first_name varchar(50)       null,
-    last_name  varchar(50)       null,
-    username   varchar(50)       not null,
-    email      varchar(50)       null,
-    password   varchar(68)       not null,
-    picture    blob              null,
-    enabled    tinyint default 1 not null,
-    age        int               null
+    first_name varchar(50)          null,
+    last_name  varchar(50)          null,
+    username   varchar(50)          not null,
+    email      varchar(50)          null,
+    password   varchar(68)          not null,
+    picture    blob                 null,
+    enabled    tinyint    default 1 not null,
+    age        int                  not null,
+    is_public  tinyint(1) default 0 null
 );
 
 create table authorities
@@ -69,7 +70,6 @@ create table requests
     sender_id   int                  not null,
     receiver_id int                  not null,
     isAccepted  tinyint(1) default 0 not null,
-    isPending   tinyint(1) default 1 not null,
     constraint requests_users_id_fk
         foreign key (sender_id) references users (id),
     constraint requests_users_id_fk_2

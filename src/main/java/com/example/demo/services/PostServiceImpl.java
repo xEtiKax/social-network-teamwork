@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostServiceImpl implements PostService {
-    public static final String POST_WITH_ID_DOES_NOT_EXISTS = "Post does not exists.";
+    public static final String POST_DOES_NOT_EXISTS = "Post does not exists.";
     private PostRepository postRepository;
 
     @Autowired
@@ -54,15 +54,15 @@ public class PostServiceImpl implements PostService {
 
     private Post postMerge(Post post, PostDTO postDTO) {
         post.setText(postDTO.getText());
-        post.setDateTime(postDTO.getDateTime());
         post.setIsPublic(postDTO.getIsPublic());
         return post;
+//        TODO set principal
     }
 
     private void throwIfPostDoesNotExists(int id) {
         if (!checkIfPostExist(id)) {
             throw new EntityNotFoundException(
-                    String.format(POST_WITH_ID_DOES_NOT_EXISTS, id));
+                    String.format(POST_DOES_NOT_EXISTS, id));
         }
     }
 }
