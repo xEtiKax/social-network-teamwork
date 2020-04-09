@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.io.Serializable;
-import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Serializable> {
 

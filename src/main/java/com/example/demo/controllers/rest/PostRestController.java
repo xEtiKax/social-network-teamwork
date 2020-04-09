@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.rest;
 
 import com.example.demo.models.Post;
 import com.example.demo.services.PostService;
@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -28,4 +27,13 @@ public class PostRestController {
         postService.createPost(post);
     }
 
+    @PostMapping("/update/{id}")
+    public void updatePost(@PathVariable int id, @RequestBody Post post, Principal principal) {
+        postService.updatePost(id, post);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deletePost(@PathVariable int id){
+        postService.deletePost(id);
+    }
 }

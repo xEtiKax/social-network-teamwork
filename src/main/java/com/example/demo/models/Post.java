@@ -1,12 +1,15 @@
 package com.example.demo.models;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "posts")
+@Where(clause = "enabled != 0")
 public class Post {
 
     @Id
@@ -21,12 +24,6 @@ public class Post {
     @JoinColumn(name = "created_by")
     private User createdBy;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "comments",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "post_id")})
-    private List<Comments> comments;
-
     @Column(name = "is_public")
     private boolean isPublic;
 
@@ -34,21 +31,20 @@ public class Post {
     private LocalDateTime dateTime;
 
     @Column(name = "picture")
-    Byte[] picture;
+    private Byte[] picture;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "likes",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "post_id")})
-    private Set<User> postLikers;
+    @Column(name = "enabled")
+    private int enabled;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    private List<Like> likes = new ArrayList<>();
+
+    public Post() {
+    }
 
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getText() {
@@ -83,19 +79,19 @@ public class Post {
         this.dateTime = dateTime;
     }
 
-//    public Set<User> getPostLikers() {
-//        return postLikers;
-//    }
-//
-//    public void setPostLikers(Set<User> postLikers) {
-//        this.postLikers = postLikers;
-//    }
-
-    public List<Comments> getComments() {
-        return comments;
+    public int getEnabled() {
+        return enabled;
     }
 
-    public void setComments(List<Comments> comments) {
-        this.comments = comments;
+    public void setEnabled(int enable) {
+        this.enabled = enable;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
     }
 }

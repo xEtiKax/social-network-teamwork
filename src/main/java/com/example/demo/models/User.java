@@ -1,6 +1,9 @@
 package com.example.demo.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,26 +44,22 @@ public class User {
     @JoinTable(name = "users_friends",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})
-    private Set<User> friends;
+    private Set<User> friends = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "requests",
-            joinColumns = {@JoinColumn(name = "sender_id")},
-            inverseJoinColumns = {@JoinColumn(name = "receiver_id")})
-    private Set<User> requests;
+    @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
+    private Set<Request> requests = new HashSet<>();
 
-    //    @Column(name = "is_public")
-//    private boolean isPublic;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Like> likes = new HashSet<>();
+
+    @Column(name = "is_public")
+    private boolean isPublic;
 
     public User() {
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -111,28 +110,20 @@ public class User {
         this.photo = photo;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-//    public boolean isPublic() {
-//        return isPublic;
-//    }
-//
-//    public void setPublic(boolean aPublic) {
-//        isPublic = aPublic;
-//    }
-
     public int getEnabled() {
         return enabled;
     }
 
     public void setEnabled(int enabled) {
         this.enabled = enabled;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public Set<User> getFriends() {
@@ -143,11 +134,27 @@ public class User {
         this.friends = friends;
     }
 
-    public Set<User> getRequests() {
+    public Set<Request> getRequests() {
         return requests;
     }
 
-    public void setRequests(Set<User> requests) {
+    public void setRequests(Set<Request> requests) {
         this.requests = requests;
+    }
+
+    public Set<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<Like> likes) {
+        this.likes = likes;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
     }
 }
