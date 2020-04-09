@@ -18,4 +18,6 @@ public interface UserService {
 
     void deleteUser(int id);
 
+    void changePassword(String username, String oldPassword, String newPassword);
+
 }

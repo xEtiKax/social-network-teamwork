@@ -7,6 +7,8 @@ import com.example.demo.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostServiceImpl implements PostService {
     public static final String POST_DOES_NOT_EXISTS = "Post does not exists.";
@@ -28,6 +30,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getPostById(int id) {
         return postRepository.getPostById(id);
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(int userId) {
+        return postRepository.getPostsByUserId(userId);
     }
 
     @Override

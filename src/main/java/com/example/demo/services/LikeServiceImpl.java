@@ -21,12 +21,17 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void deleteLike(Like like) {
-        likeRepository.delete(like);
+    public void deleteLike(int likeId) {
+        likeRepository.deleteById(likeId);
     }
 
     @Override
-    public Like getLikeByUserId(int userId) {
-        return likeRepository.getLikeByUserId(userId);
+    public Like getLikeByUserIdAndPostId(int userId, int postId) {
+        return likeRepository.getLikeByUserIdAndPostId(userId, postId);
+    }
+
+    @Override
+    public int getPostLikes(int postId) {
+        return likeRepository.getPostLikes(postId);
     }
 }

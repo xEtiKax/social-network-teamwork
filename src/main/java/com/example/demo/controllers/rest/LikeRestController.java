@@ -35,10 +35,8 @@ public class LikeRestController {
         Like like = new Like();
         like.setPost(post);
         like.setUser(user);
-
         try {
             likeService.createLike(like);
-//            post.getPostLikers().add(user);
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "You already likes this post");
         }
@@ -46,14 +44,17 @@ public class LikeRestController {
 
     @DeleteMapping("/dislike/{postId}")
     public void dislikePost(@PathVariable int postId, @RequestHeader String userWhoDisLike) {
-        Post post = postService.getPostById(postId);
         User user = userService.getByUsername(userWhoDisLike);
-//        post.getPostLikers().removeIf(p -> p.getId() == postId);
-        Like like = likeService.getLikeByUserId(user.getId());
+        Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
         try {
-            likeService.deleteLike(like);
+            likeService.deleteLike(like.getId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You don't like this post");
         }
+    }
+
+    @GetMapping("/getPostLikes/{postId}")
+    public int getPostLikes(@PathVariable int postId) {
+        return likeService.getPostLikes(postId);
     }
 }

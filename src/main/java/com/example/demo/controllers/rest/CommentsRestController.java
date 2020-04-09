@@ -1,5 +1,6 @@
 package com.example.demo.controllers.rest;
 
+import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.models.Comments;
 import com.example.demo.models.DTO.CommentsDTO;
 import com.example.demo.models.DTO.UserDTO;
@@ -8,6 +9,7 @@ import com.example.demo.models.User;
 import com.example.demo.services.CommentService;
 import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
+import org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase;
 import org.hibernate.validator.internal.constraintvalidators.bv.time.futureorpresent.FutureOrPresentValidatorForDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,7 @@ public class CommentsRestController {
 
 
     @Autowired
-    public CommentsRestController(CommentService commentService, PostService postService,UserService userService) {
+    public CommentsRestController(CommentService commentService, PostService postService, UserService userService) {
         this.commentService = commentService;
         this.postService = postService;
         this.userService = userService;
@@ -40,6 +42,15 @@ public class CommentsRestController {
             return commentService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/byUser/{userId}")
+    public List<Comments> getCommentsByUserId(@PathVariable int userId) {
+        try {
+            return commentService.getCommentsByUserId(userId);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This user don't have comments");
         }
     }
 
@@ -76,13 +87,14 @@ public class CommentsRestController {
         return comment;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteComment(@PathVariable int id) {
-        Comments comment = commentService.getById(id);
+    @DeleteMapping("/delete/{commentId}")
+    public void deleteComment(@PathVariable int commentId, @RequestHeader String user) {
+        User requestUser = userService.getByUsername(user);
+        Comments comment = commentService.getById(commentId);
         try {
-            commentService.deleteComment(comment.getId());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            commentService.deleteComment(comment.getId(), requestUser.getUsername());
+        } catch (AuthorizationException a) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, a.getMessage());
         }
     }
 }

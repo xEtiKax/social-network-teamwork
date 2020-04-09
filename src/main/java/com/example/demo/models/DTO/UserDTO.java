@@ -20,18 +20,6 @@ public class UserDTO {
     public UserDTO() {
     }
 
-
-    public UserDTO(String username, String firstName, String lastName, String email, int age,
-                   String password, String passwordConfirmation) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.age = age;
-        this.password = password;
-        this.passwordConfirmation = passwordConfirmation;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -87,8 +75,5 @@ public class UserDTO {
     public void setAge(int age) {
         this.age = age;
     }
-
-
-
 
 }

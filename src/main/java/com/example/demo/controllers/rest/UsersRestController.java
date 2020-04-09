@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.demo.utils.Mapper.userDTOtoUserMapper;
@@ -52,11 +53,10 @@ public class UsersRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }
     }
-    @PostMapping()
+    @PostMapping("/new")
     public User createUser(@RequestBody UserDTO userDTO) {
         User user = userDTOtoUserMapper(userDTO);
         try {
-
             userService.createUser(user);
         }catch (DuplicateEntityException e){
             throw new ResponseStatusException(HttpStatus.CONFLICT,e.getMessage());

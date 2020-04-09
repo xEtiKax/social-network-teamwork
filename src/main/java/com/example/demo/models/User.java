@@ -1,9 +1,9 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -49,8 +49,14 @@ public class User {
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
     private Set<Request> requests = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Comments> comments = new HashSet<>();
+
 
     @Column(name = "is_public")
     private boolean isPublic;
@@ -150,11 +156,20 @@ public class User {
         this.likes = likes;
     }
 
-    public boolean isPublic() {
-        return isPublic;
+    public Set<Comments> getComments() {
+        return comments;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setComments(Set<Comments> comments) {
+        this.comments = comments;
     }
+
+
+//    public boolean isPublic() {
+//        return isPublic;
+//    }
+//
+//    public void setPublic(boolean aPublic) {
+//        isPublic = aPublic;
+//    }
 }
