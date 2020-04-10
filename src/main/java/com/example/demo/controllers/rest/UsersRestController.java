@@ -55,13 +55,12 @@ public class UsersRestController {
     }
     @PostMapping("/new")
     public User createUser(@RequestBody UserDTO userDTO) {
-        User user = userDTOtoUserMapper(userDTO);
         try {
-            userService.createUser(user);
+            userService.createUser(userDTO);
         }catch (DuplicateEntityException e){
             throw new ResponseStatusException(HttpStatus.CONFLICT,e.getMessage());
         }
-        return user;
+        return userService.getByUsername(userDTO.getUsername());
     }
 
     @PutMapping("/update/{id}")

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.util.List;
 
 
 public interface UserRepository extends JpaRepository<User, Serializable> {
@@ -24,4 +25,8 @@ public interface UserRepository extends JpaRepository<User, Serializable> {
     @Query("UPDATE User u set u.enabled = 0 where u.id = ?1")
     @Modifying
     void deleteUser(int id);
+
+
+    @Query(value = "select first_name,last_name,username,email,picture,age from users_friends join users u on users_friends.friend_id = u.id where user_id = ?1", nativeQuery = true)
+    List<User>getUserFriendsByUSerId(int userId);
 }

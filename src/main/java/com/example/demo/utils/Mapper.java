@@ -23,7 +23,6 @@ public class Mapper {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setAge(userDTO.getAge());
-        user.setEnabled(1);
         user.setPhoto(null);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return user;

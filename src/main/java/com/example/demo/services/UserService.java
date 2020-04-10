@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
+import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,7 +14,9 @@ public interface UserService {
 
     List<User> getAll();
 
-    User createUser(User user);
+    List<User> getUserFriends(int userId);
+
+    User createUser(UserDTO userDTO);
 
     User updateUser(User user);
 
@@ -20,4 +24,7 @@ public interface UserService {
 
     void changePassword(String username, String oldPassword, String newPassword);
 
+    void updateUserDetails(User user, String firstName, String lastName, String email);
+
+    void addProfilePicture(String username, MultipartFile profilePicture);
 }

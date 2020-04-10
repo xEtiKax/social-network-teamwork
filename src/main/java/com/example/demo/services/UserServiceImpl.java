@@ -2,15 +2,21 @@ package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.WrongPasswordException;
+import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.demo.utils.Mapper.userDTOtoUserMapper;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,7 +49,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
+    public List<User> getUserFriends(int userId) {
+        return userRepository.getUserFriendsByUSerId(userId);
+    }
+
+    @Override
+    public User createUser(UserDTO userDTO) {
+        User user = userDTOtoUserMapper(userDTO);
         if (checkUserExist(user.getUsername())) {
             throw new DuplicateEntityException("User with this username already exist");
         }
@@ -64,6 +76,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUserDetails(User user, String firstName, String lastName, String email) {
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        userRepository.save(user);
+    }
+
+    @Override
     public void changePassword(String username, String oldPassword, String newPassword) {
         User user = getByUsername(username);
         boolean passMatched = passwordEncoder.matches(oldPassword, user.getPassword());
@@ -73,6 +93,17 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new WrongPasswordException("Wrong old password");
         }
+    }
+
+    @Override
+    public void addProfilePicture(String username, MultipartFile profilePicture) {
+        User user = getByUsername(username);
+        try {
+            user.setPhoto(multiPartToByteArr(profilePicture));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userRepository.save(user);
     }
 
     @Override
@@ -96,6 +127,15 @@ public class UserServiceImpl implements UserService {
     private boolean checkUserExistById(int id) {
         User user = userRepository.getById(id);
         return user != null;
+    }
+
+    public Byte[] multiPartToByteArr(@RequestParam("imageFile") MultipartFile file) throws IOException {
+        Byte[] byteObjects = new Byte[file.getBytes().length];
+        int i = 0;
+        for (byte b : file.getBytes()) {
+            byteObjects[i++] = b;
+        }
+        return byteObjects;
     }
 
 }
