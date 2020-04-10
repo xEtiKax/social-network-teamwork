@@ -76,9 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDetails(User user, String firstName, String lastName, String email) {
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
+    public void updateUserDetails(User user, String email) {
         user.setEmail(email);
         userRepository.save(user);
     }

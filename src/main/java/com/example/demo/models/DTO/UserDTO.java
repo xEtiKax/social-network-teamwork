@@ -1,23 +1,21 @@
 package com.example.demo.models.DTO;
 
-
 public class UserDTO {
 
     private String username;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    private int age;
 
     private String password;
 
     private String passwordConfirmation;
 
     public UserDTO() {
+    }
+
+    public UserDTO(String username, String password, String passwordConfirmation) {
+        this.username = username;
+        this.password = password;
+        this.passwordConfirmation = passwordConfirmation;
     }
 
     public String getPassword() {
@@ -44,36 +42,5 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 
 }
