@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
     @GetMapping("/login")
     public String showLogin() {
-        return "login";
+        return "index";
     }
 
-    @GetMapping("/access-denied")
+    @GetMapping("/index")
     public String showAccessDenied() {
-        return "access-denied";
+        return "index";
     }
 }
 

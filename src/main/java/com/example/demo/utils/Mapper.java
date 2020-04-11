@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Component
 public class Mapper {
 
@@ -16,13 +21,11 @@ public class Mapper {
         Mapper.passwordEncoder = passwordEncoder;
     }
 
-    public static User userDTOtoUserMapper(UserDTO userDTO) {
+    public static User userDTOtoUserMapper(UserDTO userDTO){
         User user = new User();
         user.setUsername(userDTO.getUsername());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
-        user.setAge(userDTO.getAge());
+//        user.setAge(userDTO.getAge());
+        user.setEnabled(1);
         user.setPhoto(null);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return user;

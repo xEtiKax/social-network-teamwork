@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import java.util.List;
-
-import static com.example.demo.utils.Mapper.userDTOtoUserMapper;
 
 @RestController
 @RequestMapping("/api/users")
@@ -68,9 +65,7 @@ public class UsersRestController {
         User user = userService.getById(id);
         try {
             user.setUsername(userDTO.getUsername());
-            user.setFirstName(userDTO.getFirstName());
-            user.setLastName(userDTO.getLastName());
-            user.setEmail(userDTO.getEmail());
+//            user.setEmail(userDTO.getEmail());
             userService.updateUser(user);
         }catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

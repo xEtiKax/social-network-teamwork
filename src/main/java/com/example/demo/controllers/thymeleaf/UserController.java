@@ -117,14 +117,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public String updateUserProfile(@RequestParam("firstName") String firstName,
-                                    @RequestParam("lastName") String lastName,
-                                    @RequestParam("email") String email,
+    public String updateUserProfile(@RequestParam("email") String email,
                                     Principal principal,
                                     Model model) {
         User user = userService.getByUsername(principal.getName());
         try {
-            userService.updateUserDetails(user, firstName, lastName, email);
+            userService.updateUserDetails(user, email);
             model.addAttribute("success", "Profile updated successfully!");
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");

@@ -2,6 +2,7 @@ package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
+import com.example.demo.services.UserService;
 import com.example.demo.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,48 +23,50 @@ import java.util.List;
 public class RegistrationController {
     private UserDetailsManager userDetailsManager;
     private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
-    public RegistrationController(UserDetailsManager userDetailsManager , PasswordEncoder passwordEncoder) {
+    public RegistrationController(UserDetailsManager userDetailsManager , PasswordEncoder passwordEncoder, UserService userService) {
         this.userDetailsManager = userDetailsManager;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
         UserDTO userDTO = new UserDTO();
         model.addAttribute("user", userDTO);
-        return "register";
+        model.addAttribute("isRegister",true);
+        return "sign-in";
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("error", "Username/password can't be empty!");
-            return "register";
+            return "sign-in";
         }
         User user = Mapper.userDTOtoUserMapper(userDTO);
 
+        model.addAttribute("user",userDTO);
         if (userDetailsManager.userExists(user.getUsername())) {
             model.addAttribute("error", "User with the same username already exists!");
-            return "register";
+            return "sign-in";
         }
 
         if (!userDTO.getPassword().equals(userDTO.getPasswordConfirmation())) {
-            model.addAttribute("error", "Password does't match!");
-            return "register";
+            model.addAttribute("errorPass", "Password does't match!");
+            return "sign-in";
         }
 
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
         org.springframework.security.core.userdetails.User newUser =
-                new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        passwordEncoder.encode(user.getPassword()),
-                        authorities);
+                new org.springframework.security.core.userdetails.User(user.getUsername(), passwordEncoder.encode(user.getPassword()), authorities);
         userDetailsManager.createUser(newUser);
+        model.addAttribute("successful","You registered successfully");
 
-        return "register-confirmation";
+        return "sign-in";
     }
 
     @GetMapping("/register-confirmation")
