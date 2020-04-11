@@ -1,28 +1,24 @@
 package com.example.demo.controllers.rest;
 
 import com.example.demo.exceptions.AuthorizationException;
-import com.example.demo.models.Comments;
+import com.example.demo.models.Comment;
 import com.example.demo.models.DTO.CommentsDTO;
-import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.CommentService;
 import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
-import org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase;
-import org.hibernate.validator.internal.constraintvalidators.bv.time.futureorpresent.FutureOrPresentValidatorForDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
-import javax.xml.stream.events.Comment;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
-public class CommentsRestController {
+public class CommentRestController {
 
     private CommentService commentService;
     private PostService postService;
@@ -30,14 +26,14 @@ public class CommentsRestController {
 
 
     @Autowired
-    public CommentsRestController(CommentService commentService, PostService postService, UserService userService) {
+    public CommentRestController(CommentService commentService, PostService postService, UserService userService) {
         this.commentService = commentService;
         this.postService = postService;
         this.userService = userService;
     }
 
     @GetMapping("/{id}")
-    public Comments getCommentById(@PathVariable int id) {
+    public Comment getCommentById(@PathVariable int id) {
         try {
             return commentService.getById(id);
         } catch (EntityNotFoundException e) {
@@ -46,7 +42,7 @@ public class CommentsRestController {
     }
 
     @GetMapping("/byUser/{userId}")
-    public List<Comments> getCommentsByUserId(@PathVariable int userId) {
+    public List<Comment> getCommentsByUserId(@PathVariable int userId) {
         try {
             return commentService.getCommentsByUserId(userId);
         } catch (EntityNotFoundException e) {
@@ -55,7 +51,7 @@ public class CommentsRestController {
     }
 
     @GetMapping("/post/{postId}")
-    public List<Comments> getCommentsByPostId(@PathVariable int postId) {
+    public List<Comment> getCommentsByPostId(@PathVariable int postId) {
         try {
             return commentService.getCommentsByPostId(postId);
         } catch (EntityNotFoundException e) {
@@ -63,9 +59,9 @@ public class CommentsRestController {
         }
     }
 
-    @RequestMapping("/add")
-    public Comments createComment(@RequestBody CommentsDTO commentsDto, @RequestHeader String requestUser) {
-        Comments comment = new Comments();
+    @PostMapping("/add")
+    public Comment createComment(@RequestBody CommentsDTO commentsDto, @RequestHeader String requestUser) {
+        Comment comment = new Comment();
         User user = userService.getByUsername(requestUser);
         Post post = postService.getPostById(commentsDto.getPostId());
         comment.setDescription(commentsDto.getDescription());
@@ -76,8 +72,8 @@ public class CommentsRestController {
     }
 
     @PutMapping("/update/{commentId}")
-    public Comments updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable int commentId, @RequestHeader String requestUser) {
-        Comments comment = commentService.getById(commentId);
+    public Comment updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable int commentId, @RequestHeader String requestUser) {
+        Comment comment = commentService.getById(commentId);
         try {
             comment.setDescription(commentDTO.getDescription());
             commentService.updateComment(comment);
@@ -90,7 +86,7 @@ public class CommentsRestController {
     @DeleteMapping("/delete/{commentId}")
     public void deleteComment(@PathVariable int commentId, @RequestHeader String user) {
         User requestUser = userService.getByUsername(user);
-        Comments comment = commentService.getById(commentId);
+        Comment comment = commentService.getById(commentId);
         try {
             commentService.deleteComment(comment.getId(), requestUser.getUsername());
         } catch (AuthorizationException a) {

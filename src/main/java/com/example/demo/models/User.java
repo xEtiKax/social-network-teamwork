@@ -55,7 +55,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Comments> comments = new HashSet<>();
+    private Set<Comment> comments = new HashSet<>();
 
 
     @Column(name = "is_public")
@@ -156,11 +156,11 @@ public class User {
         this.likes = likes;
     }
 
-    public Set<Comments> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comments> comments) {
+    public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
 

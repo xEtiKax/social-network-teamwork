@@ -43,7 +43,7 @@ public class Post {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL)
-    private Set<Comments> comments = new HashSet<>();
+    private Set<Comment> comments = new HashSet<>();
 
     public Post() {
     }
@@ -109,11 +109,11 @@ public class Post {
         this.picture = picture;
     }
 
-    public Set<Comments> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comments> comments) {
+    public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
 }

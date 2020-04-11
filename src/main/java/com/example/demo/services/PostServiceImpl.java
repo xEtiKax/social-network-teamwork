@@ -55,6 +55,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getAllPublicPosts() {
+        return postRepository.getAllPublicPosts();
+    }
+
+    @Override
     public boolean checkIfPostExist(int id) {
         return postRepository.existsById(id);
     }

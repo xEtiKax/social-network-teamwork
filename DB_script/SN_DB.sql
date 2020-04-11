@@ -1,94 +1,122 @@
-create table users
-(
-    id         int auto_increment
-        primary key,
-    first_name varchar(50)          null,
-    last_name  varchar(50)          null,
-    username   varchar(50)          not null,
-    email      varchar(50)          null,
-    password   varchar(68)          not null,
-    picture    blob                 null,
-    enabled    tinyint    default 1 not null,
-    age        int                  not null,
-    is_public  tinyint(1) default 0 null
-);
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Server version:               10.4.12-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             10.2.0.5599
+-- --------------------------------------------------------
 
-create table authorities
-(
-    username  varchar(50) not null,
-    authority varchar(50) not null,
-    constraint authorities_users_username_fk
-        foreign key (username) references users (username)
-);
-
-create table posts
-(
-    id         int auto_increment
-        primary key,
-    text       varchar(300)                          null,
-    picture    blob                                  null,
-    created_by int                                   null,
-    is_public  tinyint(1)                            null,
-    created_at timestamp default current_timestamp() not null on update current_timestamp(),
-    enabled    tinyint   default 1                   not null,
-    constraint posts_users_id_fk
-        foreign key (created_by) references users (id)
-);
-
-create table comments
-(
-    id          int auto_increment
-        primary key,
-    description varchar(200)                          not null,
-    user_id     int                                   not null,
-    created_at  timestamp default current_timestamp() not null on update current_timestamp(),
-    post_id     int                                   not null,
-    constraint comments_posts_id_fk
-        foreign key (post_id) references posts (id),
-    constraint comments_users_id_fk
-        foreign key (user_id) references users (id)
-);
-
-create table likes
-(
-    like_id int auto_increment
-        primary key,
-    user_id int not null,
-    post_id int not null,
-    constraint UQ_UserID_PostID
-        unique (user_id, post_id),
-    constraint likes_posts_id_fk
-        foreign key (post_id) references posts (id),
-    constraint likes_users_id_fk
-        foreign key (user_id) references users (id)
-);
-
-create table requests
-(
-    id          int auto_increment
-        primary key,
-    sender_id   int                  not null,
-    receiver_id int                  not null,
-    isAccepted  tinyint(1) default 0 not null,
-    constraint requests_users_id_fk
-        foreign key (sender_id) references users (id),
-    constraint requests_users_id_fk_2
-        foreign key (receiver_id) references users (id)
-);
-
-create index users_authorities_username_fk
-    on users (username);
-
-create table users_friends
-(
-    user_id   int not null,
-    friend_id int not null,
-    constraint USERS_FRIENDS_UK
-        unique (user_id, friend_id),
-    constraint users_friends_users_id_fk
-        foreign key (user_id) references users (id),
-    constraint users_friends_users_id_fk_2
-        foreign key (friend_id) references users (id)
-);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
+-- Dumping database structure for social_network
+CREATE DATABASE IF NOT EXISTS `social_network` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `social_network`;
+
+-- Dumping structure for table social_network.authorities
+CREATE TABLE IF NOT EXISTS `authorities` (
+  `username` varchar(50) NOT NULL,
+  `authority` varchar(50) NOT NULL,
+  KEY `authorities_users_username_fk` (`username`),
+  CONSTRAINT `authorities_users_username_fk` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table social_network.comments
+CREATE TABLE IF NOT EXISTS `comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(200) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `post_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `comments_users_id_fk` (`user_id`),
+  KEY `comments_posts_id_fk` (`post_id`),
+  CONSTRAINT `comments_posts_id_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  CONSTRAINT `comments_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table social_network.likes
+CREATE TABLE IF NOT EXISTS `likes` (
+  `like_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  PRIMARY KEY (`like_id`),
+  UNIQUE KEY `UQ_UserID_PostID` (`user_id`,`post_id`),
+  KEY `likes_posts_id_fk` (`post_id`),
+  CONSTRAINT `likes_posts_id_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  CONSTRAINT `likes_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table social_network.posts
+CREATE TABLE IF NOT EXISTS `posts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` varchar(300) DEFAULT NULL,
+  `picture` blob DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `is_public` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `enabled` tinyint(4) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `posts_users_id_fk` (`created_by`),
+  CONSTRAINT `posts_users_id_fk` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table social_network.requests
+CREATE TABLE IF NOT EXISTS `requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `isAccepted` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `requests_users_id_fk` (`sender_id`),
+  KEY `requests_users_id_fk_2` (`receiver_id`),
+  CONSTRAINT `requests_users_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `requests_users_id_fk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table social_network.users
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(68) NOT NULL,
+  `picture` blob DEFAULT NULL,
+  `enabled` tinyint(4) NOT NULL DEFAULT 1,
+  `age` int(11) NOT NULL,
+  `is_public` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `users_authorities_username_fk` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table social_network.users_friends
+CREATE TABLE IF NOT EXISTS `users_friends` (
+  `user_id` int(11) NOT NULL,
+  `friend_id` int(11) NOT NULL,
+  UNIQUE KEY `USERS_FRIENDS_UK` (`user_id`,`friend_id`),
+  KEY `users_friends_users_id_fk_2` (`friend_id`),
+  CONSTRAINT `users_friends_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `users_friends_users_id_fk_2` FOREIGN KEY (`friend_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

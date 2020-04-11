@@ -1,8 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.AuthorizationException;
-import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.models.Comments;
+import com.example.demo.models.Comment;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,28 +22,28 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comments getById(int commentId) {
+    public Comment getById(int commentId) {
         return commentRepository.getByCommentId(commentId);
     }
 
     @Override
-    public List<Comments> getCommentsByPostId(int postId) {
+    public List<Comment> getCommentsByPostId(int postId) {
         return commentRepository.getCommentsByPostId(postId);
     }
 
     @Override
-    public Comments createComment(Comments comments) {
+    public Comment createComment(Comment comments) {
         commentRepository.save(comments);
         return comments;
     }
 
     @Override
-    public List<Comments> getCommentsByUserId(int userId) {
+    public List<Comment> getCommentsByUserId(int userId) {
         return commentRepository.getCommentsByUserId(userId);
     }
 
     @Override
-    public Comments updateComment(Comments comments) {
+    public Comment updateComment(Comment comments) {
         commentRepository.save(comments);
         return comments;
     }
@@ -52,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(int id, String username) {
         User user = userService.getByUsername(username);
-        List<Comments> userComments = getCommentsByUserId(user.getId());
+        List<Comment> userComments = getCommentsByUserId(user.getId());
         if (userComments.contains(commentRepository.getByCommentId(id))) {
             commentRepository.deleteById(id);
         } else {

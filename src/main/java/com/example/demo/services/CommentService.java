@@ -1,21 +1,19 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Comments;
-import com.example.demo.models.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.models.Comment;
 
 import java.util.List;
 
 public interface CommentService {
-    Comments getById(int commentId);
+    Comment getById(int commentId);
 
-    List<Comments> getCommentsByPostId(int postId);
+    List<Comment> getCommentsByPostId(int postId);
 
-    Comments createComment(Comments comments);
+    Comment createComment(Comment comments);
 
-    List<Comments> getCommentsByUserId(int userId);
+    List<Comment> getCommentsByUserId(int userId);
 
-    Comments updateComment(Comments comments);
+    Comment updateComment(Comment comments);
 
     void deleteComment(int id, String username);
 

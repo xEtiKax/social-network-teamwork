@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
-public class Comments {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -28,7 +28,7 @@ public class Comments {
     private String description;
 
 
-    public Comments() {
+    public Comment() {
     }
 
     public int getId() {
