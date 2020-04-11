@@ -4,10 +4,12 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,12 +31,15 @@ public class UserController {
     private UserService userService;
     private UserRepository userRepository;
     private PostService postService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository, PostService postService) {
+    public UserController(UserService userService, UserRepository userRepository, PostService postService,
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.postService = postService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -113,22 +118,23 @@ public class UserController {
                                   Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
-        return "editUser";
+        return "profile-account-setting";
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
     public String updateUserProfile(@RequestParam("email") String email,
+                                    @RequestParam("jobTitle") String jobTitle,
                                     Principal principal,
                                     Model model) {
         User user = userService.getByUsername(principal.getName());
         try {
-            userService.updateUserDetails(user, email);
+            userService.updateUserDetails(user, email, jobTitle);
             model.addAttribute("success", "Profile updated successfully!");
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");
         }
         model.addAttribute("user", user);
-        return "editUser";
+        return "user-profile";
     }
 
     @RequestMapping(value = "/changeProfilePicture", method = RequestMethod.POST)
@@ -142,5 +148,23 @@ public class UserController {
             model.addAttribute("error", e.getMessage());
         }
         return "redirect:/user";
+    }
+
+    @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
+    public String deleteProfile(Principal principal, Model model, @RequestParam("email") String email,
+                                @RequestParam("password") String password) {
+        User user = userService.getByUsername(principal.getName());
+        postService.getPostsByUserId(user.getId());
+        for (Post post : postService.getPostsByUserId(user.getId())) {
+            postService.deletePost(post.getId());
+        }
+        if (password.equals(passwordEncoder.encode(user.getPassword())) && email.equals(user.getEmail())) {
+            userService.deleteUser(user.getId());
+
+        } else {
+            model.addAttribute("wrongEmailOrPassword", "Wrong email or password");
+            return "profile-account-setting";
+        }
+        return "index";
     }
 }

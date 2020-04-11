@@ -31,6 +31,10 @@ public class User {
     @Column(name = "enabled")
     private int enabled;
 
+    @Column(name = "job_title")
+    private String jobTitle;
+
+
     @Column(name = "age")
     private int age;
 
@@ -142,7 +146,13 @@ public class User {
         this.comments = comments;
     }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 //    public boolean isPublic() {
 //        return isPublic;
 //    }

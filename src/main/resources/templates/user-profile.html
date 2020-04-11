@@ -1,22 +1,24 @@
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="UTF-8">
 	<title>WorkWise Html Template</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<link rel="stylesheet" type="text/css" href="../static/css/animate.css">
-	<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="../static/css/line-awesome.css">
-	<link rel="stylesheet" type="text/css" href="../static/css/line-awesome-font-awesome.min.css">
-	<link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="../static/lib/slick/slick.css">
-	<link rel="stylesheet" type="text/css" href="../static/lib/slick/slick-theme.css">
-	<link rel="stylesheet" type="text/css" href="../static/css/style.css">
-	<link rel="stylesheet" type="text/css" href="../static/css/responsive.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" href="../static/css/animate.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/css/line-awesome.css}" href="../static/css/line-awesome.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}" href="../static/css/line-awesome-font-awesome.min.css">
+	<link th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+		  href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" href="../static/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}" href="../static/lib/slick/slick-theme.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../static/css/responsive.css">
 </head>
 
 
@@ -186,40 +188,40 @@
 							<i class="la la-sort-down"></i>
 						</div>
 						<div class="user-account-settingss">
-							<h3>Online Status</h3>
-							<ul class="on-off-status">
-								<li>
-									<div class="fgt-sec">
-										<input type="radio" name="cc" id="c5">
-										<label for="c5">
-											<span></span>
-										</label>
-										<small>Online</small>
-									</div>
-								</li>
-								<li>
-									<div class="fgt-sec">
-										<input type="radio" name="cc" id="c6">
-										<label for="c6">
-											<span></span>
-										</label>
-										<small>Offline</small>
-									</div>
-								</li>
-							</ul>
-							<h3>Custom Status</h3>
-							<div class="search_form">
-								<form>
-									<input type="text" name="search">
-									<button type="submit">Ok</button>
-								</form>
-							</div><!--search_form end-->
-							<h3>Setting</h3>
+<!--							<h3>Online Status</h3>-->
+<!--							<ul class="on-off-status">-->
+<!--								<li>-->
+<!--									<div class="fgt-sec">-->
+<!--										<input type="radio" name="cc" id="c5">-->
+<!--										<label for="c5">-->
+<!--											<span></span>-->
+<!--										</label>-->
+<!--										<small>Online</small>-->
+<!--									</div>-->
+<!--								</li>-->
+<!--								<li>-->
+<!--									<div class="fgt-sec">-->
+<!--										<input type="radio" name="cc" id="c6">-->
+<!--										<label for="c6">-->
+<!--											<span></span>-->
+<!--										</label>-->
+<!--										<small>Offline</small>-->
+<!--									</div>-->
+<!--								</li>-->
+<!--							</ul>-->
+<!--							<h3>Custom Status</h3>-->
+<!--							<div class="search_form">-->
+<!--								<form>-->
+<!--									<input type="text" name="search">-->
+<!--									<button type="submit">Ok</button>-->
+<!--								</form>-->
+<!--							</div>&lt;!&ndash;search_form end&ndash;&gt;-->
+<!--							<h3>Setting</h3>-->
 							<ul class="us-links">
-								<li><a href="profile-account-setting.html" title="">Account Setting</a></li>
-								<li><a href="#" title="">Privacy</a></li>
-								<li><a href="#" title="">Faqs</a></li>
-								<li><a href="#" title="">Terms & Conditions</a></li>
+								<li><a href="profile-account-setting.html" th:href="@{/user/edit}"title="">Account Setting</a></li>
+<!--								<li><a href="#" title="">Privacy</a></li>-->
+<!--								<li><a href="#" title="">Faqs</a></li>-->
+<!--								<li><a href="#" title="">Terms & Conditions</a></li>-->
 							</ul>
 							<h3 class="tc"><a href="sign-in.html" title="">Logout</a></h3>
 						</div><!--user-account-settingss end-->
@@ -247,8 +249,8 @@
 										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
 											<ul class="flw-hr">
-												<li><a href="#" title="" class="flww"><i class="la la-plus"></i> Follow</a></li>
-												<li><a href="#" title="" class="hre">Hire</a></li>
+												<li><a href="#" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
+<!--												<li><a href="#" title="" class="hre">Hire</a></li>-->
 											</ul>
 											<ul class="flw-status">
 												<li>
@@ -261,16 +263,16 @@
 												</li>
 											</ul>
 										</div><!--user_pro_status end-->
-										<ul class="social_links">
-											<li><a href="#" title=""><i class="la la-globe"></i> www.example.com</a></li>
-											<li><a href="#" title=""><i class="fa fa-facebook-square"></i> Http://www.facebook.com/john...</a></li>
-											<li><a href="#" title=""><i class="fa fa-twitter"></i> Http://www.Twitter.com/john...</a></li>
-											<li><a href="#" title=""><i class="fa fa-google-plus-square"></i> Http://www.googleplus.com/john...</a></li>
-											<li><a href="#" title=""><i class="fa fa-behance-square"></i> Http://www.behance.com/john...</a></li>
-											<li><a href="#" title=""><i class="fa fa-pinterest"></i> Http://www.pinterest.com/john...</a></li>
-											<li><a href="#" title=""><i class="fa fa-instagram"></i> Http://www.instagram.com/john...</a></li>
-											<li><a href="#" title=""><i class="fa fa-youtube"></i> Http://www.youtube.com/john...</a></li>
-										</ul>
+<!--										<ul class="social_links">-->
+<!--											<li><a href="#" title=""><i class="la la-globe"></i> www.example.com</a></li>-->
+<!--											<li><a href="#" title=""><i class="fa fa-facebook-square"></i> Http://www.facebook.com/john...</a></li>-->
+<!--											<li><a href="#" title=""><i class="fa fa-twitter"></i> Http://www.Twitter.com/john...</a></li>-->
+<!--											<li><a href="#" title=""><i class="fa fa-google-plus-square"></i> Http://www.googleplus.com/john...</a></li>-->
+<!--											<li><a href="#" title=""><i class="fa fa-behance-square"></i> Http://www.behance.com/john...</a></li>-->
+<!--											<li><a href="#" title=""><i class="fa fa-pinterest"></i> Http://www.pinterest.com/john...</a></li>-->
+<!--											<li><a href="#" title=""><i class="fa fa-instagram"></i> Http://www.instagram.com/john...</a></li>-->
+<!--											<li><a href="#" title=""><i class="fa fa-youtube"></i> Http://www.youtube.com/john...</a></li>-->
+<!--										</ul>-->
 									</div><!--user_profile end-->
 									<div class="suggestions full-width">
 										<div class="sd-title">
@@ -361,12 +363,12 @@
 														<span>Info</span>
 													</a>
 												</li>
-												<li data-tab="portfolio-dd">
-													<a href="#" title="">
-														<img src="../static/images/ic3.png" alt="">
-														<span>Portfolio</span>
-													</a>
-												</li>
+<!--												<li data-tab="portfolio-dd">-->
+<!--													<a href="#" title="">-->
+<!--														<img src="../static/images/ic3.png" alt="">-->
+<!--														<span>Portfolio</span>-->
+<!--													</a>-->
+<!--												</li>-->
 											</ul>
 										</div><!-- tab-feed end-->
 									</div><!--user-tab-sec end-->
@@ -648,106 +650,106 @@
 											</ul>
 										</div><!--user-profile-ov end-->
 									</div><!--product-feed-tab end-->
-									<div class="product-feed-tab" id="portfolio-dd">
-										<div class="portfolio-gallery-sec">
-											<h3>Portfolio</h3>
-											<div class="gallery_pf">
-												<div class="row">
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img1.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img2.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img3.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img4.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img5.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img6.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img7.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img8.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img9.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-													<div class="col-lg-4 col-md-4 col-sm-6 col-6">
-														<div class="gallery_pt">
-															<img src="../static/images/resources/pf-img10.jpg" alt="">
-															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>
-														</div><!--gallery_pt end-->
-													</div>
-												</div>
-											</div><!--gallery_pf end-->
-										</div><!--portfolio-gallery-sec end-->
-									</div><!--product-feed-tab end-->
+<!--									<div class="product-feed-tab" id="portfolio-dd">-->
+<!--										<div class="portfolio-gallery-sec">-->
+<!--											<h3>Portfolio</h3>-->
+<!--											<div class="gallery_pf">-->
+<!--												<div class="row">-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img1.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img2.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img3.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img4.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img5.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img6.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img7.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img8.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img9.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--													<div class="col-lg-4 col-md-4 col-sm-6 col-6">-->
+<!--														<div class="gallery_pt">-->
+<!--															<img src="../static/images/resources/pf-img10.jpg" alt="">-->
+<!--															<a href="#" title=""><img src="../static/images/all-out.png" alt=""></a>-->
+<!--														</div>&lt;!&ndash;gallery_pt end&ndash;&gt;-->
+<!--													</div>-->
+<!--												</div>-->
+<!--											</div>&lt;!&ndash;gallery_pf end&ndash;&gt;-->
+<!--										</div>&lt;!&ndash;portfolio-gallery-sec end&ndash;&gt;-->
+<!--									</div>&lt;!&ndash;product-feed-tab end&ndash;&gt;-->
 								</div><!--main-ws-sec end-->
 							</div>
-							<div class="col-lg-3">
-								<div class="right-sidebar">
-									<div class="message-btn">
-										<a href="#" title=""><i class="fa fa-envelope"></i> Message</a>
-									</div>
-									<div class="widget widget-portfolio">
-										<div class="wd-heady">
-											<h3>Portfolio</h3>
-											<img src="../static/images/photo-icon.png" alt="">
-										</div>
-										<div class="pf-gallery">
-											<ul>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery1.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery2.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery3.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery4.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery5.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery6.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery7.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery8.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery9.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery10.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery11.png" alt=""></a></li>
-												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery12.png" alt=""></a></li>
-											</ul>
-										</div><!--pf-gallery end-->
-									</div><!--widget-portfolio end-->
-								</div><!--right-sidebar end-->
-							</div>
+<!--							<div class="col-lg-3">-->
+<!--								<div class="right-sidebar">-->
+<!--									<div class="message-btn">-->
+<!--										<a href="#" title=""><i class="fa fa-envelope"></i> Message</a>-->
+<!--									</div>-->
+<!--									<div class="widget widget-portfolio">-->
+<!--										<div class="wd-heady">-->
+<!--											<h3>Portfolio</h3>-->
+<!--											<img src="../static/images/photo-icon.png" alt="">-->
+<!--										</div>-->
+<!--										<div class="pf-gallery">-->
+<!--											<ul>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery1.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery2.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery3.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery4.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery5.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery6.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery7.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery8.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery9.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery10.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery11.png" alt=""></a></li>-->
+<!--												<li><a href="#" title=""><img src="../static/images/resources/pf-gallery12.png" alt=""></a></li>-->
+<!--											</ul>-->
+<!--										</div>&lt;!&ndash;pf-gallery end&ndash;&gt;-->
+<!--									</div>&lt;!&ndash;widget-portfolio end&ndash;&gt;-->
+<!--								</div>&lt;!&ndash;right-sidebar end&ndash;&gt;-->
+<!--							</div>-->
 						</div>
 					</div><!-- main-section-data end-->
 				</div> 

@@ -24,7 +24,7 @@ public interface UserService {
 
     void changePassword(String username, String oldPassword, String newPassword);
 
-    void updateUserDetails(User user, String email);
+    void updateUserDetails(User user, String email, String jobTitle);
 
     void addProfilePicture(String username, MultipartFile profilePicture);
 }
