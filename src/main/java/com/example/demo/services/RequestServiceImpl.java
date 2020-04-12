@@ -10,6 +10,8 @@ import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RequestServiceImpl implements RequestService {
     public static final String REQUEST_DOES_NOT_EXISTS = "Request does not exists.";
@@ -46,6 +48,11 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public boolean checkIfRequestExist(int sender, int receiver) {
         return requestRepository.existsByUniquePair(sender, receiver) != null;
+    }
+
+    @Override
+    public List<Request> getUserRequests(int userId) {
+        return requestRepository.getUserRequests(userId);
     }
 
     private Request requestMerge(Request request, RequestDTO requestDTO) {

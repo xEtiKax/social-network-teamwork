@@ -2,12 +2,17 @@ package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
+import com.example.demo.models.Like;
 import com.example.demo.models.Post;
+import com.example.demo.models.Request;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.LikeService;
 import com.example.demo.services.PostService;
+import com.example.demo.services.RequestService;
 import com.example.demo.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
@@ -20,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.List;
 
 import static com.example.demo.utils.Mapper.userDTOtoUserMapper;
@@ -30,29 +36,33 @@ public class UserController {
 
     private UserService userService;
     private UserRepository userRepository;
+    private RequestService requestService;
     private PostService postService;
     private PasswordEncoder passwordEncoder;
+    private LikeService likeService;
 
     @Autowired
     public UserController(UserService userService, UserRepository userRepository, PostService postService,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder, RequestService requestService, LikeService likeService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.postService = postService;
         this.passwordEncoder = passwordEncoder;
+        this.requestService = requestService;
+        this.likeService = likeService;
     }
 
     @GetMapping
     public String showuserProfile(Model model, Principal principal) {
         model.addAttribute("user", userService.getByUsername(principal.getName()));
-        return "user";
+        return "user-profile";
     }
 
     @GetMapping("/showMyPosts")
     public String showMyPosts(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
-        return "myPosts";
+        return "user-profile";
     }
 
     @GetMapping("/showMyFriends")
@@ -87,7 +97,34 @@ public class UserController {
     public String changeUserPassword(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
-        return "changePass";
+        model.addAttribute("isPass",true);
+        return "profile-account-setting";
+    }
+    @GetMapping("/privacy")
+    public String showPrivacy(Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        model.addAttribute("user",user);
+        model.addAttribute("isPrivacy",true);
+        return "profile-account-setting";
+    }
+
+    @PostMapping("/like/{postId}/")
+    public String likePost(@PathVariable int postId, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        Post post = postService.getPostById(postId);
+        Like like = new Like();
+        like.setUser(user);
+        like.setPost(post);
+        likeService.createLike(like);
+        return "redirect:/post/details" + post.getId();
+    }
+
+    @DeleteMapping("/dislike/{postId}")
+    public String dislikePost(@PathVariable int postId, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
+        likeService.deleteLike(like.getId());
+            return "redirect:/post/details";
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
@@ -113,11 +150,21 @@ public class UserController {
         return "user";
     }
 
-    @GetMapping(value = "/user/edit")
+    @GetMapping(value = "/edit")
     public String editUserDetails(Model model,
                                   Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
+        model.addAttribute("isEdit",true);
+        return "profile-account-setting";
+    }
+
+    @GetMapping(value = "/showRequests")
+    public String getFriendRequests(Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        List<Request> friendRequests = requestService.getUserRequests(user.getId());
+        model.addAttribute("requests", friendRequests);
+        model.addAttribute("isRequests",true);
         return "profile-account-setting";
     }
 
@@ -133,6 +180,9 @@ public class UserController {
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");
         }
+        catch (WrongEmailException e) {
+            model.addAttribute("wrongEmail", "Wrong email format");
+        }
         model.addAttribute("user", user);
         return "user-profile";
     }
@@ -147,18 +197,19 @@ public class UserController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "redirect:/user";
+        return "user-profile";
     }
 
     @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
-    public String deleteProfile(Principal principal, Model model, @RequestParam("email") String email,
+    public String deleteProfile(Principal principal, Model model,
                                 @RequestParam("password") String password) {
         User user = userService.getByUsername(principal.getName());
         postService.getPostsByUserId(user.getId());
+        model.addAttribute("isDelete",true);
         for (Post post : postService.getPostsByUserId(user.getId())) {
             postService.deletePost(post.getId());
         }
-        if (password.equals(passwordEncoder.encode(user.getPassword())) && email.equals(user.getEmail())) {
+        if (password.equals(passwordEncoder.encode(user.getPassword()))) {
             userService.deleteUser(user.getId());
 
         } else {

@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
@@ -15,14 +16,20 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.example.demo.utils.Mapper.userDTOtoUserMapper;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -77,9 +84,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserDetails(User user, String email, String jobTitle) {
-        user.setEmail(email);
-        user.setJobTitle(jobTitle);
-        userRepository.save(user);
+        if (!validate(email)) {
+            throw new WrongEmailException("Wrong email format");
+        } else {
+            user.setEmail(email);
+            user.setJobTitle(jobTitle);
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -136,5 +147,11 @@ public class UserServiceImpl implements UserService {
         }
         return byteObjects;
     }
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
 
 }
