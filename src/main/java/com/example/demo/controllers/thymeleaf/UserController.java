@@ -97,15 +97,13 @@ public class UserController {
     public String changeUserPassword(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
-        model.addAttribute("isPass",true);
-        return "profile-account-setting";
+        return "change-password";
     }
     @GetMapping("/privacy")
     public String showPrivacy(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user",user);
-        model.addAttribute("isPrivacy",true);
-        return "profile-account-setting";
+        return "privacy";
     }
 
     @PostMapping("/like/{postId}/")
@@ -137,10 +135,10 @@ public class UserController {
             userService.changePassword(user.getUsername(), oldPassword, newPassword);
         } catch (WrongPasswordException e) {
             model.addAttribute("error", "Wrong password");
-            return "changePass";
+            return "change-password";
         }
         model.addAttribute("success", "Password changes successful");
-        return "changePass";
+        return "change-password";
     }
 
     @GetMapping("details/{userId}")
@@ -155,7 +153,6 @@ public class UserController {
                                   Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
-        model.addAttribute("isEdit",true);
         return "profile-account-setting";
     }
 
@@ -163,9 +160,13 @@ public class UserController {
     public String getFriendRequests(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         List<Request> friendRequests = requestService.getUserRequests(user.getId());
+
+        for (Request request:friendRequests) {
+            User sender = request.getSender();
+            model.addAttribute("sender",sender);
+        }
         model.addAttribute("requests", friendRequests);
-        model.addAttribute("isRequests",true);
-        return "profile-account-setting";
+        return "requests";
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
@@ -199,13 +200,19 @@ public class UserController {
         }
         return "user-profile";
     }
+    @GetMapping(value = "/deleteProfile")
+    public String deleteUserProfile(Model model,
+                                  Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        model.addAttribute("user", user);
+        return "deactivate-account";
+    }
 
-    @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteProfile")
     public String deleteProfile(Principal principal, Model model,
                                 @RequestParam("password") String password) {
         User user = userService.getByUsername(principal.getName());
         postService.getPostsByUserId(user.getId());
-        model.addAttribute("isDelete",true);
         for (Post post : postService.getPostsByUserId(user.getId())) {
             postService.deletePost(post.getId());
         }
@@ -214,7 +221,7 @@ public class UserController {
 
         } else {
             model.addAttribute("wrongEmailOrPassword", "Wrong email or password");
-            return "profile-account-setting";
+            return "deactivate-account";
         }
         return "index";
     }
