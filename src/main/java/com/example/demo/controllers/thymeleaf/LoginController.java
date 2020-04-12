@@ -10,6 +10,11 @@ public class LoginController {
         return "sign-in";
     }
 
+    @GetMapping("/auth")
+    public String authenticate() {
+        return "redirect:/";
+    }
+
     @GetMapping("/index")
     public String showAccessDenied() {
         return "index";
