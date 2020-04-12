@@ -52,8 +52,8 @@ public class UserController {
         this.likeService = likeService;
     }
 
-    @GetMapping
-    public String showuserProfile(Model model, Principal principal) {
+    @GetMapping ("/user")
+    public String showUserProfile(Model model, Principal principal) {
         model.addAttribute("user", userService.getByUsername(principal.getName()));
         return "user-profile";
     }

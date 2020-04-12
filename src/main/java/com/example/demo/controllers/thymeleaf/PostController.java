@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -31,7 +32,7 @@ public class PostController {
         return "index";
     }
 
-    @GetMapping("/add")
+    @PostMapping("/add")
     public String addPost(@Valid @ModelAttribute("post") PostDTO postDTO, BindingResult error, Model model, Principal principal) {
         try {
             postService.createPost(postDTO);
@@ -39,6 +40,6 @@ public class PostController {
             model.addAttribute("error", e);
             return "error";
         }
-        return "index";
+        return "redirect:/";
     }
 }
