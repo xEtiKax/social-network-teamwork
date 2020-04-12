@@ -20,7 +20,7 @@ USE `social_network`;
 CREATE TABLE IF NOT EXISTS `authorities` (
   `username` varchar(50) NOT NULL,
   `authority` varchar(50) NOT NULL,
-  KEY `authorities_users_username_fk` (`username`),
+  UNIQUE KEY `USERNAME_AUTHORITY` (`username`,`authority`),
   CONSTRAINT `authorities_users_username_fk` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -34,11 +34,11 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `post_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `comments_users_id_fk` (`user_id`),
   KEY `comments_posts_id_fk` (`post_id`),
+  KEY `comments_users_id_fk` (`user_id`),
   CONSTRAINT `comments_posts_id_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
   CONSTRAINT `comments_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   PRIMARY KEY (`id`),
   KEY `posts_users_id_fk` (`created_by`),
   CONSTRAINT `posts_users_id_fk` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
   KEY `requests_users_id_fk_2` (`receiver_id`),
   CONSTRAINT `requests_users_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
   CONSTRAINT `requests_users_id_fk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -97,11 +97,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(68) NOT NULL,
   `picture` blob DEFAULT NULL,
   `enabled` tinyint(4) NOT NULL DEFAULT 1,
-  `age` int(11) NOT NULL,
+  `age` int(11) NOT NULL DEFAULT 0,
   `is_public` tinyint(1) DEFAULT 0,
+  `job_title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `users_authorities_username_fk` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `users_authorities_username_fk` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
