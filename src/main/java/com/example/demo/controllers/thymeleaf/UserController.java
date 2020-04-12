@@ -52,17 +52,28 @@ public class UserController {
         this.likeService = likeService;
     }
 
-    @GetMapping ("/user")
-    public String showUserProfile(Model model, Principal principal) {
-        model.addAttribute("user", userService.getByUsername(principal.getName()));
+    @GetMapping ("/showUserProfile/{userId}")
+    public String showUserProfile(Model model,@PathVariable int userId, Principal principal) {
+        User me = userService.getByUsername(principal.getName());
+        User user = userService.getById(userId);
+
+        List<Post> posts = postService.getPostsByUserId(userId);
+        boolean isFriend = false;
+        if (user.getFriends().contains(me)){
+            isFriend = true;
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("isFriend",isFriend);
+        model.addAttribute("posts",posts);
         return "user-profile";
     }
 
-    @GetMapping("/showMyPosts")
-    public String showMyPosts(Model model, Principal principal) {
+    @GetMapping("/showMyProfile")
+    public String showMyProfile(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
+        model.addAttribute("user",user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
-        return "user-profile";
+        return "my-profile-feed";
     }
 
     @GetMapping("/showMyFriends")
@@ -170,13 +181,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public String updateUserProfile(@RequestParam("email") String email,
+    public String updateUserProfile(@RequestParam ("username")String username,@RequestParam("email") String email,
                                     @RequestParam("jobTitle") String jobTitle,
                                     Principal principal,
                                     Model model) {
         User user = userService.getByUsername(principal.getName());
         try {
-            userService.updateUserDetails(user, email, jobTitle);
+            userService.updateUserDetails(user,username, email, jobTitle);
             model.addAttribute("success", "Profile updated successfully!");
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");

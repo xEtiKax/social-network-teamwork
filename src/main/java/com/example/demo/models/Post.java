@@ -94,7 +94,7 @@ public class Post {
     }
 
     public Set<Like> getLikes() {
-        return likes;
+        return new HashSet<>(likes);
     }
 
     public void setLikes(Set<Like> likes) {
@@ -110,7 +110,7 @@ public class Post {
     }
 
     public Set<Comment> getComments() {
-        return comments;
+        return new HashSet<>(comments);
     }
 
     public void setComments(Set<Comment> comments) {

@@ -39,10 +39,6 @@
                                 <label class="successful" th:if="${successful}" text="${successful}">You registered successfully!</label>
                                 <label class="error" th:if="${error}" text="${error}">This user already exist! Please check your username </label>
                                 <label class="errorPass" th:if="${errorPass}" text="${errorPass}">Password confirmation is wrong </label>
-                                <p>
-                                    <i th:if="${param.error}" class="error">Wrong username or password.</i>
-
-                                </p>
 
                                 <p>Workwise, is a global freelancing platform and social networking where businesses and
                                     independent professionals connect and collaborate remotely</p>
@@ -59,15 +55,10 @@
                             </ul>
                             <div class="sign_in_sec current" id="tab-1">
 
-
                                 <h3 th:if="!${isRegister}">Login</h3>
                                 <h3 th:if="${isRegister}">Register</h3>
                                 <form th:if="!${isRegister}" th:action="@{/authenticate}" method="post">
                                     <div class="row">
-                                        <p>
-                                            <i th:if="${param.error}" class="error">Wrong username or password.</i>
-
-                                        </p>
                                         <div class="col-lg-12 no-pdd">
                                             <div class="sn-field">
                                                 <input type="text" name="username" placeholder="Username">

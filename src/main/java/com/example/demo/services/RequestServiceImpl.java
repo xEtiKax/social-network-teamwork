@@ -35,6 +35,11 @@ public class RequestServiceImpl implements RequestService {
         throwIfRequestExists(requestDTO.getSender(),requestDTO.getReceiver());
         Request request = new Request();
         requestMerge(request, requestDTO);
+        User receiver = request.getReceiver();
+        if (receiver.getRequests().contains(request)){
+            throw new DuplicateEntityException("You are already sent a request");
+        }
+        receiver.addRequest(request);
         return requestRepository.save(request);
     }
 
@@ -42,6 +47,8 @@ public class RequestServiceImpl implements RequestService {
     public void deleteRequest(int id) {
         Request requestToDelete = requestRepository.getRequestById(id);
         throwIfRequestDoesNotExists(requestToDelete.getSender().getId(), requestToDelete.getReceiver().getId());
+        User receiver = requestToDelete.getReceiver();
+        receiver.deleteRequest(requestToDelete);
         requestRepository.delete(requestToDelete);
     }
 

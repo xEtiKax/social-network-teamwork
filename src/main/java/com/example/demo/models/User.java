@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.example.demo.models.DTO.RequestDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -115,7 +116,7 @@ public class User {
     }
 
     public Set<User> getFriends() {
-        return friends;
+        return new HashSet<>(friends);
     }
 
     public void setFriends(Set<User> friends) {
@@ -123,7 +124,7 @@ public class User {
     }
 
     public Set<Request> getRequests() {
-        return requests;
+        return new HashSet<>(requests);
     }
 
     public void setRequests(Set<Request> requests) {
@@ -131,7 +132,7 @@ public class User {
     }
 
     public Set<Like> getLikes() {
-        return likes;
+        return new HashSet<>(likes);
     }
 
     public void setLikes(Set<Like> likes) {
@@ -139,7 +140,7 @@ public class User {
     }
 
     public Set<Comment> getComments() {
-        return comments;
+        return new HashSet<>(comments);
     }
 
     public void setComments(Set<Comment> comments) {
@@ -153,11 +154,21 @@ public class User {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
-//    public boolean isPublic() {
-//        return isPublic;
-//    }
-//
-//    public void setPublic(boolean aPublic) {
-//        isPublic = aPublic;
-//    }
+
+    public void addRequest(Request request) {
+        this.requests.add(request);
+    }
+
+    public void deleteRequest(Request request) {
+        this.requests.remove(request);
+    }
+
+    public void addFriend(User user) {
+        this.friends.add(user);
+    }
+
+    public void removeFriend(User user) {
+        this.friends.remove(user);
+    }
+
 }

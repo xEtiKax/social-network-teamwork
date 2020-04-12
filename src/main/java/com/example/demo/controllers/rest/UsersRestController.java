@@ -65,7 +65,6 @@ public class UsersRestController {
         User user = userService.getById(id);
         try {
             user.setUsername(userDTO.getUsername());
-//            user.setEmail(userDTO.getEmail());
             userService.updateUser(user);
         }catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
