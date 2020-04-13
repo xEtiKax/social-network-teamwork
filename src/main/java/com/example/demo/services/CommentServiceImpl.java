@@ -22,12 +22,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getById(int commentId) {
+    public Comment getById(long commentId) {
         return commentRepository.getByCommentId(commentId);
     }
 
     @Override
-    public List<Comment> getCommentsByPostId(int postId) {
+    public List<Comment> getCommentsByPostId(long postId) {
         return commentRepository.getCommentsByPostId(postId);
     }
 
@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getCommentsByUserId(int userId) {
+    public List<Comment> getCommentsByUserId(long userId) {
         return commentRepository.getCommentsByUserId(userId);
     }
 
@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(int id, String username) {
+    public void deleteComment(long id, String username) {
         User user = userService.getByUsername(username);
         List<Comment> userComments = getCommentsByUserId(user.getId());
         if (userComments.contains(commentRepository.getByCommentId(id))) {

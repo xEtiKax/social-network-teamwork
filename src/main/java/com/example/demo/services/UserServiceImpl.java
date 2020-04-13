@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(long id) {
         return userRepository.getById(id);
     }
 
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserFriends(int userId) {
+    public List<User> getUserFriends(long userId) {
         return userRepository.getUserFriendsByUSerId(userId);
     }
 
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(long id) {
         if (!checkUserExistById(id)) {
             throw new EntityNotFoundException("User %s does not exist");
         }
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
         return user != null;
     }
 
-    private boolean checkUserExistById(int id) {
+    private boolean checkUserExistById(long id) {
         User user = userRepository.getById(id);
         return user != null;
     }

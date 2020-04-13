@@ -30,17 +30,17 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Post getPostById(int id) {
+    public Post getPostById(long id) {
         return postRepository.getPostById(id);
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userId) {
+    public List<Post> getPostsByUserId(long userId) {
         return postRepository.getPostsByUserId(userId);
     }
 
     @Override
-    public Post updatePost(int id, PostDTO postDTO) {
+    public Post updatePost(long id, PostDTO postDTO) {
         throwIfPostDoesNotExists(id);
         Post postToUpdate = getPostById(id);
         postMerge(postToUpdate, postDTO);
@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(int id) {
+    public void deletePost(long id) {
         throwIfPostDoesNotExists(id);
         Post post = postRepository.getPostById(id);
         post.setEnabled(0);
@@ -62,7 +62,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public boolean checkIfPostExist(int id) {
+    public boolean checkIfPostExist(long id) {
         return postRepository.existsById(id);
     }
 
@@ -73,7 +73,7 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-    private void throwIfPostDoesNotExists(int id) {
+    private void throwIfPostDoesNotExists(long id) {
         if (!checkIfPostExist(id)) {
             throw new EntityNotFoundException(
                     String.format(POST_DOES_NOT_EXISTS, id));

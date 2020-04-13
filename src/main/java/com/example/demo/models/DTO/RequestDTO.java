@@ -1,25 +1,25 @@
 package com.example.demo.models.DTO;
 
 public class RequestDTO {
-    private int sender;
-    private int receiver;
+    private long sender;
+    private long receiver;
 
     public RequestDTO() {
     }
 
-    public int getSender() {
+    public long getSender() {
         return sender;
     }
 
-    public void setSender(int sender) {
+    public void setSender(long sender) {
         this.sender = sender;
     }
 
-    public int getReceiver() {
+    public long getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(int receiver) {
+    public void setReceiver(long receiver) {
         this.receiver = receiver;
     }
 }

@@ -9,9 +9,9 @@ import java.io.Serializable;
 public interface LikeRepository extends JpaRepository<Like, Serializable> {
 
     @Query("select l from Like l where l.user.id = ?1 and l.post.id = ?1")
-    Like getLikeByUserIdAndPostId(int userId, int postId);
+    Like getLikeByUserIdAndPostId(long userId, long postId);
 
     @Query(value = "select count(*) from social_network.likes where post_id = ?1", nativeQuery = true)
-    int getPostLikes(int postId);
+    int getPostLikes(long postId);
 
 }

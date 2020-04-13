@@ -34,7 +34,7 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    public String addPost(@Valid @ModelAttribute("post") PostDTO postDTO, BindingResult error, Model model, Principal principal) {
+    public String addPost(@Valid @ModelAttribute("post") PostDTO postDTO, Model model, Principal principal) {
         try {
             User createdBy = userService.getByUsername(principal.getName());
             postService.createPost(postDTO, createdBy);

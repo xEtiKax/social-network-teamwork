@@ -10,10 +10,10 @@ import java.util.List;
 public interface PostRepository extends CrudRepository<Post, Serializable> {
 
     @Query(value = "SELECT * FROM social_network.posts WHERE id = ?1 AND enabled != 0", nativeQuery = true)
-    Post getPostById(int id);
+    Post getPostById(long id);
 
     @Query(value = "select * from social_network.posts join social_network.users u on posts.created_by = u.id where u.id = ?1", nativeQuery = true)
-    List<Post> getPostsByUserId(int userId);
+    List<Post> getPostsByUserId(long userId);
 
     @Query(value = "SELECT * FROM social_network.posts WHERE is_public != 0 ORDER BY created_at DESC ", nativeQuery = true)
     List<Post> getAllPublicPosts();

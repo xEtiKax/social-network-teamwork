@@ -5,17 +5,17 @@ import com.example.demo.models.Comment;
 import java.util.List;
 
 public interface CommentService {
-    Comment getById(int commentId);
+    Comment getById(long commentId);
 
-    List<Comment> getCommentsByPostId(int postId);
+    List<Comment> getCommentsByPostId(long postId);
 
     Comment createComment(Comment comments);
 
-    List<Comment> getCommentsByUserId(int userId);
+    List<Comment> getCommentsByUserId(long userId);
 
     Comment updateComment(Comment comments);
 
-    void deleteComment(int id, String username);
+    void deleteComment(long id, String username);
 
 
 }

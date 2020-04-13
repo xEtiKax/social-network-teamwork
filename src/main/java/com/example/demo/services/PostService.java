@@ -11,15 +11,15 @@ public interface PostService {
 
     void createPost(PostDTO postDTO, User createdBy);
 
-    Post updatePost(int id, PostDTO postDTO);
+    Post updatePost(long id, PostDTO postDTO);
 
-    Post getPostById(int id);
+    Post getPostById(long id);
 
-    List<Post> getPostsByUserId(int userId);
+    List<Post> getPostsByUserId(long userId);
 
-    boolean checkIfPostExist(int id);
+    boolean checkIfPostExist(long id);
 
-    void deletePost(int id);
+    void deletePost(long id);
 
     List<Post> getAllPublicPosts();
 

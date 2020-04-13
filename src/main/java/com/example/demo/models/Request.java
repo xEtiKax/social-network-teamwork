@@ -9,7 +9,7 @@ public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
@@ -22,7 +22,7 @@ public class Request {
     @Column(name = "isAccepted")
     private boolean isAccepted;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

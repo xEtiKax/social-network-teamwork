@@ -24,7 +24,7 @@ public class UsersRestController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable int id){
+    public User getUserById(@PathVariable long id){
         try{
             return userService.getById(id);
         }catch (EntityNotFoundException e) {
@@ -61,7 +61,7 @@ public class UsersRestController {
     }
 
     @PutMapping("/update/{id}")
-    public User updateUser(@RequestBody UserDTO userDTO, @PathVariable int id) {
+    public User updateUser(@RequestBody UserDTO userDTO, @PathVariable long id) {
         User user = userService.getById(id);
         try {
             user.setUsername(userDTO.getUsername());
@@ -72,7 +72,7 @@ public class UsersRestController {
         return user;
     }
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void deleteUser(@PathVariable long id) {
         try{
             userService.deleteUser(id);
         }catch (EntityNotFoundException e) {

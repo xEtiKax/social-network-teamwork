@@ -1,7 +1,5 @@
 package com.example.demo.controllers.thymeleaf;
 
-import com.example.demo.models.Post;
-import com.example.demo.services.CommentService;
 import com.example.demo.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

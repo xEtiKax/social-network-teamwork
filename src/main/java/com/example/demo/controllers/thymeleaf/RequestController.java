@@ -28,12 +28,12 @@ public class RequestController {
     }
 
     @GetMapping("/{id}")
-    public Request getRequestById(@PathVariable int id) {
+    public Request getRequestById(@PathVariable long id) {
         return requestService.getRequestById(id);
     }
 
     @PostMapping("/send/{userId}")
-    public String sendRequest(@PathVariable int userId, Principal principal) {
+    public String sendRequest(@PathVariable long userId, Principal principal) {
         User sender = userService.getByUsername(principal.getName());
         try {
             RequestDTO requestDTO = new RequestDTO();
@@ -48,7 +48,7 @@ public class RequestController {
     }
 
     @PostMapping("accept/{requestId}")
-    public String acceptRequest(@PathVariable int requestId, Principal principal) {
+    public String acceptRequest(@PathVariable long requestId, Principal principal) {
         Request request = requestService.getRequestById(requestId);
         User sender = request.getSender();
         User receiver = userService.getByUsername(principal.getName());
@@ -59,7 +59,7 @@ public class RequestController {
     }
 
     @DeleteMapping("reject/{requestId}")
-    public String rejectRequest(@PathVariable int requestId) {
+    public String rejectRequest(@PathVariable long requestId) {
         requestService.deleteRequest(requestId);
         return "requests";
     }

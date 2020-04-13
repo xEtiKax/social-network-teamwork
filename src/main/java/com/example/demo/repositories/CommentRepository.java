@@ -12,11 +12,11 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Serializable> {
 
     @Query("SELECT c FROM Comment c where c.post.id = ?1")
-    List<Comment> getCommentsByPostId(int postId);
+    List<Comment> getCommentsByPostId(long postId);
 
     @Query("SELECT c FROM Comment c WHERE c.id =?1")
-    Comment getByCommentId(int id);
+    Comment getByCommentId(long id);
 
     @Query("SELECT c FROM Comment c where c.user.id = ?1")
-    List<Comment> getCommentsByUserId(int userId);
+    List<Comment> getCommentsByUserId(long userId);
 }

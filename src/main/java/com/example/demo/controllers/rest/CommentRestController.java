@@ -33,7 +33,7 @@ public class CommentRestController {
     }
 
     @GetMapping("/{id}")
-    public Comment getCommentById(@PathVariable int id) {
+    public Comment getCommentById(@PathVariable long id) {
         try {
             return commentService.getById(id);
         } catch (EntityNotFoundException e) {
@@ -42,7 +42,7 @@ public class CommentRestController {
     }
 
     @GetMapping("/byUser/{userId}")
-    public List<Comment> getCommentsByUserId(@PathVariable int userId) {
+    public List<Comment> getCommentsByUserId(@PathVariable long userId) {
         try {
             return commentService.getCommentsByUserId(userId);
         } catch (EntityNotFoundException e) {
@@ -51,7 +51,7 @@ public class CommentRestController {
     }
 
     @GetMapping("/post/{postId}")
-    public List<Comment> getCommentsByPostId(@PathVariable int postId) {
+    public List<Comment> getCommentsByPostId(@PathVariable long postId) {
         try {
             return commentService.getCommentsByPostId(postId);
         } catch (EntityNotFoundException e) {
@@ -72,7 +72,7 @@ public class CommentRestController {
     }
 
     @PutMapping("/update/{commentId}")
-    public Comment updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable int commentId, @RequestHeader String requestUser) {
+    public Comment updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable long commentId, @RequestHeader String requestUser) {
         Comment comment = commentService.getById(commentId);
         try {
             comment.setDescription(commentDTO.getDescription());
@@ -84,7 +84,7 @@ public class CommentRestController {
     }
 
     @DeleteMapping("/delete/{commentId}")
-    public void deleteComment(@PathVariable int commentId, @RequestHeader String user) {
+    public void deleteComment(@PathVariable long commentId, @RequestHeader String user) {
         User requestUser = userService.getByUsername(user);
         Comment comment = commentService.getById(commentId);
         try {

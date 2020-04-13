@@ -16,7 +16,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @Column(name = "text")
     private String text;
@@ -49,7 +49,7 @@ public class Post {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

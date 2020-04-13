@@ -26,7 +26,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request getRequestById(int id) {
+    public Request getRequestById(long id) {
         return requestRepository.getRequestById(id);
     }
 
@@ -44,7 +44,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void deleteRequest(int id) {
+    public void deleteRequest(long id) {
         Request requestToDelete = requestRepository.getRequestById(id);
         throwIfRequestDoesNotExists(requestToDelete.getSender().getId(), requestToDelete.getReceiver().getId());
         User receiver = requestToDelete.getReceiver();
@@ -53,12 +53,12 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public boolean checkIfRequestExist(int sender, int receiver) {
+    public boolean checkIfRequestExist(long sender, long receiver) {
         return requestRepository.existsByUniquePair(sender, receiver) != null;
     }
 
     @Override
-    public List<Request> getUserRequests(int userId) {
+    public List<Request> getUserRequests(long userId) {
         return requestRepository.getUserRequests(userId);
     }
 
@@ -72,13 +72,13 @@ public class RequestServiceImpl implements RequestService {
 //        TODO set principal
     }
 
-    private void throwIfRequestDoesNotExists(int sender, int receiver) {
+    private void throwIfRequestDoesNotExists(long sender, long receiver) {
         if (!checkIfRequestExist(sender, receiver)) {
             throw new EntityNotFoundException(REQUEST_DOES_NOT_EXISTS);
         }
     }
 
-    private void throwIfRequestExists(int sender, int receiver) {
+    private void throwIfRequestExists(long sender, long receiver) {
         if (checkIfRequestExist(sender, receiver)) {
             throw new DuplicateEntityException(REQUEST_ALREADY_WAS_SEND);
         }

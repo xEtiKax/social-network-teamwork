@@ -5,9 +5,9 @@ import com.example.demo.models.Like;
 public interface LikeService {
     void createLike(Like like);
 
-    void deleteLike(int likeId);
+    void deleteLike(long likeId);
 
-    Like getLikeByUserIdAndPostId(int userId, int postId);
+    Like getLikeByUserIdAndPostId(long userId, long postId);
 
-    int getPostLikes(int postId);
+    int getPostLikes(long postId);
 }

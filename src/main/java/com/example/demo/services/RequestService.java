@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface RequestService {
 
-    Request getRequestById(int id);
+    Request getRequestById(long id);
 
     Request createRequest(RequestDTO requestDTO);
 
-    void deleteRequest(int id);
+    void deleteRequest(long id);
 
-    boolean checkIfRequestExist(int sender, int receiver);
+    boolean checkIfRequestExist(long sender, long receiver);
 
-    List<Request> getUserRequests(int userId);
+    List<Request> getUserRequests(long userId);
 }

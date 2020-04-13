@@ -23,7 +23,7 @@ public class RequestRestController {
     }
 
     @GetMapping("/{id}")
-    public Request getRequestById(@PathVariable int id) {
+    public Request getRequestById(@PathVariable long id) {
         return requestService.getRequestById(id);
     }
 
@@ -37,7 +37,7 @@ public class RequestRestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteRequest(@PathVariable int id) {
+    public void deleteRequest(@PathVariable long id) {
         requestService.deleteRequest(id);
     }
 }

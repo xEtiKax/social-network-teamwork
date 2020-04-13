@@ -26,7 +26,7 @@ public class PostRestController {
     }
 
     @GetMapping("/{id}")
-    public Post getPostById(@PathVariable int id) {
+    public Post getPostById(@PathVariable long id) {
         return postService.getPostById(id);
     }
 
@@ -41,12 +41,12 @@ public class PostRestController {
     }
 
     @PostMapping("/update/{id}")
-    public void updatePost(@PathVariable int id, @RequestBody PostDTO postDTO, Principal principal) {
+    public void updatePost(@PathVariable long id, @RequestBody PostDTO postDTO, Principal principal) {
         postService.updatePost(id, postDTO);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePost(@PathVariable int id) {
+    public void deletePost(@PathVariable long id) {
         postService.deletePost(id);
     }
 }

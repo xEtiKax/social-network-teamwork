@@ -29,7 +29,7 @@ public class LikeRestController {
     }
 
     @PostMapping("/like/{postId}")
-    public void likePost(@PathVariable int postId, @RequestHeader String userWhoLike) {
+    public void likePost(@PathVariable long postId, @RequestHeader String userWhoLike) {
         User user = userService.getByUsername(userWhoLike);
         Post post = postService.getPostById(postId);
         Like like = new Like();
@@ -43,7 +43,7 @@ public class LikeRestController {
     }
 
     @DeleteMapping("/dislike/{postId}")
-    public void dislikePost(@PathVariable int postId, @RequestHeader String userWhoDisLike) {
+    public void dislikePost(@PathVariable long postId, @RequestHeader String userWhoDisLike) {
         User user = userService.getByUsername(userWhoDisLike);
         Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
         try {
@@ -54,7 +54,7 @@ public class LikeRestController {
     }
 
     @GetMapping("/getPostLikes/{postId}")
-    public int getPostLikes(@PathVariable int postId) {
+    public int getPostLikes(@PathVariable long postId) {
         return likeService.getPostLikes(postId);
     }
 }

@@ -23,7 +23,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void saveUserPhoto(int userId, MultipartFile file) {
+    public void saveUserPhoto(long userId, MultipartFile file) {
         try {
             User user = userRepository.findById(userId).get();
 
@@ -37,7 +37,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void savePostPhoto(int postId, MultipartFile file) {
+    public void savePostPhoto(long postId, MultipartFile file) {
         try {
             Post post = postRepository.getPostById(postId);
 

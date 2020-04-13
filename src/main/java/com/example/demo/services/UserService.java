@@ -8,19 +8,19 @@ import java.util.List;
 
 public interface UserService {
 
-    User getById(int id);
+    User getById(long id);
 
     User getByUsername(String username);
 
     List<User> getAll();
 
-    List<User> getUserFriends(int userId);
+    List<User> getUserFriends(long userId);
 
     User createUser(UserDTO userDTO);
 
     User updateUser(User user);
 
-    void deleteUser(int id);
+    void deleteUser(long id);
 
     void changePassword(String username, String oldPassword, String newPassword);
 

@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping ("/showUserProfile/{userId}")
-    public String showUserProfile(Model model,@PathVariable int userId, Principal principal) {
+    public String showUserProfile(Model model,@PathVariable long userId, Principal principal) {
         User me = userService.getByUsername(principal.getName());
         User user = userService.getById(userId);
 
@@ -118,7 +118,7 @@ public class UserController {
     }
 
     @PostMapping("/like/{postId}/")
-    public String likePost(@PathVariable int postId, Principal principal) {
+    public String likePost(@PathVariable long postId, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         Post post = postService.getPostById(postId);
         Like like = new Like();
@@ -129,7 +129,7 @@ public class UserController {
     }
 
     @DeleteMapping("/dislike/{postId}")
-    public String dislikePost(@PathVariable int postId, Principal principal) {
+    public String dislikePost(@PathVariable long postId, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
         likeService.deleteLike(like.getId());
@@ -153,7 +153,7 @@ public class UserController {
     }
 
     @GetMapping("details/{userId}")
-    public String showDetails(Model model, @PathVariable int userId) {
+    public String showDetails(Model model, @PathVariable long userId) {
         User user = userService.getById(userId);
         model.addAttribute("user", user);
         return "user";

@@ -34,37 +34,37 @@ public class ImageController {
     }
 
     @GetMapping("post/{id}/image")
-    public String showPostUploadForm(@PathVariable int id, Model model) {
+    public String showPostUploadForm(@PathVariable long id, Model model) {
         model.addAttribute("post", postService.getPostById(id));
         return "uploadPostPhoto";
     }
 
     @GetMapping("post/{id}/postImage")
-    public void renderPostImageFormDB(@PathVariable int id, HttpServletResponse response) throws IOException {
+    public void renderPostImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         Post post = postService.getPostById(id);
         renderImage(response, post.getPicture());
     }
 
     @PostMapping("post/{id}/image")
-    public String handlePostImagePost(@PathVariable int id, @RequestParam("imageFile") MultipartFile file) {
+    public String handlePostImagePost(@PathVariable long id, @RequestParam("imageFile") MultipartFile file) {
         imageService.savePostPhoto(id, file);
         return "redirect:/posts";
     }
 
     @PostMapping("user/{userId}/image")
-    public String handleUserImagePost(@PathVariable int userId, @RequestParam("imageFile") MultipartFile file) {
+    public String handleUserImagePost(@PathVariable long userId, @RequestParam("imageFile") MultipartFile file) {
         imageService.saveUserPhoto(userId, file);
         return "redirect:/user";
     }
 
     @GetMapping("user/{userId}/image")
-    public String showUserUploadForm(@PathVariable int userId, Model model) {
+    public String showUserUploadForm(@PathVariable long userId, Model model) {
         model.addAttribute("user", userService.getById(userId));
         return "uploadUserPhoto";
     }
 
     @GetMapping("user/{id}/userImage")
-    public void renderUserImageFormDB(@PathVariable int id, HttpServletResponse response) throws IOException {
+    public void renderUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
         renderImage(response, user.getPhoto());
     }
