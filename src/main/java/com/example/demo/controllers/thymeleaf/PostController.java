@@ -37,8 +37,8 @@ public class PostController {
     public String addPost(@Valid @ModelAttribute("post") PostDTO postDTO, Model model, Principal principal) {
         try {
             User createdBy = userService.getByUsername(principal.getName());
-            postService.createPost(postDTO, createdBy);
-        }catch (DuplicateEntityException e){
+            postService.createPost(postDTO, createdBy.getId());
+        } catch (DuplicateEntityException e) {
             model.addAttribute("error", e);
             return "error";
         }

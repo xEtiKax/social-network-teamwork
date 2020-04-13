@@ -45,6 +45,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})
     private Set<User> friends = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
     private Set<Request> requests = new HashSet<>();
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostService {
 
-    void createPost(PostDTO postDTO, User createdBy);
+    void createPost(PostDTO postDTO, long createdBy);
 
     Post updatePost(long id, PostDTO postDTO);
 

@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.example.demo.models.DTO.UserDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Where;
 

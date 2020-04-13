@@ -31,10 +31,9 @@ public class PostRestController {
     }
 
     @PostMapping("/create")
-    public void createPost(@RequestBody PostDTO postDTO, Principal principal) {
+    public void createPost(@RequestBody PostDTO postDTO) {
         try {
-            User createdBy = userService.getByUsername(principal.getName());
-            postService.createPost(postDTO, createdBy);
+            postService.createPost(postDTO, postDTO.getCreatedBy());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

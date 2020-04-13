@@ -1,10 +1,8 @@
 package com.example.demo.models.DTO;
 
-import com.example.demo.models.User;
-
 public class PostDTO {
     private String text;
-    private User createdBy;
+    private long createdBy;
     private boolean isPublic;
 
     public PostDTO() {
@@ -18,11 +16,11 @@ public class PostDTO {
         this.text = text;
     }
 
-    public User getCreatedBy() {
+    public long getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
+    public void setCreatedBy(long createdBy) {
         this.createdBy = createdBy;
     }
 

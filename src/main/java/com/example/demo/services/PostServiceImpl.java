@@ -14,14 +14,16 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     public static final String POST_DOES_NOT_EXISTS = "Post does not exists.";
     private PostRepository postRepository;
+    private UserService userService;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
+        this.userService = userService;
     }
 
     @Override
-    public void createPost(PostDTO postDTO, User createdBy) {
+    public void createPost(PostDTO postDTO, long createdBy) {
         postDTO.setCreatedBy(createdBy);
         Post newPost = new Post();
         postMerge(newPost, postDTO);
@@ -31,7 +33,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostById(long id) {
-        return postRepository.getPostById(id);
+        Post post = postRepository.getById(id);
+        return post;
     }
 
     @Override
@@ -43,7 +46,8 @@ public class PostServiceImpl implements PostService {
     public Post updatePost(long id, PostDTO postDTO) {
         throwIfPostDoesNotExists(id);
         Post postToUpdate = getPostById(id);
-        postMerge(postToUpdate, postDTO);
+        postToUpdate.setText(postDTO.getText());
+        postToUpdate.setIsPublic(postDTO.getIsPublic());
         postRepository.save(postToUpdate);
         return postToUpdate;
     }
@@ -51,7 +55,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(long id) {
         throwIfPostDoesNotExists(id);
-        Post post = postRepository.getPostById(id);
+        Post post = postRepository.getById(id);
         post.setEnabled(0);
         postRepository.save(post);
     }
@@ -69,7 +73,8 @@ public class PostServiceImpl implements PostService {
     private Post postMerge(Post post, PostDTO postDTO) {
         post.setText(postDTO.getText());
         post.setIsPublic(postDTO.getIsPublic());
-        post.setCreatedBy(postDTO.getCreatedBy());
+        User createdBy = userService.getById(postDTO.getCreatedBy());
+        post.setCreatedBy(createdBy);
         return post;
     }
 
