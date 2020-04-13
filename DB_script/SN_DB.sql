@@ -28,11 +28,11 @@ CREATE TABLE IF NOT EXISTS `authorities` (
 
 -- Dumping structure for table social_network.comments
 CREATE TABLE IF NOT EXISTS `comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `description` varchar(200) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `post_id` int(11) NOT NULL,
+  `post_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `comments_posts_id_fk` (`post_id`),
   KEY `comments_users_id_fk` (`user_id`),
@@ -44,9 +44,9 @@ CREATE TABLE IF NOT EXISTS `comments` (
 
 -- Dumping structure for table social_network.likes
 CREATE TABLE IF NOT EXISTS `likes` (
-  `like_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
+  `like_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `post_id` bigint(20) NOT NULL,
   PRIMARY KEY (`like_id`),
   UNIQUE KEY `UQ_UserID_PostID` (`user_id`,`post_id`),
   KEY `likes_posts_id_fk` (`post_id`),
@@ -58,25 +58,25 @@ CREATE TABLE IF NOT EXISTS `likes` (
 
 -- Dumping structure for table social_network.posts
 CREATE TABLE IF NOT EXISTS `posts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `text` varchar(300) DEFAULT NULL,
   `picture` blob DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+  `created_by` bigint(20) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `enabled` tinyint(4) NOT NULL DEFAULT 1,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `posts_users_id_fk` (`created_by`),
   CONSTRAINT `posts_users_id_fk` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
 -- Dumping structure for table social_network.requests
 CREATE TABLE IF NOT EXISTS `requests` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sender_id` int(11) NOT NULL,
-  `receiver_id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `sender_id` bigint(20) NOT NULL,
+  `receiver_id` bigint(20) NOT NULL,
   `isAccepted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `requests_users_id_fk` (`sender_id`),
@@ -89,9 +89,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
 
 -- Dumping structure for table social_network.users
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `email` varchar(50) DEFAULT NULL,
   `password` varchar(68) NOT NULL,
@@ -102,14 +100,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `job_title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_authorities_username_fk` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
 -- Dumping structure for table social_network.users_friends
 CREATE TABLE IF NOT EXISTS `users_friends` (
-  `user_id` int(11) NOT NULL,
-  `friend_id` int(11) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `friend_id` bigint(20) NOT NULL,
   UNIQUE KEY `USERS_FRIENDS_UK` (`user_id`,`friend_id`),
   KEY `users_friends_users_id_fk_2` (`friend_id`),
   CONSTRAINT `users_friends_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
