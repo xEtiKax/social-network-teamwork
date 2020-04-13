@@ -162,7 +162,6 @@
         </div>
     </header><!--header end-->
 
-
     <section class="profile-account-setting">
         <div class="container">
             <div class="account-tabs-setting">
@@ -171,13 +170,13 @@
                         <div class="acc-leftbar">
                             <div class="nav nav-tabs" id="nav-tab">
                                 <a class="nav-item nav-link active" id="nav-acc-tab" th:href="@{/user/edit}"
-                                   aria-selected="false"><i class="la la-cogs"></i>Edit Profile</a>
+                                    aria-selected="false"><i class="la la-cogs"></i>Edit Profile</a>
                                 <a class="nav-item nav-link" id="nav-password-tab" th:href="@{/user/changePass}"
                                    aria-selected="false"><i class="fa fa-lock"></i>Change Password</a>
                                 <a class="nav-item nav-link" id="nav-privcy-tab" th:href="@{/user/showRequests}"
-                                   aria-selected="true"><i class="fa fa-group"></i>Requests</a>
+                                     aria-selected="false"><i class="fa fa-group"></i>Requests</a>
                                 <a class="nav-item nav-link" id="nav-privacy-tab" th:href="@{/user/privacy}"
-                                   aria-selected="false"><i class="fa fa-paw"></i>Privacy</a>
+                                    aria-selected="false"><i class="fa fa-paw"></i>Privacy</a>
                                 <a class="nav-item nav-link" id="nav-deactivate-tab" th:href="@{/user/deleteProfile}"
                                    aria-selected="false"><i class="fa fa-random"></i>Deactivate Account</a>
                             </div>
@@ -185,52 +184,48 @@
                     </div>
                     <div class="col-lg-9">
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="privcy" role="tabpanel" aria-labelledby="nav-privcy-tab">
+                            <div class="tab-pane fade show active" id="nav-acc" role="tabpanel"
+                                 aria-labelledby="nav-acc-tab">
                                 <div class="acc-setting">
-                                    <h3>Friend Requests</h3>
-                                    <div class="requests-list">
-                                        <div th:each="request : ${requests}"class="request-details">
-                                            <div class="noty-user-img">
-                                                <img th:src="@{'/user/' + ${request.getSender().getId()} + '/image'}"/>
+                                    <h3>Edit Profile Information</h3>
+                                    <form th:action="@{/user/updateProfile}" th:object="${user}" method="post">
+                                        <div class="cp-field">
+                                            <h5>Change Username</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" name="username" placeholder="New Username">
+                                                <i class="fa fa-lock"></i>
                                             </div>
-                                            <div  class="request-info">
-                                                <h3 th:text="${request.getSender().username}"></h3>
-                                                <span th:text="${request.getSender().getJobTitle()}" >PHP Developer</span>
+                                        </div>
+                                        <div class="cp-field">
+                                            <h5>Change Email</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" name="email" placeholder="New Email">
+                                                <i class="fa fa-lock"></i>
                                             </div>
-                                            <div class="accept-feat">
-                                                <ul>
-                                                    <li>
-                                                        <button type="submit" class="accept-req">Accept</button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="submit" class="close-req"><i
-                                                                class="la la-close"></i></button>
-                                                    </li>
-                                                </ul>
-                                            </div><!--accept-feat end-->
-                                        </div><!--request-detailse end-->
-
-                                        <div class="request-details">
-                                            <div class="noty-user-img">
-                                                <img src="../static/images/resources/r-img3.png" alt="">
+                                        </div>
+                                        <div class="cp-field">
+                                            <h5>Change Age</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" name="age" placeholder="Age">
+                                                <i class="fa fa-lock"></i>
                                             </div>
-                                            <div class="request-info">
-                                                <h3>Poonam</h3>
-                                                <span>Wordpress Developer</span>
+                                        </div>
+                                        <div class="cp-field">
+                                            <h5>Change Job Title</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" name="jobTitle" placeholder="New Job Title">
+                                                <i class="fa fa-lock"></i>
                                             </div>
-                                            <div class="accept-feat">
-                                                <ul>
-                                                    <li>
-                                                        <button type="submit" class="accept-req">Accept</button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="submit" class="close-req"><i
-                                                                class="la la-close"></i></button>
-                                                    </li>
-                                                </ul>
-                                            </div><!--accept-feat end-->
-                                        </div><!--request-detailse end-->
-                                    </div><!--requests-list end-->
+                                        </div>
+                                        <div class="save-stngs pd2">
+                                            <ul>
+                                                <li>
+                                                    <button type="submit">Save Setting</button>
+                                                </li>
+                                                <!--													<li><button type="submit">Restore Setting</button></li>-->
+                                            </ul>
+                                        </div><!--save-stngs end-->
+                                    </form>
                                 </div><!--acc-setting end-->
                             </div>
                         </div>
@@ -260,7 +255,6 @@
     </footer>
 
 </div><!--theme-layout end-->
-
 
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/popper.js}"></script>

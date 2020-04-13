@@ -22,9 +22,9 @@ public interface UserService {
 
     void deleteUser(long id);
 
-    void changePassword(String username, String oldPassword, String newPassword);
+    void changePassword(String username, String oldPassword, String newPassword,String passwordConfirm);
 
-    void updateUserDetails(User user,String username, String email, String jobTitle);
+    void updateUserDetails(User user,String username, String email,int age, String jobTitle);
 
     void addProfilePicture(String username, MultipartFile profilePicture);
 }

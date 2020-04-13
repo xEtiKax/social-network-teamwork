@@ -120,7 +120,7 @@
 						</div>
 						<div class="user-account-settingss">
 							<ul class="us-links">
-								<li><a href="profile-account-setting.html" th:href="@{/user/edit}"title="">Account Setting</a></li>
+								<li><a href="user-settings.html" th:href="@{/user/edit}" title="">Account Setting</a></li>
 							</ul>
 							<h3 class="tc"><a href="sign-in.html" title="">Logout</a></h3>
 						</div><!--user-account-settingss end-->
@@ -153,12 +153,8 @@
 											</ul>
 											<ul class="flw-status">
 												<li>
-													<span>Following</span>
-													<b>34</b>
-												</li>
-												<li>
-													<span>Followers</span>
-													<b>155</b>
+<!--													<span>Friends</span>-->
+													<b th:text="${friendsCounter}" >Friends</b>
 												</li>
 											</ul>
 										</div><!--user_pro_status end-->

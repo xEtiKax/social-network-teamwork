@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.models.DTO.UserDTO;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 
 public class Factory {
@@ -19,5 +20,10 @@ public class Factory {
         user.setPassword("pass");
         user.setPasswordConfirmation("pass");
         return user;
+    }
+    public static Post createPost() {
+        Post post = new Post();
+        post.setText("txt");
+        return post;
     }
 }

@@ -9,7 +9,6 @@ import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.Request;
 import com.example.demo.models.User;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.LikeService;
 import com.example.demo.services.PostService;
 import com.example.demo.services.RequestService;
@@ -23,29 +22,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.security.Principal;
-import java.sql.SQLException;
 import java.util.List;
-
-import static com.example.demo.utils.Mapper.userDTOtoUserMapper;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     private UserService userService;
-    private UserRepository userRepository;
     private RequestService requestService;
     private PostService postService;
     private PasswordEncoder passwordEncoder;
     private LikeService likeService;
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository, PostService postService,
+    public UserController(UserService userService, PostService postService,
                           PasswordEncoder passwordEncoder, RequestService requestService, LikeService likeService) {
         this.userService = userService;
-        this.userRepository = userRepository;
         this.postService = postService;
         this.passwordEncoder = passwordEncoder;
         this.requestService = requestService;
@@ -62,9 +55,11 @@ public class UserController {
         if (user.getFriends().contains(me)){
             isFriend = true;
         }
+        int friendsCounter = user.getFriends().size();
         model.addAttribute("user",user);
         model.addAttribute("isFriend",isFriend);
         model.addAttribute("posts",posts);
+        model.addAttribute("friendsCounter",friendsCounter);
         return "user-profile";
     }
 
@@ -139,18 +134,18 @@ public class UserController {
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public String changePassword(@RequestParam(name = "oldPassword") String oldPassword,
                                  @RequestParam(name = "newPassword") String newPassword,
+                                 @RequestParam("passwordConfirm") String passwordConfirm,
                                  Principal principal, Model model) {
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user", user);
         try {
-            userService.changePassword(user.getUsername(), oldPassword, newPassword);
+            User user = userService.getByUsername(principal.getName());
+            userService.changePassword(user.getUsername(), oldPassword, newPassword,passwordConfirm);
+            model.addAttribute("success", "Password changes successful");
         } catch (WrongPasswordException e) {
             model.addAttribute("error", "Wrong password");
-            return "change-password";
         }
-        model.addAttribute("success", "Password changes successful");
         return "change-password";
     }
+
 
     @GetMapping("details/{userId}")
     public String showDetails(Model model, @PathVariable long userId) {
@@ -164,30 +159,31 @@ public class UserController {
                                   Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
-        return "profile-account-setting";
+        return "user-settings";
     }
 
     @GetMapping(value = "/showRequests")
     public String getFriendRequests(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         List<Request> friendRequests = requestService.getUserRequests(user.getId());
-
-        for (Request request:friendRequests) {
-            User sender = request.getSender();
-            model.addAttribute("sender",sender);
-        }
+//        for (Request request:friendRequests) {
+//            User sender = request.getSender();
+//            model.addAttribute("sender",sender);
+//        }
         model.addAttribute("requests", friendRequests);
         return "requests";
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public String updateUserProfile(@RequestParam ("username")String username,@RequestParam("email") String email,
+    public String updateUserProfile(@RequestParam ("username")String username,
+                                    @RequestParam("email") String email,
+                                    @RequestParam("age") int age,
                                     @RequestParam("jobTitle") String jobTitle,
                                     Principal principal,
                                     Model model) {
         User user = userService.getByUsername(principal.getName());
         try {
-            userService.updateUserDetails(user,username, email, jobTitle);
+            userService.updateUserDetails(user,username, email,age, jobTitle);
             model.addAttribute("success", "Profile updated successfully!");
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");

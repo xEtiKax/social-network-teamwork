@@ -83,26 +83,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDetails(User user,String username, String email, String jobTitle) {
+    public void updateUserDetails(User user,String username, String email,int age, String jobTitle) {
         if (!validate(email)) {
             throw new WrongEmailException("Wrong email format");
         } else {
             user.setUsername(username);
             user.setEmail(email);
+            user.setAge(age);
             user.setJobTitle(jobTitle);
             userRepository.save(user);
         }
     }
 
     @Override
-    public void changePassword(String username, String oldPassword, String newPassword) {
+    public void changePassword(String username, String oldPassword, String newPassword,String passwordConfirm) {
+        if (!newPassword.equals(passwordConfirm)) {
+            throw new WrongPasswordException("Passwords does not match");
+        }
         User user = getByUsername(username);
-        boolean passMatched = passwordEncoder.matches(oldPassword, user.getPassword());
-        if (passMatched) {
+        boolean oldPasswordMatched = passwordEncoder.matches(oldPassword, user.getPassword());
+        if (oldPasswordMatched) {
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
         } else {
-            throw new WrongPasswordException("Wrong old password");
+            throw new WrongPasswordException("Wrong password");
         }
     }
 

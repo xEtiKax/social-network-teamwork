@@ -16,8 +16,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.mCustomScrollbar.min.css}" href="../static/css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
     <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}" href="../static/lib/slick/slick-theme.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/style.css}" href="../static/css/style.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/responsive.css}" href="../static/css/responsive.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../css/responsive.css">
 </head>
 
 
@@ -150,7 +150,7 @@
                         </div><!--search_form end-->
                         <h3>Setting</h3>
                         <ul class="us-links">
-                            <li><a href="profile-account-setting.html" title="">Account Setting</a></li>
+                            <li><a href="user-settings.html" title="">Account Setting</a></li>
                             <li><a href="#" title="">Privacy</a></li>
                             <li><a href="#" title="">Faqs</a></li>
                             <li><a href="#" title="">Terms & Conditions</a></li>
@@ -169,25 +169,23 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="acc-leftbar">
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-acc-tab" data-toggle="tab" th:href="@{/edit}" href="#nav-acc"
-                                   role="tab" aria-controls="nav-acc" aria-selected="true"><i class="la la-cogs"></i>Edit Profile</a>
-                                <a class="nav-item nav-link" id="nav-password-tab" data-toggle="tab" th:href="@{/changePass}"
-                                   href="#nav-password" role="tab" aria-controls="nav-password" aria-selected="false"><i
-                                        class="fa fa-lock"></i>Change Password</a>
-                                <a class="nav-item nav-link" id="nav-privcy-tab" data-toggle="tab" th:href="@{/showRequests}" href="#privcy"
-                                   role="tab" aria-controls="privacy" aria-selected="false"><i class="fa fa-group"></i>Requests</a>
-                                <a class="nav-item nav-link" id="nav-privacy-tab" data-toggle="tab" th:href="@{/privacy}" href="#privacy"
-                                   role="tab" aria-controls="privacy" aria-selected="false"><i class="fa fa-paw"></i>Privacy</a>
-                                <a class="nav-item nav-link" id="nav-deactivate-tab" data-toggle="tab"
-                                   th:href="@{/deleteProfile}" href="#nav-deactivate" role="tab" aria-controls="nav-deactivate"
-                                   aria-selected="false"><i class="fa fa-random"></i>Deactivate Account</a>
+                            <div class="nav nav-tabs" id="nav-tab">
+                                <a class="nav-item nav-link active" id="nav-acc-tab" th:href="@{/user/edit}"
+                                   aria-selected="false"><i class="la la-cogs"></i>Edit Profile</a>
+                                <a class="nav-item nav-link" id="nav-password-tab" th:href="@{/user/changePass}"
+                                   aria-selected="false"><i class="fa fa-lock"></i>Change Password</a>
+                                <a class="nav-item nav-link" id="nav-privcy-tab" th:href="@{/user/showRequests}"
+                                   aria-selected="false"><i class="fa fa-group"></i>Requests</a>
+                                <a class="nav-item nav-link" id="nav-privacy-tab" th:href="@{/user/privacy}"
+                                   aria-selected="false"><i class="fa fa-paw"></i>Privacy</a>
+                                <a class="nav-item nav-link" id="nav-deactivate-tab" th:href="@{/user/deleteProfile}"
+                                   aria-selected="true"><i class="fa fa-random"></i>Deactivate Account</a>
                             </div>
                         </div><!--acc-leftbar end-->
                     </div>
                     <div class="col-lg-9">
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade" id="nav-deactivate" role="tabpanel"
+                            <div class="tab-pane fade show active" id="nav-deactivate" role="tabpanel"
                                  aria-labelledby="nav-deactivate-tab">
                                 <div class="acc-setting">
                                     <h3>Deactivate Account</h3>
@@ -238,12 +236,12 @@
 </div><!--theme-layout end-->
 
 
-<script type="text/javascript" src="../static/js/jquery.min.js"></script>
-<script type="text/javascript" src="../static/js/popper.js"></script>
-<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../static/js/jquery.mCustomScrollbar.js"></script>
-<script type="text/javascript" src="../static/lib/slick/slick.min.js"></script>
-<script type="text/javascript" src="../static/js/script.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.mCustomScrollbar.js}"></script>
+<script type="text/javascript" th:src="@{/lib/slick/slick.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
 
 
 </body>
