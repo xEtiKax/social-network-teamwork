@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
+import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void createPost(PostDTO postDTO) {
+    public void createPost(PostDTO postDTO, User createdBy) {
+        postDTO.setCreatedBy(createdBy);
         Post newPost = new Post();
         postMerge(newPost, postDTO);
         postRepository.save(newPost);
@@ -67,8 +69,8 @@ public class PostServiceImpl implements PostService {
     private Post postMerge(Post post, PostDTO postDTO) {
         post.setText(postDTO.getText());
         post.setIsPublic(postDTO.getIsPublic());
+        post.setCreatedBy(postDTO.getCreatedBy());
         return post;
-//        TODO set principal
     }
 
     private void throwIfPostDoesNotExists(int id) {

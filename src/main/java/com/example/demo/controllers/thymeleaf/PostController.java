@@ -2,6 +2,7 @@ package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.User;
 import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,8 @@ public class PostController {
     @PostMapping("/add")
     public String addPost(@Valid @ModelAttribute("post") PostDTO postDTO, BindingResult error, Model model, Principal principal) {
         try {
-            postService.createPost(postDTO);
+            User createdBy = userService.getByUsername(principal.getName());
+            postService.createPost(postDTO, createdBy);
         }catch (DuplicateEntityException e){
             model.addAttribute("error", e);
             return "error";
