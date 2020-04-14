@@ -8,11 +8,11 @@
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" href="../static/css/animate.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/flatpickr.min.css}" href="../static/css/flatpickr.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome.css}" href="../static/css/line-awesome.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}" href="../static/css/line-awesome-font-awesome.min.css">
-	<link th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" href="../static/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}" href="../static/lib/slick/slick-theme.css">
@@ -171,20 +171,6 @@
 				</div>
 			</div>
 		</section>
-<!--		<form action="#" th:action="@{/user/updateProfile}" th:object="${user}" method="post" enctype="multipart/form-data">
-        <i th:if="${success}" th:text="${success}" style="color: #a7c64e"></i>
-        <i th:if="${error}" th:text="${error}" style="color: red"></i>
-        <br/>
-        <b>First Name: </b><input type="text" th:field="*{firstName}"/>
-        <br/>
-        <b>Last Name: </b><input type="text" th:field="*{lastName}"/>
-        <br/>
-        <b>Email: </b><input type="text" th:field="*{email}"/>
-        <br/>
-        <label class="control-label">Select File</label>
-        <input id="imageFile" name="imageFile" type="file" class="file">
-        <button type="submit" class="btn btn-primary"><i></i>Update Profile</button>
-    </form>-->
 		<main>
 			<div class="main-section">
 				<div class="container">
@@ -194,12 +180,26 @@
 								<div class="main-left-sidebar">
 									<div class="user_profile">
 										<div class="user-pro-img">
-											<img src="../images/resources/user-pro-img.png" alt="">
-											<div class="add-dp" id="OpenImgUpload">
-												<input type="file" id="file">
-												<label for="file"><i class="fas fa-camera"></i></label>
-											</div>
+											<img th:src="@{'/user/' + ${user.id} + '/userImage'}"/>
+
+										</div>
+										<div class="add-dp" id="OpenImgUpload">
+
 										</div><!--user-pro-img end-->
+										<form action="#" th:action="@{/user/changeProfilePicture}" th:object="${user}" method="post" enctype="multipart/form-data">
+
+											<div class="add-pic-box">
+												<div class="container">
+													<div class="row no-gutters">
+														<div class="col-lg-12 col-sm-12">
+															<input name="profilePicture" type="file" id="profilePicture">
+															<label for="profilePicture">Change Image</label>
+														</div>
+													</div>
+												</div>
+											</div>
+											<button type="submit" class="btn btn-primary"><i></i>Update Profile</button>
+										</form>
 										<div class="user_pro_status">
 											<ul class="flw-status">
 												<li>

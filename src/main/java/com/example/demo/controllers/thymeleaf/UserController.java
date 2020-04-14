@@ -208,7 +208,7 @@ public class UserController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "user-profile";
+        return "my-profile-feed";
     }
 
     @GetMapping(value = "/deleteProfile")

@@ -196,6 +196,8 @@
                                             <div  class="request-info">
                                                 <h3 th:text="${request.getSender().username}"></h3>
                                                 <span th:text="${request.getSender().getJobTitle()}" >PHP Developer</span>
+                                                <h3 th:if="${request.isAccepted()}">Waiting</h3>
+
                                             </div>
                                             <div class="accept-feat">
                                                 <ul>

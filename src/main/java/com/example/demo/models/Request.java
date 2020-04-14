@@ -19,7 +19,7 @@ public class Request {
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
-    @Column(name = "isAccepted")
+    @Column(name = "is_accepted")
     private boolean isAccepted;
 
     public long getId() {
