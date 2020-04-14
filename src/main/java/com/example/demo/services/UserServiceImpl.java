@@ -83,11 +83,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDetails(User user,String username, String email,int age, String jobTitle) {
+    public void updateUserDetails(User user,String firstName,String lastName, String email,int age, String jobTitle) {
         if (!validate(email)) {
             throw new WrongEmailException("Wrong email format");
         } else {
-            user.setUsername(username);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
             user.setEmail(email);
             user.setAge(age);
             user.setJobTitle(jobTitle);

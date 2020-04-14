@@ -60,7 +60,7 @@ public class ImageController {
     @GetMapping("user/{userId}/image")
     public String showUserUploadForm(@PathVariable long userId, Model model) {
         model.addAttribute("user", userService.getById(userId));
-        return "uploadUserPhoto";
+        return "user-profile";
     }
 
     @GetMapping("user/{id}/userImage")

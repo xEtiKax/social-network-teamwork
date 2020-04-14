@@ -35,7 +35,7 @@
                     <div class="col-lg-6">
                         <div class="cmp-info">
                             <div class="cm-logo">
-                                <img th:href="@{/static/images/cm-logo.png}"src="../static/images/cm-logo.png" alt="">
+                                <img th:href="@{/static/images/cm-logo.png}" alt="">
                                 <label class="successful" th:if="${successful}" text="${successful}">You registered successfully!</label>
                                 <label class="error" th:if="${error}" text="${error}">This user already exist! Please check your username </label>
                                 <label class="errorPass" th:if="${errorPass}" text="${errorPass}">Password confirmation is wrong </label>
@@ -44,7 +44,7 @@
                                 <p>Workwise, is a global freelancing platform and social networking where businesses and
                                     independent professionals connect and collaborate remotely</p>
                             </div><!--cm-logo end-->
-                            <img src="../static/images/cm-main-img.png" alt="">
+                            <img src="../images/cm-main-img.png" alt="">
                         </div><!--cmp-info end-->
                     </div>
                     <div class="col-lg-6">
@@ -77,9 +77,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                <form th:action="@{/logout}" sec:authorize="isAuthenticated()" method="post">
-                                    <button type="submit" class="btn btn-primary" value="Logout">Logout</button>
-                                </form>
+
 <!--                                <form th:action="@{/}" >-->
 <!--                                    <button type="submit" class="btn btn-primary" value="home">Home</button>-->
 <!--                                </form>-->
@@ -110,6 +108,9 @@
                                         </div>
                                     </div>
                                 </form>
+                                <form th:action="@{/logout}" sec:authorize="isAuthenticated()" method="post">
+                                    <button type="submit" class="btn btn-primary" value="Logout">Logout</button>
+                                </form>
                             </div><!--sign_in_sec end-->
                         </div><!--login-sec end-->
                     </div>
@@ -129,7 +130,7 @@
                     <li><a href="#" title="">Language</a></li>
                     <li><a href="#" title="">Copyright Policy</a></li>
                 </ul>
-                <p><img src="../static/images/copy-icon.png" alt="">Copyright 2019</p>
+                <p><img src="../images/copy-icon.png" alt="">Copyright 2019</p>
             </div>
         </div><!--footy-sec end-->
     </div><!--sign-in-page end-->

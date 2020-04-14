@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -175,7 +176,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public String updateUserProfile(@RequestParam ("username")String username,
+    public String updateUserProfile(@RequestParam ("firstName")String firstName,
+                                    @RequestParam ("lastName") String lastName,
                                     @RequestParam("email") String email,
                                     @RequestParam("age") int age,
                                     @RequestParam("jobTitle") String jobTitle,
@@ -183,7 +185,7 @@ public class UserController {
                                     Model model) {
         User user = userService.getByUsername(principal.getName());
         try {
-            userService.updateUserDetails(user,username, email,age, jobTitle);
+            userService.updateUserDetails(user,firstName,lastName, email,age, jobTitle);
             model.addAttribute("success", "Profile updated successfully!");
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");
@@ -192,7 +194,7 @@ public class UserController {
             model.addAttribute("wrongEmail", "Wrong email format");
         }
         model.addAttribute("user", user);
-        return "user-profile";
+        return "user-settings";
     }
 
     @RequestMapping(value = "/changeProfilePicture", method = RequestMethod.POST)
@@ -218,16 +220,17 @@ public class UserController {
     @RequestMapping(value = "/deleteProfile")
     public String deleteProfile(Principal principal, Model model,
                                 @RequestParam("password") String password) {
+
         User user = userService.getByUsername(principal.getName());
-        postService.getPostsByUserId(user.getId());
+
         for (Post post : postService.getPostsByUserId(user.getId())) {
             postService.deletePost(post.getId());
         }
-        if (password.equals(passwordEncoder.encode(user.getPassword()))) {
+        boolean passwordMatch = passwordEncoder.matches(password,user.getPassword());
+        if (passwordMatch) {
             userService.deleteUser(user.getId());
-
         } else {
-            model.addAttribute("wrongEmailOrPassword", "Wrong email or password");
+            model.addAttribute("wrongPassword", "Wrong email or password");
             return "deactivate-account";
         }
         return "index";

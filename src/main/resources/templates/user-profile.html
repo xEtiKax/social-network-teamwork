@@ -39,8 +39,8 @@
 					<nav>
 						<ul>
 							<li>
-								<a href="index.html" title="">
-									<span><img src="../static/images/icon1.png" alt=""></span>
+								<a th:href="@{/}" title="">
+									<span><img src="../images/icon1.png" alt=""></span>
 									Home
 								</a>
 							</li>
@@ -114,7 +114,9 @@
 					</div><!--menu-btn end-->
 					<div class="user-account">
 						<div class="user-info">
-							<img src="../static/images/resources/user.png" alt="">
+							<div class="img-container">
+								<img th:src="@{'/user/' + ${user.id} + '/image'}"/>
+							</div>
 							<a href="#" title="">John</a>
 							<i class="la la-sort-down"></i>
 						</div>
@@ -144,7 +146,7 @@
 								<div class="main-left-sidebar">
 									<div class="user_profile">
 										<div class="user-pro-img">
-											<img src="../static/images/resources/user-pro-img.png" alt="">
+											<img src="../images/resources/user-pro-img.png" alt="">
 										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
 											<ul class="flw-hr">
