@@ -9,10 +9,10 @@ import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.Request;
 import com.example.demo.models.User;
-import com.example.demo.services.LikeService;
-import com.example.demo.services.PostService;
-import com.example.demo.services.RequestService;
-import com.example.demo.services.UserService;
+import com.example.demo.services.interfaces.LikeService;
+import com.example.demo.services.interfaces.PostService;
+import com.example.demo.services.interfaces.RequestService;
+import com.example.demo.services.interfaces.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -178,8 +177,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public String updateUserProfile(@RequestParam ("firstName")String firstName,
-                                    @RequestParam ("lastName") String lastName,
+    public String updateUserProfile(@RequestParam("firstName") String firstName,
+                                    @RequestParam("lastName") String lastName,
                                     @RequestParam("email") String email,
                                     @RequestParam("age") int age,
                                     @RequestParam("jobTitle") String jobTitle,
@@ -187,7 +186,7 @@ public class UserController {
                                     Model model) {
         User user = userService.getByUsername(principal.getName());
         try {
-            userService.updateUserDetails(user,firstName,lastName, email,age, jobTitle);
+            userService.updateUserDetails(user, firstName, lastName, email, age, jobTitle);
             model.addAttribute("success", "Profile updated successfully!");
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");
@@ -211,6 +210,19 @@ public class UserController {
         return "my-profile-feed";
     }
 
+    @RequestMapping(value = "/changeCoverPhoto", method = RequestMethod.POST)
+    public String changeCoverPhoto(Principal principal, Model model,
+                                   @RequestParam("coverPhoto") MultipartFile coverPhoto) {
+        try {
+            User user = userService.getByUsername(principal.getName());
+            userService.addCoverPhoto(user.getUsername(), coverPhoto);
+            model.addAttribute("success", "Picture changed successful");
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "my-profile-feed";
+    }
+
     @GetMapping(value = "/deleteProfile")
     public String deleteUserProfile(Model model,
                                     Principal principal) {
@@ -227,7 +239,7 @@ public class UserController {
         for (Post post : postService.getPostsByUserId(user.getId())) {
             postService.deletePost(post.getId(), principal, request);
         }
-        boolean passwordMatch = passwordEncoder.matches(password,user.getPassword());
+        boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
         if (passwordMatch) {
             userService.deleteUser(user.getId());
         } else {

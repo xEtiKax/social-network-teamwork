@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.services.interfaces;
 
 import com.example.demo.models.DTO.RequestDTO;
 import com.example.demo.models.Request;

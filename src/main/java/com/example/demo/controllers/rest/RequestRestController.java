@@ -1,10 +1,9 @@
 package com.example.demo.controllers.rest;
 
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.DTO.RequestDTO;
 import com.example.demo.models.Request;
-import com.example.demo.services.RequestService;
+import com.example.demo.services.interfaces.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

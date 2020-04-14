@@ -4,6 +4,8 @@ import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.models.Comment;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CommentRepository;
+import com.example.demo.services.interfaces.CommentService;
+import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

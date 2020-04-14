@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.services.interfaces;
 
 import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
@@ -22,9 +22,11 @@ public interface UserService {
 
     void deleteUser(long id);
 
-    void changePassword(String username, String oldPassword, String newPassword,String passwordConfirm);
+    void changePassword(String username, String oldPassword, String newPassword, String passwordConfirm);
 
-    void updateUserDetails(User user,String firstName, String lastName, String email,int age, String jobTitle);
+    void updateUserDetails(User user, String firstName, String lastName, String email, int age, String jobTitle);
 
     void addProfilePicture(String username, MultipartFile profilePicture);
+
+    void addCoverPhoto(String username, MultipartFile profilePicture);
 }

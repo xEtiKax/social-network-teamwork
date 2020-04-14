@@ -3,9 +3,7 @@ package com.example.demo.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -35,6 +33,10 @@ public class User {
     @Lob
     @Column(name = "picture", columnDefinition = "BLOB")
     private Byte[] photo;
+
+    @Lob
+    @Column(name = "cover_photo", columnDefinition = "BLOB")
+    private Byte[] coverPhoto;
 
     @Column(name = "enabled")
     private int enabled;
@@ -195,4 +197,11 @@ public class User {
         this.lastName = lastName;
     }
 
+    public Byte[] getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(Byte[] coverPhoto) {
+        this.coverPhoto = coverPhoto;
+    }
 }

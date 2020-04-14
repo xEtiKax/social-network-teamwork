@@ -2,9 +2,9 @@ package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
-import com.example.demo.services.ImageService;
-import com.example.demo.services.PostService;
-import com.example.demo.services.UserService;
+import com.example.demo.services.interfaces.ImageService;
+import com.example.demo.services.interfaces.PostService;
+import com.example.demo.services.interfaces.UserService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,6 +67,24 @@ public class ImageController {
     public void renderUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
         renderImage(response, user.getPhoto());
+    }
+
+    @PostMapping("user/{userId}/cover")
+    public String handleUserImageCover(@PathVariable long userId, @RequestParam("imageFile") MultipartFile file) {
+        imageService.saveUserCover(userId, file);
+        return "redirect:/user";
+    }
+
+    @GetMapping("user/{userId}/cover")
+    public String showUserCoverUploadForm(@PathVariable long userId, Model model) {
+        model.addAttribute("user", userService.getById(userId));
+        return "user-profile";
+    }
+
+    @GetMapping("user/{id}/coverImage")
+    public void renderUserCoverFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
+        User user = userService.getById(id);
+        renderImage(response, user.getCoverPhoto());
     }
 
     private void renderImage(HttpServletResponse response, Byte[] photo) throws IOException {

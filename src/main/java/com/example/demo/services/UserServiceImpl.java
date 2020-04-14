@@ -6,6 +6,7 @@ import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -116,6 +117,17 @@ public class UserServiceImpl implements UserService {
         User user = getByUsername(username);
         try {
             user.setPhoto(multiPartToByteArr(profilePicture));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userRepository.save(user);
+    }
+
+    @Override
+    public void addCoverPhoto(String username, MultipartFile coverPhoto) {
+        User user = getByUsername(username);
+        try {
+            user.setCoverPhoto(multiPartToByteArr(coverPhoto));
         } catch (IOException e) {
             e.printStackTrace();
         }

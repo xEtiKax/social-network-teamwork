@@ -4,6 +4,7 @@ import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.interfaces.ImageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,20 @@ public class ImageServiceImpl implements ImageService {
 
             Byte[] byteObjects = multiPartToByteArr(file);
             user.setPhoto(byteObjects);
+            userRepository.save(user);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void saveUserCover(long userId, MultipartFile file) {
+        try {
+            User user = userRepository.findById(userId).get();
+
+            Byte[] byteObjects = multiPartToByteArr(file);
+            user.setCoverPhoto(byteObjects);
             userRepository.save(user);
         }catch (IOException e){
             e.printStackTrace();

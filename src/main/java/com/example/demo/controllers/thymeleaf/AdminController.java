@@ -1,8 +1,8 @@
 package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.services.PostService;
-import com.example.demo.services.UserService;
+import com.example.demo.services.interfaces.PostService;
+import com.example.demo.services.interfaces.UserService;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.models.Like;
 import com.example.demo.repositories.LikeRepository;
+import com.example.demo.services.interfaces.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -7,6 +7,7 @@ import com.example.demo.models.Request;
 import com.example.demo.models.User;
 import com.example.demo.repositories.RequestRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.interfaces.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

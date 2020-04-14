@@ -5,11 +5,12 @@ import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
+import com.example.demo.services.interfaces.PostService;
+import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import java.security.Principal;
 import java.util.List;
 
