@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @RestController
@@ -20,7 +21,7 @@ public class PostRestController {
     private UserService userService;
 
     @Autowired
-    public PostRestController(PostService postService,UserService userService) {
+    public PostRestController(PostService postService, UserService userService) {
         this.postService = postService;
         this.userService = userService;
     }
@@ -45,7 +46,7 @@ public class PostRestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePost(@PathVariable long id) {
-        postService.deletePost(id);
+    public void deletePost(@PathVariable long id, Principal principal, HttpServletRequest request) {
+        postService.deletePost(id, principal, request);
     }
 }

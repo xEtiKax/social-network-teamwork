@@ -8,6 +8,9 @@ import com.example.demo.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -53,9 +56,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(long id) {
+    public void deletePost(long id, Principal principal, HttpServletRequest request) {
         throwIfPostDoesNotExists(id);
         Post post = postRepository.getById(id);
+        canUserDeletePost(post, principal, request);
         post.setEnabled(0);
         postRepository.save(post);
     }
@@ -83,5 +87,14 @@ public class PostServiceImpl implements PostService {
             throw new EntityNotFoundException(
                     String.format(POST_DOES_NOT_EXISTS, id));
         }
+    }
+
+    private boolean canUserDeletePost(Post post, Principal principal, HttpServletRequest request) {
+        if (principal != null && (principal.getName().equals(post.getCreatedBy().getUsername()) ||
+                request.isUserInRole("ROLE_ADMIN"))) {
+            post.setCanDelete(true);
+        }
+        post.setCanDelete(false);
+        return post.getCanDelete();
     }
 }

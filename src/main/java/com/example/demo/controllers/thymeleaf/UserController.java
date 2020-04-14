@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -46,28 +47,28 @@ public class UserController {
         this.likeService = likeService;
     }
 
-    @GetMapping ("/showUserProfile/{userId}")
-    public String showUserProfile(Model model,@PathVariable long userId, Principal principal) {
+    @GetMapping("/showUserProfile/{userId}")
+    public String showUserProfile(Model model, @PathVariable long userId, Principal principal) {
         User me = userService.getByUsername(principal.getName());
         User user = userService.getById(userId);
 
         List<Post> posts = postService.getPostsByUserId(userId);
         boolean isFriend = false;
-        if (user.getFriends().contains(me)){
+        if (user.getFriends().contains(me)) {
             isFriend = true;
         }
         int friendsCounter = user.getFriends().size();
-        model.addAttribute("user",user);
-        model.addAttribute("isFriend",isFriend);
-        model.addAttribute("posts",posts);
-        model.addAttribute("friendsCounter",friendsCounter);
+        model.addAttribute("user", user);
+        model.addAttribute("isFriend", isFriend);
+        model.addAttribute("posts", posts);
+        model.addAttribute("friendsCounter", friendsCounter);
         return "user-profile";
     }
 
     @GetMapping("/showMyProfile")
     public String showMyProfile(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
         return "my-profile-feed";
     }
@@ -106,10 +107,11 @@ public class UserController {
         model.addAttribute("user", user);
         return "change-password";
     }
+
     @GetMapping("/privacy")
     public String showPrivacy(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "privacy";
     }
 
@@ -129,7 +131,7 @@ public class UserController {
         User user = userService.getByUsername(principal.getName());
         Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
         likeService.deleteLike(like.getId());
-            return "redirect:/post/details";
+        return "redirect:/post/details";
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
@@ -139,7 +141,7 @@ public class UserController {
                                  Principal principal, Model model) {
         try {
             User user = userService.getByUsername(principal.getName());
-            userService.changePassword(user.getUsername(), oldPassword, newPassword,passwordConfirm);
+            userService.changePassword(user.getUsername(), oldPassword, newPassword, passwordConfirm);
             model.addAttribute("success", "Password changes successful");
         } catch (WrongPasswordException e) {
             model.addAttribute("error", "Wrong password");
@@ -189,8 +191,7 @@ public class UserController {
             model.addAttribute("success", "Profile updated successfully!");
         } catch (DuplicateEntityException e) {
             model.addAttribute("error", "Email already exists");
-        }
-        catch (WrongEmailException e) {
+        } catch (WrongEmailException e) {
             model.addAttribute("wrongEmail", "Wrong email format");
         }
         model.addAttribute("user", user);
@@ -209,9 +210,10 @@ public class UserController {
         }
         return "user-profile";
     }
+
     @GetMapping(value = "/deleteProfile")
     public String deleteUserProfile(Model model,
-                                  Principal principal) {
+                                    Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
         return "deactivate-account";
@@ -219,12 +221,11 @@ public class UserController {
 
     @RequestMapping(value = "/deleteProfile")
     public String deleteProfile(Principal principal, Model model,
-                                @RequestParam("password") String password) {
-
+                                @RequestParam("password") String password, HttpServletRequest request) {
         User user = userService.getByUsername(principal.getName());
 
         for (Post post : postService.getPostsByUserId(user.getId())) {
-            postService.deletePost(post.getId());
+            postService.deletePost(post.getId(), principal, request);
         }
         boolean passwordMatch = passwordEncoder.matches(password,user.getPassword());
         if (passwordMatch) {

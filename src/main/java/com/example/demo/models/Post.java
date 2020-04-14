@@ -38,6 +38,9 @@ public class Post {
     @Column(name = "enabled")
     private int enabled = 1;
 
+    @Transient
+    private boolean CanDelete;
+
     @JsonIgnore
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
@@ -116,5 +119,13 @@ public class Post {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public boolean getCanDelete() {
+        return CanDelete;
+    }
+
+    public void setCanDelete(boolean canDelete) {
+        CanDelete = canDelete;
     }
 }
