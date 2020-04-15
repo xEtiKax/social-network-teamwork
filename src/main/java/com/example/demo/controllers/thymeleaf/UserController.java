@@ -168,10 +168,7 @@ public class UserController {
     public String getFriendRequests(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         List<Request> friendRequests = requestService.getUserRequests(user);
-//        for (Request request:friendRequests) {
-//            User sender = request.getSender();
-//            model.addAttribute("sender",sender);
-//        }
+        model.addAttribute("user",user);
         model.addAttribute("requests", friendRequests);
         return "requests";
     }

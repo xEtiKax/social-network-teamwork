@@ -56,12 +56,13 @@ public class RequestController {
         sender.addFriend(receiver);
         receiver.addFriend(sender);
         requestService.deleteRequest(requestId);
-        return "requests";
+
+        return "redirect:/user/showRequests";
     }
 
-    @DeleteMapping("reject/{requestId}")
+    @PostMapping("reject/{requestId}")
     public String rejectRequest(@PathVariable long requestId) {
         requestService.deleteRequest(requestId);
-        return "requests";
+        return "redirect:/user/showRequests";
     }
 }

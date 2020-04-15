@@ -29,7 +29,7 @@
         <div class="container">
             <div class="header-data">
                 <div class="logo">
-                    <a href="index.html" title=""><img src="../images/logo.png" alt=""></a>
+                    <a th:href="@{/}" title=""><img src="../images/logo.png" alt=""></a>
                 </div><!--logo end-->
                 <div class="search-bar">
                     <form>
@@ -114,10 +114,10 @@
                     <a href="#" title=""><i class="fa fa-bars"></i></a>
                 </div><!--menu-btn end-->
                 <div class="user-account">
-                    <div class="user-info">
-                        <img src="../images/resources/user.png" alt="">
-                        <a href="#" title="">John</a>
-                        <i class="la la-sort-down"></i>
+                    <div class="user-info" th:if="${user != null}">
+                        <img th:if="${user.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+                        <img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+                        <a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
                     </div>
                     <div class="user-account-settingss">
                         <h3>Online Status</h3>
@@ -169,7 +169,7 @@
                     <div class="col-lg-3">
                         <div class="acc-leftbar">
                             <div class="nav nav-tabs" id="nav-tab">
-                                <a class="nav-item nav-link active" id="nav-acc-tab" th:href="@{/user/edit}"
+                                <a class="nav-item nav-link" id="nav-acc-tab" th:href="@{/user/edit}"
                                    aria-selected="false"><i class="la la-cogs"></i>Edit Profile</a>
                                 <a class="nav-item nav-link" id="nav-password-tab" th:href="@{/user/changePass}"
                                    aria-selected="false"><i class="fa fa-lock"></i>Change Password</a>
@@ -177,7 +177,7 @@
                                    aria-selected="false"><i class="fa fa-group"></i>Requests</a>
                                 <a class="nav-item nav-link" id="nav-privacy-tab" th:href="@{/user/privacy}"
                                    aria-selected="false"><i class="fa fa-paw"></i>Privacy</a>
-                                <a class="nav-item nav-link" id="nav-deactivate-tab" th:href="@{/user/deleteProfile}"
+                                <a class="nav-item nav-link active" id="nav-deactivate-tab" th:href="@{/user/deleteProfile}"
                                    aria-selected="true"><i class="fa fa-random"></i>Deactivate Account</a>
                             </div>
                         </div><!--acc-leftbar end-->
@@ -194,7 +194,7 @@
                                             <h5>Password <i class="fa fa-lock"></i></h5>
 
                                             <div class="cpp-field">
-                                                <input type="password" name="password" placeholder="Password">
+                                                <input type="password" required name="password" placeholder="Password">
                                             </div>
                                         </div>
                                         <div class="save-stngs pd3">

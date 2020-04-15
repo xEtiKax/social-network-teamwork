@@ -172,7 +172,7 @@
 											<button type="submit" class="btn btn-primary"><i></i>Update Profile</button>
 										</form>-->
 		<section class="cover-sec">
-			<img th:src="@{'/user/' + ${user.id} + '/coverImage'}"/>
+			<img th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"/>
 			<div class="add-pic-box">
 				<div class="container">
 					<div class="row no-gutters">
@@ -196,7 +196,7 @@
 								<div class="main-left-sidebar">
 									<div class="user_profile">
 										<div class="user-pro-img">
-											<img th:src="@{'/user/' + ${user.id} + '/userImage'}"/>
+											<img th:src="@{'/user/' + ${user.getId()} + '/userImage'}"/>
 
 										</div>
 										<div class="add-dp" id="OpenImgUpload">
