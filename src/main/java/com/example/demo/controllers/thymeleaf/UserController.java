@@ -70,6 +70,7 @@ public class UserController {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
+        model.addAttribute("post", new Post());
         return "my-profile-feed";
     }
 
@@ -246,15 +247,4 @@ public class UserController {
         }
         return "index";
     }
-
-    @GetMapping("/showMyPosts")
-    public String showUserPosts(Model model, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        List<Post> posts = postService.getPostsByUserId(user.getId());
-        model.addAttribute("myPosts", posts);
-        model.addAttribute("post", new Post());
-        return "my-profile-feed";
-    }
-
-
 }

@@ -54,7 +54,7 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public void savePostPhoto(long postId, MultipartFile file) {
         try {
-            Post post = postRepository.getById(postId);
+            Post post = postRepository.findByIdAndEnabledTrue(postId);
 
             Byte[] byteObjects = multiPartToByteArr(file);
             post.setPicture(byteObjects);
