@@ -59,12 +59,12 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<Request> getUserRequests(long userId) {
-        return requestRepository.getUserRequests(userId);
+    public List<Request> getUserRequests(User userId) {
+        return requestRepository.findAllByReceiver(userId);
     }
 
     private Request requestMerge(Request request, RequestDTO requestDTO) {
-        request.setAccepted(false);
+        request.setAccepted(0);
         User receiver = userRepository.getById(requestDTO.getReceiver());
         request.setReceiver(receiver);
         User sender = userRepository.getById(requestDTO.getSender());

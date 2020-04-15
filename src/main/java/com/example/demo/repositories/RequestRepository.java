@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.Request;
+import com.example.demo.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,6 +18,7 @@ public interface RequestRepository extends CrudRepository<Request, Serializable>
     Request existsByUniquePair(long sender, long receiver);
 
 
-    @Query(value = "SELECT id, sender_id, receiver_id from social_network.requests where receiver_id = ?1", nativeQuery = true)
-    List<Request> getUserRequests(long userId);
+//    @Query(value = "SELECT id, sender_id, receiver_id from social_network.requests where receiver_id = ?1", nativeQuery = true)
+
+    List<Request> findAllByReceiver(User userId);
 }

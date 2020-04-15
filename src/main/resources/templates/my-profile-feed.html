@@ -229,16 +229,10 @@
 							<div class="col-lg-6">
 								<div class="main-ws-sec">
 									<div class="user-tab-sec rewivew">
-										<li class="list-group-item" th:text=" ${user.getFirstName()}"></li>
+										<li class="list-group-item" ></li>
 										<div class="star-descp">
-											<span>Graphic Designer at Self Employed</span>
-											<ul>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star-half-o"></i></li>
-											</ul>
+											<span th:text=" ${user.getFirstName()}" >Graphic Designer at Self Employed</span>
+											<span th:text=" ${user.getLastName()}" >Graphic Designer at Self Employed</span>
 										</div><!--star-descp end-->
                                             <div class="tab-feed st2 settingjb">
 											<ul>

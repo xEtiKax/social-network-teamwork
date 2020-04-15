@@ -20,7 +20,7 @@ public class Request {
     private User receiver;
 
     @Column(name = "is_accepted")
-    private boolean isAccepted;
+    private int isAccepted;
 
     public long getId() {
         return id;
@@ -42,11 +42,11 @@ public class Request {
         this.receiver = receiver;
     }
 
-    public boolean isAccepted() {
+    public int isAccepted() {
         return isAccepted;
     }
 
-    public void setAccepted(boolean accepted) {
+    public void setAccepted(int accepted) {
         isAccepted = accepted;
     }
 }

@@ -31,11 +31,11 @@ public class User {
     private String password;
 
     @Lob
-    @Column(name = "picture", columnDefinition = "BLOB")
+    @Column(name = "picture", columnDefinition = "LONGBLOB")
     private Byte[] photo;
 
     @Lob
-    @Column(name = "cover_photo", columnDefinition = "BLOB")
+    @Column(name = "cover_photo", columnDefinition = "LONGBLOB")
     private Byte[] coverPhoto;
 
     @Column(name = "enabled")
@@ -66,9 +66,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
 
-
-    @Column(name = "is_public")
-    private boolean isPublic;
 
     public User() {
     }
