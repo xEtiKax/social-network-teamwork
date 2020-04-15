@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   PRIMARY KEY (`id`),
   KEY `posts_users_id_fk` (`created_by`),
   CONSTRAINT `posts_users_id_fk` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -77,13 +77,13 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `sender_id` bigint(20) NOT NULL,
   `receiver_id` bigint(20) NOT NULL,
-  `isAccepted` tinyint(1) NOT NULL DEFAULT 0,
+  `is_accepted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `requests_users_id_fk` (`sender_id`),
   KEY `requests_users_id_fk_2` (`receiver_id`),
   CONSTRAINT `requests_users_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
   CONSTRAINT `requests_users_id_fk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -93,14 +93,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(50) DEFAULT NULL,
   `password` varchar(68) NOT NULL,
-  `picture` blob DEFAULT NULL,
+  `picture` longblob DEFAULT NULL,
   `enabled` tinyint(4) NOT NULL DEFAULT 1,
   `age` int(11) NOT NULL DEFAULT 0,
   `is_public` tinyint(1) DEFAULT 0,
   `job_title` varchar(255) DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `cover_photo` longblob DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_authorities_username_fk` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
