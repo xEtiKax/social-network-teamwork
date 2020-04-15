@@ -69,6 +69,12 @@ public class ImageController {
         renderImage(response, user.getPhoto());
     }
 
+    @GetMapping("public/user/{id}/userImage")
+    public void renderPublicUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
+        User user = userService.getById(id);
+        renderImage(response, user.getPhoto());
+    }
+
     @PostMapping("user/{userId}/cover")
     public String handleUserImageCover(@PathVariable long userId, @RequestParam("imageFile") MultipartFile file) {
         imageService.saveUserCover(userId, file);

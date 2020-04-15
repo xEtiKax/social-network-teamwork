@@ -110,63 +110,30 @@
                                 </div><!--nott-list end-->
                             </div><!--notification-box end-->
                         </li>
-                        <li>
+                        <li th:if="${user == null}">
                             <a th:href="@{/login}" title="">
                                 <span><img th:src="@{/images/icon3.png}" alt=""></span>
                                 Login
+                            </a>
+                        </li>
+                        <li th:if="${user != null}">
+                            <a th:href="@{/logout}" title="">
+                                <span><img th:src="@{/images/icon3.png}" alt=""></span>
+                                Logout
                             </a>
                         </li>
                     </ul>
                 </nav><!--nav end-->
                 <div class="menu-btn">
                     <!--TODO menu button-->
-                    <a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
+                    <a href="#" title=""><i class="fa fa-bars"></i></a>
                 </div><!--menu-btn end-->
                 <div class="user-account">
                     <div class="user-info" th:if="${user != null}">
-						<!--TODO user profile picture-->
                         <img th:if="${user.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
                         <img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                         <a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
                     </div>
-                    <div class="user-account-settingss" id="users">
-                        <h3>Online Status</h3>
-                        <ul class="on-off-status">
-                            <li>
-                                <div class="fgt-sec">
-                                    <input type="radio" name="cc" id="c5">
-                                    <label for="c5">
-                                        <span></span>
-                                    </label>
-                                    <small>Online</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="fgt-sec">
-                                    <input type="radio" name="cc" id="c6">
-                                    <label for="c6">
-                                        <span></span>
-                                    </label>
-                                    <small>Offline</small>
-                                </div>
-                            </li>
-                        </ul>
-                        <h3>Custom Status</h3>
-                        <div class="search_form">
-                            <form>
-                                <input type="text" name="search">
-                                <button type="submit">Ok</button>
-                            </form>
-                        </div><!--search_form end-->
-                        <h3>Setting</h3>
-                        <ul class="us-links">
-                            <li><a href="user-settings.html" title="">Account Setting</a></li>
-                            <li><a href="#" title="">Privacy</a></li>
-                            <li><a href="#" title="">Faqs</a></li>
-                            <li><a href="#" title="">Terms & Conditions</a></li>
-                        </ul>
-                        <h3 class="tc"><a href="sign-in.html" title="">Logout</a></h3>
-                    </div><!--user-account-settingss end-->
                 </div>
             </div><!--header-data end-->
         </div>
@@ -182,9 +149,9 @@
                                 <div class="user-data full-width" sec:authorize="hasRole('ROLE_USER')">
                                     <div class="user-profile">
                                         <div class="username-dt">
-                                            <div class="usr-pic">
-											<!--TODO get user profile picture-->
-                                                <img th:src="@{/images/resources/user-pic.png}" alt="">
+                                            <div class="usr-pic" th:if="${user != null}">
+                                                <img th:if="${user.getPhoto()}" style="height: 120px;width: 120px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+                                                <img th:if="${user.getPhoto() == null}" style="height: 120px;width: 120px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                             </div>
                                         </div><!--username-dt end-->
                                         <div class="user-specs">
@@ -199,7 +166,7 @@
                                             <span>155</span>
                                         </li>
                                         <li>
-                                            <a href="my-profile.html" title="">View Profile</a>
+                                            <a th:href="@{/user/showMyProfile}" title="">View Profile</a>
                                         </li>
                                     </ul>
                                 </div><!--user-data end-->
@@ -208,9 +175,9 @@
                         <div class="col-lg-6 col-md-8 no-pd">
                             <div class="main-ws-sec">
                                 <div class="post-topbar" sec:authorize="hasRole('ROLE_USER')">
-                                    <div class="user-picy">
-                                        <!--TODO get user profile picture-->
-                                        <img th:src="@{/images/resources/user-pic.png}" alt="">
+                                    <div class="user-picy" th:if="${user != null}" >
+                                        <img th:if="${user.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+                                        <img th:if="${user.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                     </div>
                                     <div class="post-st">
                                         <ul>
@@ -226,13 +193,14 @@
                                                 <div class="posty">
                                                     <div class="post-bar no-margin">
                                                         <div class="post_topbar">
-                                                            <div class="usy-dt">
-                                                                <img th:src="@{/images/resources/us-pc2.png}" alt="">
-                                                                <!--TODO get user profile picture-->
+                                                            <div class="usy-dt" th:if="${post.createdBy}">
+                                                                <img th:if="${post.createdBy.photo}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
+                                                                <img th:if="${post.createdBy.photo == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                                                 <div class="usy-name">
-                                                                    <h3 th:text="${post.createdBy.getUsername()}">John
-                                                                        Doe</h3>
-                                                                    <span th:text="${post.getDateTime()}"><img th:src="@{/images/clock.png}" alt="">3 min ago</span>
+                                                                    <h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
+                                                                    <span th:text="${post.getDateTime()}">
+                                                                        <img th:src="@{/images/clock.png}" alt="">3 min ago
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                             <div class="ed-opts">

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -245,4 +246,15 @@ public class UserController {
         }
         return "index";
     }
+
+    @GetMapping("/showMyPosts")
+    public String showUserPosts(Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        List<Post> posts = postService.getPostsByUserId(user.getId());
+        model.addAttribute("myPosts", posts);
+        model.addAttribute("post", new Post());
+        return "my-profile-feed";
+    }
+
+
 }
