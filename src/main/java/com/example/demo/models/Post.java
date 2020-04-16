@@ -36,7 +36,7 @@ public class Post {
     private Byte[] picture;
 
     @Column(name = "enabled")
-    private int enabled = 1;
+    private boolean enabled = true;
 
     @Transient
     private boolean CanDelete;
@@ -89,11 +89,11 @@ public class Post {
         this.dateTime = dateTime;
     }
 
-    public int getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(int enable) {
+    public void setEnabled(boolean enable) {
         this.enabled = enable;
     }
 

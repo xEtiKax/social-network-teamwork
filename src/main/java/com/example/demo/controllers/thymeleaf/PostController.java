@@ -3,6 +3,7 @@ package com.example.demo.controllers.thymeleaf;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
@@ -45,10 +46,34 @@ public class PostController {
         return "redirect:/";
     }
 
+    @PostMapping("/user/add")
+    public String addUserPost(@Valid @ModelAttribute("post") PostDTO postDTO, Model model, Principal principal) {
+        try {
+            User createdBy = userService.getByUsername(principal.getName());
+            postService.createPost(postDTO, createdBy.getId());
+        } catch (DuplicateEntityException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/user/showMyProfile";
+    }
+
     @PostMapping("/delete/{id}")
     public String deletePost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
         try {
             postService.deletePost(id, principal, request);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model, Principal principal, HttpServletRequest request) {
+
+        try {
+            postService.updatePost(id, postDTO);
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";

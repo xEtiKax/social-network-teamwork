@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostById(long id) {
-        Post post = postRepository.findByIdAndEnabledTrue(id);
+        Post post = postRepository.getById(id);
         return post;
     }
 
@@ -59,9 +59,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(long id, Principal principal, HttpServletRequest request) {
         throwIfPostDoesNotExists(id);
-        Post post = postRepository.findByIdAndEnabledTrue(id);
+        Post post = postRepository.getById(id);
         canUserDeletePost(post, principal, request);
-        post.setEnabled(0);
+        post.setEnabled(false);
         postRepository.save(post);
     }
 

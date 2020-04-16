@@ -28,7 +28,6 @@ public class HomeController {
             User user = userService.getByUsername(principal.getName());
             model.addAttribute("user", user);
         }catch (Exception e){
-            System.out.println(e);
         }
         model.addAttribute("users", userService.getAll());
         return "index";

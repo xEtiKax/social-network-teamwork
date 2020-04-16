@@ -4,6 +4,7 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
+import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
@@ -79,7 +80,6 @@ public class UserController {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
-        model.addAttribute("post", new Post());
         return "my-profile-feed";
     }
 
@@ -261,8 +261,11 @@ public class UserController {
     public String showUserPosts(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         List<Post> posts = postService.getPostsByUserId(user.getId());
+        model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
-        model.addAttribute("post", new Post());
+        model.addAttribute("post", new PostDTO());
         return "my-profile-feed";
     }
+
+
 }
