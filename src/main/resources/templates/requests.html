@@ -191,7 +191,8 @@
                                     <div class="requests-list">
                                         <div th:each="request : ${requests}"class="request-details">
                                             <div class="noty-user-img">
-                                                <img th:src="@{'/user/' + ${request.getSender().getId()} + '/userImage'}"/>
+                                                <img th:if="${request.getSender().getPhoto()}" th:src="@{'/user/' + ${request.getSender().getId()} + '/userImage'}"/>
+                                                <img th:if="${request.getSender().getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                             </div>
                                             <div  class="request-info">
                                                 <h3 th:text="${request.getSender().firstName}"></h3>

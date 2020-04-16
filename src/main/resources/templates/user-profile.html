@@ -28,7 +28,7 @@
 			<div class="container">
 				<div class="header-data">
 					<div class="logo">
-						<a href="index.html" title=""><img src="../static/images/logo.png" alt=""></a>
+						<a href="index.html" title=""><img th:src="@{/images/logo.png}" alt=""></a>
 					</div><!--logo end-->
 					<div class="search-bar">
 						<form>
@@ -40,23 +40,23 @@
 						<ul>
 							<li>
 								<a th:href="@{/}" title="">
-									<span><img src="../images/icon1.png" alt=""></span>
+									<span><img th:src="@{/images/icon1.png}" alt=""></span>
 									Home
 								</a>
 							</li>
 							<li>
 								<a href="profiles.html" title="">
-									<span><img src="../static/images/icon4.png" alt=""></span>
+									<span><img th:src="@{/images/icon4.png}" alt=""></span>
 									Profiles
 								</a>
 								<ul>
-									<li><a href="user-profile.html" title="">User Profile</a></li>
+									<li><a th:href="@{/user/showMyProfile}" title="">User Profile</a></li>
 									<li><a href="my-profile-feed.html" title="">my-profile-feed</a></li>
 								</ul>
 							</li>
 							<li>
 								<a href="#" title="" class="not-box-open">
-									<span><img src="../static/images/icon7.png" alt=""></span>
+									<span><img th:src="@{/images/icon7.png}" alt=""></span>
 									Notification
 								</a>
 								<div class="notification-box noti" id="notification">
@@ -110,12 +110,14 @@
 						</ul>
 					</nav><!--nav end-->
 					<div class="menu-btn">
-						<a href="#" title=""><i class="fa fa-bars"></i></a>
+						<a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
 					</div><!--menu-btn end-->
 					<div class="user-account">
 						<div class="user-info">
-							<div class="img-container">
-								<img th:src="@{'/user/' + ${user.id} + '/image'}"/>
+							<div class="user-info" th:if="${user != null}">
+								<img th:if="${user.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+<!--								<img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">-->
+								<a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
 							</div>
 							<a href="#" title="">John</a>
 							<i class="la la-sort-down"></i>
@@ -137,6 +139,15 @@
 		</section>
 
 
+
+		<section class="cover-sec">
+			<img th:if="${user.coverPhoto}" style="height: 450px;width: 1600px;" th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"  alt="">
+			<img th:if="${user.coverPhoto == null}" style="height: 450px;width: 1600px;" th:src="@{/images/resources/cover-default.jpg}" alt="">
+
+		</section>
+
+
+
 		<main>
 			<div class="main-section">
 				<div class="container">
@@ -150,12 +161,12 @@
 										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
 											<ul class="flw-hr">
-												<li><a th:if="${!isFriend}"href="#" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
-												<li><a th:if="${isFriend}"href="#" title="" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
+												<li><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
+												<li><a th:if="${isSentRequest}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
+												<li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
 											</ul>
 											<ul class="flw-status">
 												<li>
-<!--													<span>Friends</span>-->
 													<b th:text="${friendsCounter}" >Friends</b>
 												</li>
 											</ul>

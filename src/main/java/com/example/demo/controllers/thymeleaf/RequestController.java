@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/request")
@@ -33,8 +32,8 @@ public class RequestController {
         return requestService.getRequestById(id);
     }
 
-    @PostMapping("/send/{userId}")
-    public String sendRequest(@PathVariable long userId, Principal principal) {
+    @RequestMapping("/send")
+    public String sendRequest(@RequestParam(name = "userId") long userId, Principal principal) {
         User sender = userService.getByUsername(principal.getName());
         try {
             RequestDTO requestDTO = new RequestDTO();
@@ -45,7 +44,7 @@ public class RequestController {
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
-        return "user-profile";
+        return "redirect:/user/showUserProfile/" + userId;
     }
 
     @PostMapping("accept/{requestId}")
@@ -60,9 +59,27 @@ public class RequestController {
         return "redirect:/user/showRequests";
     }
 
+    @RequestMapping(value = "/remove/{friendId}", method = RequestMethod.GET)
+    public String removeFriend(@PathVariable long friendId, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        User friend = userService.getById(friendId);
+        userService.removeFriend(user, friend);
+        userService.removeFriend(friend, user);
+        return "redirect:/user/showUserProfile/" + friend.getId();
+    }
+
     @PostMapping("reject/{requestId}")
     public String rejectRequest(@PathVariable long requestId) {
         requestService.deleteRequest(requestId);
         return "redirect:/user/showRequests";
+    }
+
+    @RequestMapping(value = "/cancel/{userId}")
+    public String cancelRequest(@PathVariable long userId, Principal principal) {
+        User sender = userService.getByUsername(principal.getName());
+        Request request = requestService.getRequestBySenderAndReciever(sender.getId(), userId);
+        User receiver = userService.getById(userId);
+        requestService.deleteRequest(request.getId());
+        return "redirect:/user/showUserProfile/" + receiver.getId();
     }
 }

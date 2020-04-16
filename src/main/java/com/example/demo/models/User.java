@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Where(clause = "enabled != 0")
 public class User {
 
     @Id
@@ -27,13 +29,16 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
+    @JsonIgnore
     @Lob
     @Column(name = "picture", columnDefinition = "LONGBLOB")
     private Byte[] photo;
 
+    @JsonIgnore
     @Lob
     @Column(name = "cover_photo", columnDefinition = "LONGBLOB")
     private Byte[] coverPhoto;

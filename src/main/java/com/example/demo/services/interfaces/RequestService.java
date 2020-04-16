@@ -16,5 +16,7 @@ public interface RequestService {
 
     boolean checkIfRequestExist(long sender, long receiver);
 
+    Request getRequestBySenderAndReciever(long sender, long receiver);
+
     List<Request> getUserRequests(User userId);
 }

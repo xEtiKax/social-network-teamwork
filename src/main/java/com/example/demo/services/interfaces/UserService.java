@@ -4,6 +4,8 @@ import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -16,7 +18,7 @@ public interface UserService {
 
     List<User> getUserFriends(long userId);
 
-    User createUser(UserDTO userDTO);
+    User createUser(UserDTO userDTO) throws IOException;
 
     User updateUser(User user);
 
@@ -29,4 +31,8 @@ public interface UserService {
     void addProfilePicture(String username, MultipartFile profilePicture);
 
     void addCoverPhoto(String username, MultipartFile profilePicture);
+
+    void removeFriend(User me, User friend);
+
+
 }

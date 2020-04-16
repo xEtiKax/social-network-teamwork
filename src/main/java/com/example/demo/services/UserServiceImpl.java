@@ -13,9 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,11 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> getAll() {
-        List<User> users = new ArrayList<>(userRepository.findAll());
-        if (users.isEmpty()) {
-            throw new EntityNotFoundException("There are no registered users");
-        }
-        return users;
+        return new ArrayList<>(userRepository.findAll());
     }
 
     @Override
@@ -62,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserDTO userDTO) {
+    public User createUser(UserDTO userDTO) throws IOException {
         User user = userDTOtoUserMapper(userDTO);
         if (checkUserExist(user.getUsername())) {
             throw new DuplicateEntityException("User with this username already exist");
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDetails(User user,String firstName,String lastName, String email,int age, String jobTitle) {
+    public void updateUserDetails(User user, String firstName, String lastName, String email, int age, String jobTitle) {
         if (!validate(email)) {
             throw new WrongEmailException("Wrong email format");
         } else {
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(String username, String oldPassword, String newPassword,String passwordConfirm) {
+    public void changePassword(String username, String oldPassword, String newPassword, String passwordConfirm) {
         if (!newPassword.equals(passwordConfirm)) {
             throw new WrongPasswordException("Passwords does not match");
         }
@@ -121,6 +123,12 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         userRepository.save(user);
+    }
+
+    @Override
+    public void removeFriend(User me, User friend) {
+        me.removeFriend(friend);
+        userRepository.save(me);
     }
 
     @Override

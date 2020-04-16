@@ -59,6 +59,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public Request getRequestBySenderAndReciever(long sender, long receiver) {
+        return requestRepository.findAllByReceiverAndSender(sender, receiver);
+    }
+
+    @Override
     public List<Request> getUserRequests(User userId) {
         return requestRepository.findAllByReceiver(userId);
     }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -41,7 +42,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult bindingResult, Model model) throws IOException {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("error", "Username/password can't be empty!");
@@ -64,6 +65,7 @@ public class RegistrationController {
         org.springframework.security.core.userdetails.User newUser =
                 new org.springframework.security.core.userdetails.User(user.getUsername(), passwordEncoder.encode(user.getPassword()), authorities);
         userDetailsManager.createUser(newUser);
+
         model.addAttribute("successful","You registered successfully");
 
         return "sign-in";

@@ -23,9 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -52,14 +52,23 @@ public class UserController {
         User me = userService.getByUsername(principal.getName());
         User user = userService.getById(userId);
 
+        boolean isSentRequest = requestService.checkIfRequestExist(me.getId(), userId);
         List<Post> posts = postService.getPostsByUserId(userId);
         boolean isFriend = false;
+        boolean isFriendAndIsSentRequest = true;
+        if (!user.getFriends().contains(me) && !isSentRequest) {
+            isFriendAndIsSentRequest = false;
+        }
         if (user.getFriends().contains(me)) {
             isFriend = true;
         }
+
         int friendsCounter = user.getFriends().size();
+
+        model.addAttribute("isSentRequest", isSentRequest);
         model.addAttribute("user", user);
         model.addAttribute("isFriend", isFriend);
+        model.addAttribute("isFriendAndIsSentRequest", isFriendAndIsSentRequest);
         model.addAttribute("posts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
         return "user-profile";
@@ -95,7 +104,7 @@ public class UserController {
         }
         try {
             userService.createUser(userDTO);
-        } catch (DuplicateEntityException e) {
+        } catch (DuplicateEntityException | IOException e) {
             model.addAttribute("error", e);
             return "error";
         }
@@ -170,7 +179,7 @@ public class UserController {
     public String getFriendRequests(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         List<Request> friendRequests = requestService.getUserRequests(user);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         model.addAttribute("requests", friendRequests);
         return "requests";
     }
@@ -246,5 +255,14 @@ public class UserController {
             return "deactivate-account";
         }
         return "index";
+    }
+
+    @GetMapping("/showMyPosts")
+    public String showUserPosts(Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        List<Post> posts = postService.getPostsByUserId(user.getId());
+        model.addAttribute("myPosts", posts);
+        model.addAttribute("post", new Post());
+        return "my-profile-feed";
     }
 }

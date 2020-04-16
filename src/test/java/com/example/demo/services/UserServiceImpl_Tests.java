@@ -54,7 +54,7 @@ public class UserServiceImpl_Tests {
     }
 
     @Test(expected = DuplicateEntityException.class)
-    public void createUserShouldThrow_When_UserNameAlreadyExists() {
+    public void createUserShouldThrow_When_UserNameAlreadyExists() throws IOException {
         //Arrange
         User user = createUser();
         Mockito.when(mockUserRepository.getUserByUsername(anyString()))
@@ -65,7 +65,7 @@ public class UserServiceImpl_Tests {
     }
 
     @Test(expected = DuplicateEntityException.class)
-    public void createUserShouldThrow_When_UserEmailAlreadyExists() {
+    public void createUserShouldThrow_When_UserEmailAlreadyExists() throws IOException {
         //Arrange
         User user = createUser();
         Mockito.when(mockUserRepository.getUserByEmail(anyString()))
