@@ -12,7 +12,7 @@ public interface PostRepository extends CrudRepository<Post, Serializable> {
     @Query(value = "SELECT * FROM social_network.posts WHERE id = ?1 AND enabled != 0", nativeQuery = true)
     Post getById(long id);
 
-    @Query(value = "select * from social_network.posts join social_network.users u on posts.created_by = u.id where u.id = ?1 AND enabled != 0", nativeQuery = true)
+    @Query(value = "select * from social_network.posts join social_network.users u on posts.created_by = u.id where u.id = ?1 AND posts.enabled != 0", nativeQuery = true)
     List<Post> getPostsByUserId(long userId);
 
     @Query(value = "SELECT * FROM social_network.posts WHERE is_public != 0 AND enabled != 0 ORDER BY created_at DESC ", nativeQuery = true)
