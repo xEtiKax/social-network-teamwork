@@ -155,6 +155,13 @@
 <!--                    </div>-->
 
 
+<!--            <ul class="flw-hr">
+				<li><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
+				<li><a th:if="${isSentRequest}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
+				<li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
+			</ul>-->
+
+
 
 
 

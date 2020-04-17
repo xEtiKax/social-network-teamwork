@@ -80,9 +80,20 @@ public class UserController {
 
         User user = userService.getByUsername(principal.getName());
         int friendsCounter = user.getFriends().size();
+        List<Post> posts = postService.getPostsByUserId(user.getId());
+
+        boolean isLiked = false;
+        for (Post post : posts) {
+            Like like = likeService.getLikeByUserIdAndPostId(user.getId(),post.getId());
+            if (like != null) {
+                isLiked = true;
+            }
+        }
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
+        model.addAttribute("post", new Post());
+        model.addAttribute("isLiked",isLiked);
         model.addAttribute("friendsCounter", friendsCounter);
         return "my-profile-feed";
     }
@@ -93,6 +104,12 @@ public class UserController {
         List<User> friends = userService.getUserFriends(user.getId());
         model.addAttribute("friends", friends);
         return "friends";
+    }
+
+    @GetMapping("/showAllUsers")
+    public String showUsers(Model model) {
+        model.addAttribute("users",userService.getAll());
+        return "profiles";
     }
 
     @GetMapping("/new")
@@ -129,7 +146,7 @@ public class UserController {
         return "privacy";
     }
 
-    @PostMapping("/like/{postId}/")
+    @RequestMapping("/like/{postId}")
     public String likePost(@PathVariable long postId, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         Post post = postService.getPostById(postId);
@@ -137,15 +154,15 @@ public class UserController {
         like.setUser(user);
         like.setPost(post);
         likeService.createLike(like);
-        return "redirect:/post/details" + post.getId();
+        return "redirect:/user/showMyProfile";
     }
 
-    @DeleteMapping("/dislike/{postId}")
+    @RequestMapping("/dislike/{postId}")
     public String dislikePost(@PathVariable long postId, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
         likeService.deleteLike(like.getId());
-        return "redirect:/post/details";
+        return "redirect:/user/showUserProfile/" + user.getId();
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
@@ -261,15 +278,15 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/showMyPosts")
-    public String showUserPosts(Model model, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        List<Post> posts = postService.getPostsByUserId(user.getId());
-        model.addAttribute("user", user);
-        model.addAttribute("myPosts", posts);
-        model.addAttribute("post", new PostDTO());
-        return "my-profile-feed";
-    }
+//    @GetMapping("/showMyPosts")
+//    public String showUserPosts(Model model, Principal principal) {
+//        User user = userService.getByUsername(principal.getName());
+//        List<Post> posts = postService.getPostsByUserId(user.getId());
+//        model.addAttribute("user", user);
+//        model.addAttribute("myPosts", posts);
+//        model.addAttribute("post", new PostDTO());
+//        return "my-profile-feed";
+//    }
 
 
 }

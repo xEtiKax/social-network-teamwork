@@ -6,6 +6,8 @@ import com.example.demo.services.interfaces.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LikeServiceImpl implements LikeService {
 
@@ -28,7 +30,12 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public Like getLikeByUserIdAndPostId(long userId, long postId) {
-        return likeRepository.getLikeByUserIdAndPostId(userId, postId);
+        return likeRepository.getLikeByUser_IdAndPost_Id(userId, postId);
+    }
+
+    @Override
+    public boolean checkIfLikeExist(long userId, long postId) {
+        return likeRepository.existsByUniquePair(userId, postId);
     }
 
     @Override

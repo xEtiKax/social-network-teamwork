@@ -18,6 +18,8 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}" href="../static/lib/slick/slick-theme.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../static/css/responsive.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
 </head>
 <body>
 	<div class="wrapper" th:classappend="${post} ? overlay : ''">
@@ -131,7 +133,7 @@
 						<div class="col-lg-12 col-sm-12">
 							<form action="#" th:action="@{/user/changeCoverPhoto}" th:object="${user}" method="post" enctype="multipart/form-data">
 							<input name="coverPhoto" type="file" id="coverPhoto">
-								<label for="coverPhoto">Change Image</label>
+								<label for="coverPhoto">Browse</label>
 								<button type="submit" class="btn btn-primary"><i></i>Update</button>
 							</form>
 						</div>
@@ -146,6 +148,7 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="main-left-sidebar">
+									<div class="user-data full-width">
 									<div class="user_profile">
 										<div class="user-pro-img" th:if="${user != null}">
 											<img th:if="${user.getPhoto()}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
@@ -157,28 +160,35 @@
 													<div class="row no-gutters" style="margin-left: 27px;">
 														<div class="col-lg-10">
 															<input name="profilePicture" type="file" id="profilePicture">
-															<label for="profilePicture">Change Image</label>
+															<label for="profilePicture">Browse</label>
 														</div>
 													</div>
 												</div>
 											</div>
-											<button type="submit" class="btn btn-primary"><i></i>Update Profile</button>
+											<button type="submit" class="btn btn-primary"><i></i>Update</button>
 										</form>
-										<div class="user_pro_status">
-											<ul class="flw-status">
+										<div class="user-specs">
+											<ul class="user-fw-status">
 												<li>
-													<span>Friends</span>
-													<b th:text="${friendsCounter}" >Friends</b>
+													<span th:text=" ${user.getJobTitle()}">Graphic Designer at Self Employed</span>
+												</li>
+												<li>
+													<span th:text="${friendsCounter + ' Friends'}" >Friends</span>
+												</li>
+												<li>
+													<a th:href="@{/user/showMyFriends}" >Show friends</a>
 												</li>
 											</ul>
-										</div><!--user_pro_status end-->
+										</div>
+									</div><!--user-profile end-->
+									</ul>
 									</div><!--user_profile end-->
 								</div><!--main-left-sidebar end-->
 							</div>
+
 							<div class="col-lg-6">
 								<div class="main-ws-sec">
 									<div class="user-tab-sec rewivew">
-										<li class="list-group-item" ></li>
 										<div class="star-descp">
 											<span th:text=" ${user.getFirstName()}" >Graphic Designer at Self Employed</span>
 											<span th:text=" ${user.getLastName()}" >Graphic Designer at Self Employed</span>
@@ -289,7 +299,8 @@
 												<div class="job-status-bar">
 													<ul class="like-com">
 														<li>
-															<a href="#"><i class="fas fa-heart"></i> Like</a>
+															<a th:if="${!isLiked}" th:href="@{'/user/like/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
+															<a th:if="${isLiked}" th:href="@{'/user/dislike/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
 															<img th:src="@{/images/liked-img.png}" alt="">
 															<span>25</span>
 														</li>
@@ -297,7 +308,6 @@
 													</ul>
 													<a href="#"><i class="fas fa-eye"></i>Views 50</a>
 												</div>
-
 											</div><!--post-bar end-->
 										</div><!--posts-section end-->
 									</div><!--product-feed-tab end-->

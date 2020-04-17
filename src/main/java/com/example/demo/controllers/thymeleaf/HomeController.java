@@ -24,16 +24,12 @@ public class HomeController {
     @GetMapping("/")
     public String showHomePage(Model model, Principal principal) {
         model.addAttribute("posts", postService.getAllPublicPosts());
-        int friendsCounter = 0;
         try {
             User user = userService.getByUsername(principal.getName());
-            friendsCounter = user.getFriends().size();
             model.addAttribute("user", user);
         }catch (Exception e){
         }
         model.addAttribute("users", userService.getAll());
-        model.addAttribute("friendsCounter", friendsCounter);
-
         return "index";
     }
 
