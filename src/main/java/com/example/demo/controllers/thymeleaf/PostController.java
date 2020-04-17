@@ -69,6 +69,17 @@ public class PostController {
         return "redirect:/";
     }
 
+    @PostMapping("user/delete/{id}")
+    public String deleteUserPost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
+        try {
+            postService.deletePost(id, principal, request);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/user/showMyProfile";
+    }
+
     @PostMapping("/update/{id}")
     public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model, Principal principal, HttpServletRequest request) {
 
