@@ -27,6 +27,6 @@ public interface UserRepository extends JpaRepository<User, Serializable> {
     void deleteUser(long id);
 
 
-    @Query(value = "select first_name,last_name,username,email,picture,age from users_friends join users u on users_friends.friend_id = u.id where user_id = ?1", nativeQuery = true)
+    @Query(value = "select * from users_friends join users u on users_friends.friend_id = u.id where user_id = ?1", nativeQuery = true)
     List<User>getUserFriendsByUSerId(long userId);
 }

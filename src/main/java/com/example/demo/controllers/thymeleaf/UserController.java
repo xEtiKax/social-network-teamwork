@@ -77,9 +77,14 @@ public class UserController {
 
     @GetMapping("/showMyProfile")
     public String showMyProfile(Model model, Principal principal) {
+
         User user = userService.getByUsername(principal.getName());
+        int friendsCounter = user.getFriends().size();
+
         model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
+        model.addAttribute("post", new Post());
+        model.addAttribute("friendsCounter", friendsCounter);
         return "my-profile-feed";
     }
 
@@ -215,7 +220,7 @@ public class UserController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "my-profile-feed";
+        return "redirect:/user/showMyProfile";
     }
 
     @RequestMapping(value = "/changeCoverPhoto", method = RequestMethod.POST)
@@ -228,7 +233,7 @@ public class UserController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "my-profile-feed";
+        return "redirect:/user/showMyProfile";
     }
 
     @GetMapping(value = "/deleteProfile")

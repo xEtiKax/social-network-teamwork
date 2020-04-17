@@ -70,9 +70,4 @@ public class RegistrationController {
 
         return "sign-in";
     }
-
-    @GetMapping("/register-confirmation")
-    public String showRegisterConfirmation() {
-        return "register-confirmation";
-    }
 }

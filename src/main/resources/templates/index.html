@@ -31,7 +31,7 @@
         <div class="container">
             <div class="header-data">
                 <div class="logo">
-                    <a href="index.html" title=""><img th:src="@{/images/logo.png}" alt=""></a>
+                    <a title=""><img th:src="@{/images/logo.png}" alt=""></a>
                 </div><!--logo end-->
                 <div class="search-bar">
                     <form>
@@ -159,9 +159,10 @@
                                     </div><!--user-profile end-->
                                     <ul class="user-fw-status">
                                         <li>
-                                            <h4>Friends</h4>
-											<!--TODO get users friends count-->
-                                            <span>155</span>
+                                            <b th:text="${friendsCounter + ' Friends'}" >Friends</b>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/user/showMyFriends}" >Show friends</a>
                                         </li>
                                         <li>
                                             <a th:href="@{/user/showMyProfile}" title="">View Profile</a>

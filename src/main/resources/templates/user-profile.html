@@ -10,10 +10,10 @@
 	<meta name="keywords" content="" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" href="../static/css/animate.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/flatpickr.min.css}" href="../static/css/flatpickr.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/css/line-awesome.css}" href="../static/css/line-awesome.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}" href="../static/css/line-awesome-font-awesome.min.css">
-	<link th:href="@{/vendor/fontawesome-free/css/all.min.css}"
-		  href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" href="../static/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}" href="../static/lib/slick/slick-theme.css">
@@ -23,12 +23,12 @@
 
 
 <body>
-	<div class="wrapper">
+	<div class="wrapper" th:classappend="${post} ? overlay : ''">
 		<header>
 			<div class="container">
 				<div class="header-data">
 					<div class="logo">
-						<a href="index.html" title=""><img th:src="@{/images/logo.png}" alt=""></a>
+						<a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
 					</div><!--logo end-->
 					<div class="search-bar">
 						<form>
@@ -92,20 +92,23 @@
 							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="../static/images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
 						  				<div class="view-all-nots">
 						  					<a href="#" title="">View All Notification</a>
 						  				</div>
 									</div><!--nott-list end-->
 								</div><!--notification-box end-->
+							</li>
+							<li th:if="${user == null}">
+								<a th:href="@{/login}" title="">
+									<span><img th:src="@{/images/icon3.png}" alt=""></span>
+									Login
+								</a>
+							</li>
+							<li th:if="${user != null}">
+								<a th:href="@{/logout}" title="">
+									<span><img th:src="@{/images/icon3.png}" alt=""></span>
+									Logout
+								</a>
 							</li>
 						</ul>
 					</nav><!--nav end-->
@@ -113,41 +116,25 @@
 						<a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
 					</div><!--menu-btn end-->
 					<div class="user-account">
-						<div class="user-info">
 							<div class="user-info" th:if="${user != null}">
 								<img th:if="${user.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-<!--								<img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">-->
+								<img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 								<a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
 							</div>
-							<a href="#" title="">John</a>
-							<i class="la la-sort-down"></i>
 						</div>
-						<div class="user-account-settingss">
-							<ul class="us-links">
-								<li><a href="user-settings.html" th:href="@{/user/edit}" title="">Account Setting</a></li>
-							</ul>
-							<h3 class="tc"><a href="sign-in.html" title="">Logout</a></h3>
-						</div><!--user-account-settingss end-->
-					</div>
 				</div><!--header-data end-->
 			</div>
-		</header><!--header end-->	
-
-
-		<section class="cover-sec">
-			<img src="../static/images/resources/cover-img.jpg" alt="">
-		</section>
-
-
-
+		</header><!--header end-->
 		<section class="cover-sec">
 			<img th:if="${user.coverPhoto}" style="height: 450px;width: 1600px;" th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"  alt="">
 			<img th:if="${user.coverPhoto == null}" style="height: 450px;width: 1600px;" th:src="@{/images/resources/cover-default.jpg}" alt="">
-
+				<div class="container">
+					<div class="row no-gutters">
+						<div class="col-lg-12 col-sm-12">
+						</div>
+					</div>
+				</div>
 		</section>
-
-
-
 		<main>
 			<div class="main-section">
 				<div class="container">
@@ -157,7 +144,8 @@
 								<div class="main-left-sidebar">
 									<div class="user_profile">
 										<div class="user-pro-img">
-											<img src="../images/resources/user-pro-img.png" alt="">
+											<img th:if="${user.getPhoto()}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+											<img th:if="${user.getPhoto() == null}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
 											<ul class="flw-hr">
@@ -165,89 +153,26 @@
 												<li><a th:if="${isSentRequest}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
 												<li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
 											</ul>
-											<ul class="flw-status">
-												<li>
-													<b th:text="${friendsCounter}" >Friends</b>
-												</li>
-											</ul>
+											<div class="user_pro_status">
+												<ul class="user-fw-status">
+													<li>
+														<b th:text="${friendsCounter + ' Friends'}" >Friends</b>
+													</li>
+												</ul>
 										</div><!--user_pro_status end-->
+									</div>
 									</div><!--user_profile end-->
-									<div class="suggestions full-width">
-										<div class="sd-title">
-											<h3>Suggestions</h3>
-											<i class="la la-ellipsis-v"></i>
-										</div><!--sd-title end-->
-										<div class="suggestions-list">
-											<div class="suggestion-usd">
-												<img src="../static/images/resources/s1.png" alt="">
-												<div class="sgt-text">
-													<h4>Jessica William</h4>
-													<span>Graphic Designer</span>
-												</div>
-												<span><i class="la la-plus"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="../static/images/resources/s2.png" alt="">
-												<div class="sgt-text">
-													<h4>John Doe</h4>
-													<span>PHP Developer</span>
-												</div>
-												<span><i class="la la-plus"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="../static/images/resources/s3.png" alt="">
-												<div class="sgt-text">
-													<h4>Poonam</h4>
-													<span>Wordpress Developer</span>
-												</div>
-												<span><i class="la la-plus"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="../static/images/resources/s4.png" alt="">
-												<div class="sgt-text">
-													<h4>Bill Gates</h4>
-													<span>C & C++ Developer</span>
-												</div>
-												<span><i class="la la-plus"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="../static/images/resources/s5.png" alt="">
-												<div class="sgt-text">
-													<h4>Jessica William</h4>
-													<span>Graphic Designer</span>
-												</div>
-												<span><i class="la la-plus"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="../static/images/resources/s6.png" alt="">
-												<div class="sgt-text">
-													<h4>John Doe</h4>
-													<span>PHP Developer</span>
-												</div>
-												<span><i class="la la-plus"></i></span>
-											</div>
-											<div class="view-more">
-												<a href="#" title="">View More</a>
-											</div>
-										</div><!--suggestions-list end-->
-									</div><!--suggestions end-->
 								</div><!--main-left-sidebar end-->
 							</div>
 							<div class="col-lg-6">
 								<div class="main-ws-sec">
 									<div class="user-tab-sec">
-										<h3>John Doe</h3>
+										<h3 th:text=" ${user.getFirstName()}" ></h3>
+										<h3 th:text=" ${user.getLastName()}" ></h3>
 										<div class="star-descp">
-											<span>Graphic Designer at Self Employed</span>
-											<ul>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star-half-o"></i></li>
-											</ul>
+											<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>
 										</div><!--star-descp end-->
-										<div class="tab-feed">
+										<div class="tab-feed st2 settingjb">
 											<ul>
 												<li data-tab="feed-dd" class="active">
 													<a href="#" title="">
@@ -269,7 +194,8 @@
 											<div class="post-bar">
 												<div class="post_topbar">
 													<div class="usy-dt">
-														<img src="../static/images/resources/us-pic.png" alt="">
+														<img th:if="${user.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+														<img th:if="${user.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 														<div class="usy-name">
 															<h3>John Doe</h3>
 															<span><img src="../static/images/clock.png" alt="">3 min ago</span>
@@ -321,45 +247,6 @@
 											</div><!--process-comm end-->
 										</div><!--posts-section end-->
 									</div><!--product-feed-tab end-->
-									<div class="product-feed-tab" id="info-dd">
-										<div class="user-profile-ov">
-											<h3>Overview</h3>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam lectus commodo viverra. Nunc eu augue nec arcu efficitur faucibus. Aliquam accumsan ac magna convallis bibendum. Quisque laoreet augue eget augue fermentum scelerisque. Vivamus dignissim mollis est dictum blandit. Nam porta auctor neque sed congue. Nullam rutrum eget ex at maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget vestibulum lorem.</p>
-										</div><!--user-profile-ov end-->
-										<div class="user-profile-ov st2">
-											<h3>Experience</h3>
-											<h4>Web designer</h4>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam lectus commodo viverra. </p>
-											<h4>UI / UX Designer</h4>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor aliquam felis, nec condimentum ipsum commodo id.</p>
-											<h4>PHP developer</h4>
-											<p class="no-margin">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam lectus commodo viverra. </p>
-										</div><!--user-profile-ov end-->
-										<div class="user-profile-ov">
-											<h3>Education</h3>
-											<h4>Master of Computer Science</h4>
-											<span>2015 - 2018</span>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam lectus commodo viverra. </p>
-										</div><!--user-profile-ov end-->
-										<div class="user-profile-ov">
-											<h3>Location</h3>
-											<h4>India</h4>
-											<p>151/4 BT Chownk, Delhi </p>
-										</div><!--user-profile-ov end-->
-										<div class="user-profile-ov">
-											<h3>Skills</h3>
-											<ul>
-												<li><a href="#" title="">HTML</a></li>
-												<li><a href="#" title="">PHP</a></li>
-												<li><a href="#" title="">CSS</a></li>
-												<li><a href="#" title="">Javascript</a></li>
-												<li><a href="#" title="">Wordpress</a></li>
-												<li><a href="#" title="">Photoshop</a></li>
-												<li><a href="#" title="">Illustrator</a></li>
-												<li><a href="#" title="">Corel Draw</a></li>
-											</ul>
-										</div><!--user-profile-ov end-->
-									</div><!--product-feed-tab end-->
 								</div><!--main-ws-sec end-->
 							</div>
 						</div>
@@ -386,17 +273,13 @@
 				<a href="#" title="" class="close-box"><i class="la la-close"></i></a>
 			</div><!--overview-edit end-->
 		</div><!--overview-box end-->
-
-
-
 	</div><!--theme-layout end-->
 
 
-
-<script type="text/javascript" src="../static/js/jquery.min.js"></script>
-<script type="text/javascript" src="../static/js/popper.js"></script>
-<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../static/lib/slick/slick.min.js"></script>
-<script type="text/javascript" src="../static/js/script.js"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/popper.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/slick/slick.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>
