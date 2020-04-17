@@ -80,6 +80,12 @@ public class PostController {
         return "redirect:/user/showMyProfile";
     }
 
+    @GetMapping("/edit/{id}")
+    public String showEditPostForm(@PathVariable long id, Model model) {
+        model.addAttribute("post", postService.getPostById(id));
+        return "index";
+    }
+
     @PostMapping("/update/{id}")
     public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model, Principal principal, HttpServletRequest request) {
 

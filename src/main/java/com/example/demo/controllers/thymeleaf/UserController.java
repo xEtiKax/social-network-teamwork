@@ -83,7 +83,6 @@ public class UserController {
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
-        model.addAttribute("post", new Post());
         model.addAttribute("friendsCounter", friendsCounter);
         return "my-profile-feed";
     }

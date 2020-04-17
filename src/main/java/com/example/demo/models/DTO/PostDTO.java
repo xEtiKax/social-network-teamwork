@@ -1,11 +1,16 @@
 package com.example.demo.models.DTO;
 
 public class PostDTO {
+    private long id = 0;
     private String text;
     private long createdBy;
     private boolean isPublic;
 
     public PostDTO() {
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getText() {
