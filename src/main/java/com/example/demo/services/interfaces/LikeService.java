@@ -1,12 +1,14 @@
 package com.example.demo.services.interfaces;
 
 import com.example.demo.models.Like;
+import com.example.demo.models.Post;
+import com.example.demo.models.User;
 
 
 public interface LikeService {
-    void createLike(Like like);
+    void createLike(User user, Post post);
 
-    void deleteLike(long likeId);
+    void deleteLike(Like like, Post post);
 
     Like getLikeByUserIdAndPostId(long userId, long postId);
 

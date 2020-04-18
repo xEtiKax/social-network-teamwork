@@ -1,12 +1,13 @@
 package com.example.demo.services;
 
 import com.example.demo.models.Like;
+import com.example.demo.models.Post;
+import com.example.demo.models.User;
 import com.example.demo.repositories.LikeRepository;
+import com.example.demo.repositories.PostRepository;
 import com.example.demo.services.interfaces.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class LikeServiceImpl implements LikeService {
@@ -19,13 +20,19 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void createLike(Like like) {
+    public void createLike(User user, Post post) {
+        Like like = new Like();
+        like.setUser(user);
+        like.setPost(post);
+        post.addLike(like);
         likeRepository.save(like);
     }
 
     @Override
-    public void deleteLike(long likeId) {
-        likeRepository.deleteById(likeId);
+    public void deleteLike(Like like, Post post) {
+        post.removeLike(like);
+        post.setLiked(false);
+        likeRepository.delete(like);
     }
 
     @Override
@@ -42,4 +49,5 @@ public class LikeServiceImpl implements LikeService {
     public int getPostLikes(long postId) {
         return likeRepository.getPostLikes(postId);
     }
+
 }

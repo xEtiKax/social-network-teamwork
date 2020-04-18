@@ -29,6 +29,10 @@ public class Post {
     @Column(name = "is_public")
     private boolean isPublic;
 
+
+    @Transient
+    private boolean isLiked;
+
     @Column(name = "created_at")
     private LocalDateTime dateTime;
 
@@ -127,5 +131,21 @@ public class Post {
 
     public void setCanDelete(boolean canDelete) {
         CanDelete = canDelete;
+    }
+
+    public void addLike(Like like) {
+        likes.add(like);
+    }
+
+    public void removeLike(Like like) {
+        likes.remove(like);
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

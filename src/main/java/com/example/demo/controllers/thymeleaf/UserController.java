@@ -4,11 +4,8 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
-import com.example.demo.models.DTO.PostDTO;
-import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
-import com.example.demo.models.Request;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.LikeService;
 import com.example.demo.services.interfaces.PostService;
@@ -18,13 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -82,18 +76,17 @@ public class UserController {
         int friendsCounter = user.getFriends().size();
         List<Post> posts = postService.getPostsByUserId(user.getId());
 
-        boolean isLiked = false;
         for (Post post : posts) {
-            Like like = likeService.getLikeByUserIdAndPostId(user.getId(),post.getId());
-            if (like != null) {
-                isLiked = true;
+            for (Like like:post.getLikes()) {
+                if (like.getUser().getId() == user.getId()){
+                    post.setLiked(true);
+                }
             }
         }
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
         model.addAttribute("post", new Post());
-        model.addAttribute("isLiked",isLiked);
         model.addAttribute("friendsCounter", friendsCounter);
         return "my-profile-feed";
     }
@@ -108,28 +101,8 @@ public class UserController {
 
     @GetMapping("/showAllUsers")
     public String showUsers(Model model) {
-        model.addAttribute("users",userService.getAll());
+        model.addAttribute("users", userService.getAll());
         return "profiles";
-    }
-
-    @GetMapping("/new")
-    public String showNewUserForm(Model model) {
-        model.addAttribute("user", new UserDTO());
-        return "user";
-    }
-
-    @PostMapping("/new")
-    public String createUser(@Valid @ModelAttribute("user") UserDTO userDTO, Model model, BindingResult error) {
-        if (error.hasErrors()) {
-            return "user";
-        }
-        try {
-            userService.createUser(userDTO);
-        } catch (DuplicateEntityException | IOException e) {
-            model.addAttribute("error", e);
-            return "error";
-        }
-        return "redirect:/user";
     }
 
     @GetMapping("/changePass")
@@ -144,25 +117,6 @@ public class UserController {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
         return "privacy";
-    }
-
-    @RequestMapping("/like/{postId}")
-    public String likePost(@PathVariable long postId, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        Post post = postService.getPostById(postId);
-        Like like = new Like();
-        like.setUser(user);
-        like.setPost(post);
-        likeService.createLike(like);
-        return "redirect:/user/showMyProfile";
-    }
-
-    @RequestMapping("/dislike/{postId}")
-    public String dislikePost(@PathVariable long postId, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
-        likeService.deleteLike(like.getId());
-        return "redirect:/user/showUserProfile/" + user.getId();
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
@@ -180,29 +134,12 @@ public class UserController {
         return "change-password";
     }
 
-
-    @GetMapping("details/{userId}")
-    public String showDetails(Model model, @PathVariable long userId) {
-        User user = userService.getById(userId);
-        model.addAttribute("user", user);
-        return "user";
-    }
-
     @GetMapping(value = "/edit")
     public String editUserDetails(Model model,
                                   Principal principal) {
         User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
         return "user-settings";
-    }
-
-    @GetMapping(value = "/showRequests")
-    public String getFriendRequests(Model model, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        List<Request> friendRequests = requestService.getUserRequests(user);
-        model.addAttribute("user", user);
-        model.addAttribute("requests", friendRequests);
-        return "requests";
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
@@ -224,32 +161,6 @@ public class UserController {
         }
         model.addAttribute("user", user);
         return "user-settings";
-    }
-
-    @RequestMapping(value = "/changeProfilePicture", method = RequestMethod.POST)
-    public String changeProfilePicture(Principal principal, Model model,
-                                       @RequestParam("profilePicture") MultipartFile profilePicture) {
-        try {
-            User user = userService.getByUsername(principal.getName());
-            userService.addProfilePicture(user.getUsername(), profilePicture);
-            model.addAttribute("success", "Picture changed successful");
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/user/showMyProfile";
-    }
-
-    @RequestMapping(value = "/changeCoverPhoto", method = RequestMethod.POST)
-    public String changeCoverPhoto(Principal principal, Model model,
-                                   @RequestParam("coverPhoto") MultipartFile coverPhoto) {
-        try {
-            User user = userService.getByUsername(principal.getName());
-            userService.addCoverPhoto(user.getUsername(), coverPhoto);
-            model.addAttribute("success", "Picture changed successful");
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/user/showMyProfile";
     }
 
     @GetMapping(value = "/deleteProfile")
@@ -277,16 +188,4 @@ public class UserController {
         }
         return "index";
     }
-
-//    @GetMapping("/showMyPosts")
-//    public String showUserPosts(Model model, Principal principal) {
-//        User user = userService.getByUsername(principal.getName());
-//        List<Post> posts = postService.getPostsByUserId(user.getId());
-//        model.addAttribute("user", user);
-//        model.addAttribute("myPosts", posts);
-//        model.addAttribute("post", new PostDTO());
-//        return "my-profile-feed";
-//    }
-
-
 }
