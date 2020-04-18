@@ -48,7 +48,7 @@ public class LikeRestController {
         Post post = postService.getPostById(postId);
         Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
         try {
-            likeService.deleteLike(like,post);
+            likeService.deleteLike(like,post,user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You don't like this post");
         }

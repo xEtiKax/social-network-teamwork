@@ -35,8 +35,8 @@
                     <a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
                 </div><!--logo end-->
                 <div class="search-bar">
-                    <form>
-                        <input type="text" name="search" placeholder="Search...">
+                    <form th:action="@{/user/searchUser}" th:object="${user}" method="post">
+                        <input type="text" name="username" placeholder="Search...">
                         <button type="submit"><i class="la la-search"></i></button>
                     </form>
                 </div><!--search-bar end-->
@@ -222,18 +222,28 @@
                                                 <p th:text="${post.text}">Lorem ipsum dolor sit amet <a href="#" title="">view more</a></p>
                                             </div>
                                             <div class="job-status-bar">
-                                                <ul class="like-com">
+                                                <ul class="like-com" sec:authorize="hasRole('ROLE_USER')">
                                                     <li>
-                                                        <a href="#"><i class="fas fa-heart"></i> Like</a>
-                                                        <!--TODO get pictures of all users who like the post-->
+                                                        <a th:if="${!post.isLiked()}" th:href="@{'/likePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
+                                                        <a th:if="${post.isLiked()}" th:href="@{'/dislikePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
                                                         <img th:src="@{/images/liked-img.png}" alt="">
                                                         <span>25</span>
                                                     </li>
-                                                    <li><a href="#" class="com"><i
-                                                            class="fas fa-comment-alt"></i> Comment 15</a>
-                                                    </li>
+                                                    <li><a href="#" class="com"><i class="fas fa-comment-alt"></i> Comment 15</a></li>
                                                 </ul>
                                             </div>
+<!--                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a th:if="${!post.isLiked()}" th:href="@{'/like/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
+                                                        <a th:if="${post.isLiked()}" th:href="@{'/dislike/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
+                                                        <img th:src="@{/images/liked-img.png}" alt="">
+                                                        <span>25</span>
+                                                    </li>
+                                                    <li><a href="#" class="com"><i class="fas fa-comment-alt"></i> Comment 15</a></li>
+                                                </ul>
+                                                <a href="#"><i class="fas fa-eye"></i>Views 50</a>
+                                            </div>-->
                                         </div><!--post-bar end-->
                                         <div class="comment-section">
                                             <div class="comment-sec"

@@ -31,16 +31,14 @@ public class UserController {
     private RequestService requestService;
     private PostService postService;
     private PasswordEncoder passwordEncoder;
-    private LikeService likeService;
 
     @Autowired
     public UserController(UserService userService, PostService postService,
-                          PasswordEncoder passwordEncoder, RequestService requestService, LikeService likeService) {
+                          PasswordEncoder passwordEncoder, RequestService requestService) {
         this.userService = userService;
         this.postService = postService;
         this.passwordEncoder = passwordEncoder;
         this.requestService = requestService;
-        this.likeService = likeService;
     }
 
     @GetMapping("/showUserProfile/{userId}")
@@ -49,7 +47,7 @@ public class UserController {
         User user = userService.getById(userId);
 
         boolean isSentRequest = requestService.checkIfRequestExist(me.getId(), userId);
-        List<Post> posts = postService.getPostsByUserId(userId);
+
         boolean isFriend = false;
         boolean isFriendAndIsSentRequest = true;
         if (!user.getFriends().contains(me) && !isSentRequest) {
@@ -58,6 +56,7 @@ public class UserController {
         if (user.getFriends().contains(me)) {
             isFriend = true;
         }
+        List<Post> posts = checkLike(userId, user);
 
         int friendsCounter = user.getFriends().size();
 
@@ -75,17 +74,11 @@ public class UserController {
 
         User user = userService.getByUsername(principal.getName());
         int friendsCounter = user.getFriends().size();
-        List<Post> posts = postService.getPostsByUserId(user.getId());
-
-        for (Post post : posts) {
-            for (Like like : post.getLikes()) {
-                if (like.getUser().getId() == user.getId()) {
-                    post.setLiked(true);
-                }
-            }
-        }
+        List<Post> posts = checkLike(user.getId(), user);
 
         model.addAttribute("user", user);
+        model.addAttribute("myPosts", posts);
+        model.addAttribute("post", new Post());
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
         model.addAttribute("friendsCounter", friendsCounter);
         model.addAttribute("comment", new CommentDTO());
@@ -98,6 +91,13 @@ public class UserController {
         List<User> friends = userService.getUserFriends(user.getId());
         model.addAttribute("friends", friends);
         return "friends";
+    }
+
+    @PostMapping(value = "/searchUser")
+    public String searchUser(@RequestParam(value = "username") String username, Model model) {
+        List<User> result = userService.getByNameLikeThis(username);
+        model.addAttribute("result",result);
+        return "search-result";
     }
 
     @GetMapping("/showAllUsers")
@@ -189,6 +189,19 @@ public class UserController {
         }
         return "index";
     }
+
+    public List<Post> checkLike(@PathVariable long userId, User user) {
+        List<Post> posts = postService.getPostsByUserId(userId);
+        for (Post post : posts) {
+            for (Like like : post.getLikes()) {
+                if (like.getUser().getId() == user.getId()) {
+                    post.setLiked(true);
+                }
+            }
+        }
+        return posts;
+    }
+
 
     @GetMapping("/showMyPosts")
     public String showUserPosts(Model model, Principal principal) {

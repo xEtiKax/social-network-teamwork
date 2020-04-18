@@ -18,6 +18,8 @@ public interface UserService {
 
     List<User> getUserFriends(long userId);
 
+    List<User> getByNameLikeThis(String username);
+
     User createUser(UserDTO userDTO) throws IOException;
 
     User updateUser(User user);

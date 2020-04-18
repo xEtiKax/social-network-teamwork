@@ -2,6 +2,8 @@ package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.models.Comment;
 import com.example.demo.models.DTO.CommentDTO;
+import com.example.demo.models.Like;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -26,11 +29,15 @@ public class HomeController {
     @GetMapping("/")
     public String showHomePage(Model model, Principal principal) {
         model.addAttribute("posts", postService.getAllPublicPosts());
+        int friendsCounter = 0;
         try {
             User user = userService.getByUsername(principal.getName());
+            friendsCounter = user.getFriends().size();
+            checkLike(user);
             model.addAttribute("user", user);
-        }catch (Exception e){
+        } catch (Exception ignored) {
         }
+        model.addAttribute("friendsCounter",friendsCounter);
         model.addAttribute("users", userService.getAll());
         model.addAttribute("comment", new CommentDTO());
 
@@ -40,5 +47,36 @@ public class HomeController {
     @GetMapping("/admin")
     public String showAdminPage() {
         return "admin";
+    }
+// @GetMapping("/")
+//    public String showHomePage(Model model, Principal principal) {
+//
+//        User user = userService.getByUsername(principal.getName());
+//
+
+    //
+//        model.addAttribute("user", user);
+//        model.addAttribute("posts", postService.getAllPublicPosts());
+//        model.addAttribute("users", userService.getAll());
+//        model.addAttribute("comment", new CommentDTO());
+//
+//        return "index";
+//    }
+//
+//
+//    @GetMapping("/admin")
+//    public String showAdminPage() {
+//        return "admin";
+//    }
+//
+    private void checkLike(User user) {
+        List<Post> posts = postService.getAllPublicPosts();
+        for (Post post : posts) {
+            for (Like like : post.getLikes()) {
+                if (like.getUser().getId() == user.getId()) {
+                    post.setLiked(true);
+                }
+            }
+        }
     }
 }

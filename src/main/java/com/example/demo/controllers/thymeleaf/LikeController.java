@@ -1,5 +1,7 @@
 package com.example.demo.controllers.thymeleaf;
 
+import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
@@ -29,18 +31,49 @@ public class LikeController {
 
     @RequestMapping("/like/{postId}")
     public String likePost(@PathVariable long postId, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        Post post = postService.getPostById(postId);
-        likeService.createLike(user,post);
+        try {
+            User user = userService.getByUsername(principal.getName());
+            Post post = postService.getPostById(postId);
+            likeService.createLike(user, post);
+        } catch (DuplicateEntityException ignored) {
+        }
         return "redirect:/user/showMyProfile";
     }
 
     @RequestMapping("/dislike/{postId}")
     public String dislikePost(@PathVariable long postId, Principal principal) {
-        Post post = postService.getPostById(postId);
-        User user = userService.getByUsername(principal.getName());
-        Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
-        likeService.deleteLike(like,post);
+        try {
+            Post post = postService.getPostById(postId);
+            User user = userService.getByUsername(principal.getName());
+            Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
+            likeService.deleteLike(like, post, user);
+        } catch (EntityNotFoundException ignored) {
+        }
         return "redirect:/user/showMyProfile";
     }
+
+
+    @RequestMapping("/likePublicPost/{postId}")
+    public String likePublicPost(@PathVariable long postId, Principal principal) {
+        try {
+            User user = userService.getByUsername(principal.getName());
+            Post post = postService.getPostById(postId);
+            likeService.createLike(user, post);
+        } catch (DuplicateEntityException ignored) {
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping("/dislikePublicPost/{postId}")
+    public String dislikePublicPost(@PathVariable long postId, Principal principal) {
+        try {
+            Post post = postService.getPostById(postId);
+            User user = userService.getByUsername(principal.getName());
+            Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
+            likeService.deleteLike(like, post, user);
+        }catch (EntityNotFoundException ignored) {
+        }
+        return "redirect:/";
+    }
 }
+

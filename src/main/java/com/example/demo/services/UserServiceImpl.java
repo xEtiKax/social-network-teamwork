@@ -55,6 +55,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getByNameLikeThis(String username) {
+        return userRepository.findAllByUsernameIsContaining(username);
+    }
+
+    @Override
     public List<User> getUserFriends(long userId) {
         return userRepository.getUserFriendsByUSerId(userId);
     }

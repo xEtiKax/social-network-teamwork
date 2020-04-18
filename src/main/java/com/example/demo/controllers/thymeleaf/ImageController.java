@@ -50,11 +50,11 @@ public class ImageController {
         renderImage(response, user.getPhoto());
     }
 
-//    @GetMapping("public/user/{id}/userImage")
-//    public void renderPublicUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
-//        User user = userService.getById(id);
-//        renderImage(response, user.getPhoto());
-//    }
+    @GetMapping("public/user/{id}/userImage")
+    public void renderPublicUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
+        User user = userService.getById(id);
+        renderImage(response, user.getPhoto());
+    }
 
     @GetMapping("user/{userId}/cover")
     public String showUserCoverUploadForm(@PathVariable long userId, Model model) {
