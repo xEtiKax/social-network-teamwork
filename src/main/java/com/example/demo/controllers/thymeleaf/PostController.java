@@ -3,10 +3,12 @@ package com.example.demo.controllers.thymeleaf;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -85,9 +87,14 @@ public class PostController {
         return "index";
     }
 
+    @GetMapping("/user/edit/{id}")
+    public String showUserEditPostForm(@PathVariable long id, Model model) {
+        model.addAttribute("post", postService.getPostById(id));
+        return "redirect:/user/showMyProfile";
+    }
+
     @PostMapping("/update/{id}")
     public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model) {
-
         try {
             postService.updatePost(id, postDTO);
         } catch (EntityNotFoundException e) {
@@ -96,4 +103,16 @@ public class PostController {
         }
         return "redirect:/";
     }
+
+    @PostMapping("/user/update/{id}")
+    public String updateUserPost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model) {
+        try {
+            postService.updatePost(id, postDTO);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/user/showMyProfile";
+    }
+
 }

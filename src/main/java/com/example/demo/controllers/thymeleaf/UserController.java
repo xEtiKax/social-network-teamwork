@@ -4,6 +4,7 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
+import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
@@ -77,8 +78,8 @@ public class UserController {
         List<Post> posts = postService.getPostsByUserId(user.getId());
 
         for (Post post : posts) {
-            for (Like like:post.getLikes()) {
-                if (like.getUser().getId() == user.getId()){
+            for (Like like : post.getLikes()) {
+                if (like.getUser().getId() == user.getId()) {
                     post.setLiked(true);
                 }
             }
@@ -86,8 +87,8 @@ public class UserController {
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
-        model.addAttribute("post", new Post());
         model.addAttribute("friendsCounter", friendsCounter);
+        model.addAttribute("comment", new CommentDTO());
         return "my-profile-feed";
     }
 
@@ -187,5 +188,16 @@ public class UserController {
             return "deactivate-account";
         }
         return "index";
+    }
+
+    @GetMapping("/showMyPosts")
+    public String showUserPosts(Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        List<Post> posts = postService.getPostsByUserId(user.getId());
+        model.addAttribute("user", user);
+        model.addAttribute("myPosts", posts);
+        model.addAttribute("post", new Post());
+        model.addAttribute("comment", new CommentDTO());
+        return "my-profile-feed";
     }
 }
