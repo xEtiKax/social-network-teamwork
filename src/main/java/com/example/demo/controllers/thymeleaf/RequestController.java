@@ -9,10 +9,12 @@ import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/request")
@@ -81,5 +83,13 @@ public class RequestController {
         User receiver = userService.getById(userId);
         requestService.deleteRequest(request.getId());
         return "redirect:/user/showUserProfile/" + receiver.getId();
+    }
+    @GetMapping(value = "/showRequests")
+    public String getFriendRequests(Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        List<Request> friendRequests = requestService.getUserRequests(user);
+        model.addAttribute("user", user);
+        model.addAttribute("requests", friendRequests);
+        return "requests";
     }
 }

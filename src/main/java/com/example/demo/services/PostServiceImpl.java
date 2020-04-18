@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
@@ -98,4 +99,5 @@ public class PostServiceImpl implements PostService {
         post.setCanDelete(false);
         return post.getCanDelete();
     }
+
 }

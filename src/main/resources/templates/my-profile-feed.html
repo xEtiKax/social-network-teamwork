@@ -299,8 +299,8 @@
 												<div class="job-status-bar">
 													<ul class="like-com">
 														<li>
-															<a th:if="${!isLiked}" th:href="@{'/user/like/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
-															<a th:if="${isLiked}" th:href="@{'/user/dislike/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
+															<a th:if="${!post.isLiked()}" th:href="@{'/like/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
+															<a th:if="${post.isLiked()}" th:href="@{'/dislike/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
 															<img th:src="@{/images/liked-img.png}" alt="">
 															<span>25</span>
 														</li>
