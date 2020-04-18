@@ -1,15 +1,15 @@
 package com.example.demo.models.DTO;
 
-public class CommentsDTO {
+public class CommentDTO {
 
     private String description;
 
     private long postId;
 
-    public CommentsDTO() {
+    public CommentDTO() {
     }
 
-    public CommentsDTO(String description) {
+    public CommentDTO(String description) {
         this.description = description;
     }
 

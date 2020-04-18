@@ -2,7 +2,7 @@ package com.example.demo.controllers.rest;
 
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.models.Comment;
-import com.example.demo.models.DTO.CommentsDTO;
+import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.CommentService;
@@ -60,11 +60,11 @@ public class CommentRestController {
     }
 
     @PostMapping("/add")
-    public Comment createComment(@RequestBody CommentsDTO commentsDto, @RequestHeader String requestUser) {
+    public Comment createComment(@RequestBody CommentDTO commentDto, @RequestHeader String requestUser) {
         Comment comment = new Comment();
         User user = userService.getByUsername(requestUser);
-        Post post = postService.getPostById(commentsDto.getPostId());
-        comment.setDescription(commentsDto.getDescription());
+        Post post = postService.getPostById(commentDto.getPostId());
+        comment.setDescription(commentDto.getDescription());
         comment.setPost(post);
         comment.setUser(user);
         commentService.createComment(comment);
@@ -72,7 +72,7 @@ public class CommentRestController {
     }
 
     @PutMapping("/update/{commentId}")
-    public Comment updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable long commentId, @RequestHeader String requestUser) {
+    public Comment updateComment(@RequestBody CommentDTO commentDTO, @PathVariable long commentId, @RequestHeader String requestUser) {
         Comment comment = commentService.getById(commentId);
         try {
             comment.setDescription(commentDTO.getDescription());

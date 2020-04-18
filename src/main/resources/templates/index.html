@@ -250,9 +250,6 @@
                                                                 <span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}"
                                                                            alt=""></span>
                                                                 <p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
-                                                                    <!--TODO reply comments-->
-                                                                <a href="#" title="" class="active"><i
-                                                                        class="fa fa-reply-all"></i>Reply</a>
                                                             </div>
                                                         </div><!--comment-list end-->
                                                     </li>
@@ -263,14 +260,10 @@
                                                 <p>No comments</p>
                                             </div>
                                             <!--comment-sec end-->
-                                            <div class="post-comment">
-                                                <div class="cm_img">
-                                                    <img src="../static/images/resources/bg-img4.png"
-                                                         alt="">
-                                                </div>
+                                            <div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
                                                 <div class="comment_box">
-                                                    <form>
-                                                        <input type="text" placeholder="Post a comment">
+                                                    <form th:action="@{'/comment/add/' + ${post.id}}" method="post" th:object="${comment}">
+                                                        <input type="text" placeholder="Post a comment" th:field="*{description}">
                                                         <button type="submit">Send</button>
                                                     </form>
                                                 </div>

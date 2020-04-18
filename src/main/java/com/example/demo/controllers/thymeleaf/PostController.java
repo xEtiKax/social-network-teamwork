@@ -3,7 +3,6 @@ package com.example.demo.controllers.thymeleaf;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
-import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
@@ -87,7 +86,7 @@ public class PostController {
     }
 
     @PostMapping("/update/{id}")
-    public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model, Principal principal, HttpServletRequest request) {
+    public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model) {
 
         try {
             postService.updatePost(id, postDTO);

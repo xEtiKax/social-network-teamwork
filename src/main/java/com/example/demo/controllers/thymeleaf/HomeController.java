@@ -1,5 +1,7 @@
 package com.example.demo.controllers.thymeleaf;
 
+import com.example.demo.models.Comment;
+import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
@@ -30,6 +32,8 @@ public class HomeController {
         }catch (Exception e){
         }
         model.addAttribute("users", userService.getAll());
+        model.addAttribute("comment", new CommentDTO());
+
         return "index";
     }
 
