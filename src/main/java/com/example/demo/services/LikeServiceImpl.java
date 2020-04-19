@@ -7,13 +7,8 @@ import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.LikeRepository;
 import com.example.demo.services.interfaces.LikeService;
-import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @Service
 public class LikeServiceImpl implements LikeService {

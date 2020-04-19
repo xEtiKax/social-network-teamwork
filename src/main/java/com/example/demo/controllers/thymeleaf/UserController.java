@@ -1,14 +1,12 @@
 package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.exceptions.DuplicateEntityException;
-import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
-import com.example.demo.services.interfaces.LikeService;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.RequestService;
 import com.example.demo.services.interfaces.UserService;
@@ -17,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -96,7 +93,7 @@ public class UserController {
     @PostMapping(value = "/searchUser")
     public String searchUser(@RequestParam(value = "username") String username, Model model) {
         List<User> result = userService.getByNameLikeThis(username);
-        model.addAttribute("result",result);
+        model.addAttribute("result", result);
         return "search-result";
     }
 
@@ -201,7 +198,6 @@ public class UserController {
         }
         return posts;
     }
-
 
     @GetMapping("/showMyPosts")
     public String showUserPosts(Model model, Principal principal) {

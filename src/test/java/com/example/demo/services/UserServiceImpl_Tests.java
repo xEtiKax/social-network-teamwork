@@ -166,7 +166,7 @@ public class UserServiceImpl_Tests {
 
     @Test(expected = EntityNotFoundException.class)
     public void updateUserDetailsShould_ThrowIfUserDoesNotExist() {
-        mockUserService.updateUserDetails(createUser(), "username", "email", "job");
+        mockUserService.updateUserDetails(createUser(), "username", "email", "email",25,"developer");
 
     }
 
@@ -176,7 +176,7 @@ public class UserServiceImpl_Tests {
         Mockito.when(mockUserRepository.save(any(User.class))).thenReturn(expectedUser);
         Mockito.when(mockUserRepository.existsById(anyInt())).thenReturn(true);
 
-        mockUserService.updateUserDetails(expectedUser, "newName", "newEmail", "newJob");
+        mockUserService.updateUserDetails(createUser(), "username", "email", "email",25,"developer");
 
         Assert.assertSame(expectedUser, expectedUser);
     }
@@ -241,13 +241,13 @@ public class UserServiceImpl_Tests {
         User user = createUser();
         Mockito.when(passwordEncoder.matches("pass", "pass"));
 
-        mockUserService.changePassword(user.getUsername(), "pass", "pass");
+        mockUserService.changePassword(user.getUsername(), "pass", "pass","pass");
         Mockito.verify(mockUserRepository, times(1)).save(any(User.class));
     }
 
     @Test(expected = WrongPasswordException.class)
     public void changeUserPasswordShould_Throw_WhenPasswordDoesntMatch() {
-        mockUserService.changePassword(createUser().getUsername(), "pass", "p");
+        mockUserService.changePassword(createUser().getUsername(), "pass", "p","asd");
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.demo.models;
 
-import com.example.demo.models.DTO.UserDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Where;
 
@@ -28,7 +27,6 @@ public class Post {
 
     @Column(name = "is_public")
     private boolean isPublic;
-
 
     @Transient
     private boolean isLiked;
@@ -89,10 +87,6 @@ public class Post {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
     public boolean getEnabled() {
         return enabled;
     }
@@ -103,10 +97,6 @@ public class Post {
 
     public Set<Like> getLikes() {
         return new HashSet<>(likes);
-    }
-
-    public void setLikes(Set<Like> likes) {
-        this.likes = likes;
     }
 
     public Byte[] getPicture() {

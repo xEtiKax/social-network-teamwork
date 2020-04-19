@@ -14,52 +14,51 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+@Configuration
+@EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class JPAConfiguration {
-    @Configuration
-    @EnableTransactionManagement
-    @PropertySource("classpath:application.properties")
-    public class JpaConfig {
 
-        private String dbURl, dbUsername, dBPassword, driverName;
 
-        @Autowired
-        public JpaConfig(Environment env) {
-            dbURl = env.getProperty("spring.datasource.url");
-            dbUsername = env.getProperty("spring.datasource.username");
-            dBPassword = env.getProperty("spring.datasource.password");
-            driverName = env.getProperty("spring.datasource.driver-class-name");
-        }
+    private String dbURl, dbUsername, dBPassword, driverName;
 
-        @Bean
-        public DataSource dataSource() {
-            DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setDriverClassName(driverName);
-            dataSource.setUrl(dbURl);
-            dataSource.setUsername(dbUsername);
-            dataSource.setPassword(dBPassword);
-            return dataSource;
-        }
-
-        @Bean
-        public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-            LocalContainerEntityManagerFactoryBean em
-                    = new LocalContainerEntityManagerFactoryBean();
-            em.setDataSource(dataSource());
-            em.setPackagesToScan("com.example.demo");
-
-            JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-            em.setJpaVendorAdapter(vendorAdapter);
-            em.setJpaProperties(additionalProperties());
-
-            return em;
-        }
-
-        Properties additionalProperties() {
-            Properties properties = new Properties();
-            properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-
-            return properties;
-        }
-
+    @Autowired
+    public JPAConfiguration(Environment env) {
+        dbURl = env.getProperty("spring.datasource.url");
+        dbUsername = env.getProperty("spring.datasource.username");
+        dBPassword = env.getProperty("spring.datasource.password");
+        driverName = env.getProperty("spring.datasource.driver-class-name");
     }
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverName);
+        dataSource.setUrl(dbURl);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dBPassword);
+        return dataSource;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em
+                = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("com.example.demo");
+
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(additionalProperties());
+
+        return em;
+    }
+
+    Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+
+        return properties;
+    }
+
 }

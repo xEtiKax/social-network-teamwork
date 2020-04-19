@@ -9,10 +9,6 @@ public class CommentDTO {
     public CommentDTO() {
     }
 
-    public CommentDTO(String description) {
-        this.description = description;
-    }
-
     public String getDescription() {
         return description;
     }

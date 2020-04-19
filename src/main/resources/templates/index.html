@@ -227,9 +227,9 @@
                                                         <a th:if="${!post.isLiked()}" th:href="@{'/likePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
                                                         <a th:if="${post.isLiked()}" th:href="@{'/dislikePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
                                                         <img th:src="@{/images/liked-img.png}" alt="">
-                                                        <span>25</span>
+                                                        <span th:text=" ${post.getLikes().size()}">Likes</span>
                                                     </li>
-                                                    <li><a href="#" class="com"><i class="fas fa-comment-alt"></i> Comment 15</a></li>
+                                                    <li><a href="#" th:text=" ${post.getComments().size() + '  Comments'}" class="com"><i class="fas fa-comment-alt"></i> Comment 15</a></li>
                                                 </ul>
                                             </div>
 <!--                                            <div class="job-status-bar">
@@ -279,8 +279,15 @@
                                                 </div>
                                             </div><!--post-comment end-->
                                         </div><!--comment-section end-->
-                                    </div><!--posty end-->
                                 </div>
+                                    <div class="process-comm">
+                                        <div class="spinner">
+                                            <div class="bounce1"></div>
+                                            <div class="bounce2"></div>
+                                            <div class="bounce3"></div>
+                                        </div>
+                                    </div><!--process-comm end-->
+                                </div><!--posty end-->
                             </div><!--main-ws-sec end-->
                         </div>
                         <div class="col-lg-3 pd-right-none no-pd" >
@@ -340,6 +347,9 @@
         }
     }
 </script>
+
+
+
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/popper.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>

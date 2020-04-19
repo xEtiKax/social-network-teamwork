@@ -72,7 +72,7 @@ public class CommentRestController {
     }
 
     @PutMapping("/update/{commentId}")
-    public Comment updateComment(@RequestBody CommentDTO commentDTO, @PathVariable long commentId, @RequestHeader String requestUser) {
+    public Comment updateComment(@RequestBody CommentDTO commentDTO, @PathVariable long commentId) {
         Comment comment = commentService.getById(commentId);
         try {
             comment.setDescription(commentDTO.getDescription());

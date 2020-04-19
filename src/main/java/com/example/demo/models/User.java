@@ -143,14 +143,6 @@ public class User {
         this.requests = requests;
     }
 
-    public Set<Like> getLikes() {
-        return new HashSet<>(likes);
-    }
-
-    public void setLikes(Set<Like> likes) {
-        this.likes = likes;
-    }
-
     public Set<Comment> getComments() {
         return new HashSet<>(comments);
     }

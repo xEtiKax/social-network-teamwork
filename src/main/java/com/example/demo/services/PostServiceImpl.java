@@ -2,7 +2,6 @@ package com.example.demo.services;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
-import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
@@ -48,13 +47,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(long id, PostDTO postDTO) {
+    public void updatePost(long id, PostDTO postDTO) {
         throwIfPostDoesNotExists(id);
         Post postToUpdate = getPostById(id);
         postToUpdate.setText(postDTO.getText());
         postToUpdate.setIsPublic(postDTO.getIsPublic());
         postRepository.save(postToUpdate);
-        return postToUpdate;
     }
 
     @Override
@@ -76,12 +74,11 @@ public class PostServiceImpl implements PostService {
         return postRepository.existsById(id);
     }
 
-    private Post postMerge(Post post, PostDTO postDTO) {
+    private void postMerge(Post post, PostDTO postDTO) {
         post.setText(postDTO.getText());
         post.setIsPublic(postDTO.getIsPublic());
         User createdBy = userService.getById(postDTO.getCreatedBy());
         post.setCreatedBy(createdBy);
-        return post;
     }
 
     private void throwIfPostDoesNotExists(long id) {
@@ -91,13 +88,12 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    private boolean canUserDeletePost(Post post, Principal principal, HttpServletRequest request) {
+    private void canUserDeletePost(Post post, Principal principal, HttpServletRequest request) {
         if (principal != null && (principal.getName().equals(post.getCreatedBy().getUsername()) ||
                 request.isUserInRole("ROLE_ADMIN"))) {
             post.setCanDelete(true);
         }
         post.setCanDelete(false);
-        return post.getCanDelete();
     }
 
 }

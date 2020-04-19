@@ -36,7 +36,7 @@ public class LikeRestController {
         like.setPost(post);
         like.setUser(user);
         try {
-            likeService.createLike(user,post);
+            likeService.createLike(user, post);
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "You already likes this post");
         }
@@ -48,7 +48,7 @@ public class LikeRestController {
         Post post = postService.getPostById(postId);
         Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
         try {
-            likeService.deleteLike(like,post,user);
+            likeService.deleteLike(like, post, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You don't like this post");
         }

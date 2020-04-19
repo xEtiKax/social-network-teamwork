@@ -32,16 +32,16 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request createRequest(RequestDTO requestDTO) {
-        throwIfRequestExists(requestDTO.getSender(),requestDTO.getReceiver());
+    public void createRequest(RequestDTO requestDTO) {
+        throwIfRequestExists(requestDTO.getSender(), requestDTO.getReceiver());
         Request request = new Request();
         requestMerge(request, requestDTO);
         User receiver = request.getReceiver();
-        if (receiver.getRequests().contains(request)){
+        if (receiver.getRequests().contains(request)) {
             throw new DuplicateEntityException("You are already sent a request");
         }
         receiver.addRequest(request);
-        return requestRepository.save(request);
+        requestRepository.save(request);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request getRequestBySenderAndReciever(long sender, long receiver) {
+    public Request getRequestBySenderAndReceiver(long sender, long receiver) {
         return requestRepository.findAllByReceiverAndSender(sender, receiver);
     }
 
@@ -68,14 +68,12 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.findAllByReceiver(userId);
     }
 
-    private Request requestMerge(Request request, RequestDTO requestDTO) {
+    private void requestMerge(Request request, RequestDTO requestDTO) {
         request.setAccepted(0);
         User receiver = userRepository.getById(requestDTO.getReceiver());
         request.setReceiver(receiver);
         User sender = userRepository.getById(requestDTO.getSender());
         request.setSender(sender);
-        return request;
-//        TODO set principal
     }
 
     private void throwIfRequestDoesNotExists(long sender, long receiver) {

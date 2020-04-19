@@ -17,4 +17,5 @@ public interface PostRepository extends CrudRepository<Post, Serializable> {
 
     @Query(value = "SELECT * FROM social_network.posts WHERE is_public != 0 AND enabled != 0 ORDER BY created_at DESC ", nativeQuery = true)
     List<Post> getAllPublicPosts();
+
 }

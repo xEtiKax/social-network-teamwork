@@ -2,7 +2,6 @@ package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
-import com.example.demo.services.interfaces.UserService;
 import com.example.demo.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,20 +23,20 @@ import java.util.List;
 public class RegistrationController {
     private UserDetailsManager userDetailsManager;
     private PasswordEncoder passwordEncoder;
-    private UserService userService;
+
 
     @Autowired
-    public RegistrationController(UserDetailsManager userDetailsManager , PasswordEncoder passwordEncoder, UserService userService) {
+    public RegistrationController(UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
         this.userDetailsManager = userDetailsManager;
         this.passwordEncoder = passwordEncoder;
-        this.userService = userService;
+
     }
 
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
         UserDTO userDTO = new UserDTO();
         model.addAttribute("user", userDTO);
-        model.addAttribute("isRegister",true);
+        model.addAttribute("isRegister", true);
         return "sign-in";
     }
 
@@ -50,7 +49,7 @@ public class RegistrationController {
         }
         User user = Mapper.userDTOtoUserMapper(userDTO);
 
-        model.addAttribute("user",userDTO);
+        model.addAttribute("user", userDTO);
         if (userDetailsManager.userExists(user.getUsername())) {
             model.addAttribute("error", "User with the same username already exists!");
             return "sign-in";
@@ -66,7 +65,7 @@ public class RegistrationController {
                 new org.springframework.security.core.userdetails.User(user.getUsername(), passwordEncoder.encode(user.getPassword()), authorities);
         userDetailsManager.createUser(newUser);
 
-        model.addAttribute("successful","You registered successfully");
+        model.addAttribute("successful", "You registered successfully");
 
         return "sign-in";
     }

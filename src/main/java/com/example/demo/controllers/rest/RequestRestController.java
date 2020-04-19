@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("api/requests")
 public class RequestRestController {
@@ -27,7 +25,7 @@ public class RequestRestController {
     }
 
     @PostMapping("/create")
-    public void createRequest(@RequestBody RequestDTO requestDTO, Principal principal) {
+    public void createRequest(@RequestBody RequestDTO requestDTO) {
         try {
             requestService.createRequest(requestDTO);
         } catch (EntityNotFoundException e) {

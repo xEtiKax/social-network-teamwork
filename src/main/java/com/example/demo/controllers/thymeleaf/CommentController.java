@@ -3,7 +3,6 @@ package com.example.demo.controllers.thymeleaf;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.Comment;
 import com.example.demo.models.DTO.CommentDTO;
-import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.CommentService;
@@ -58,13 +57,13 @@ public class CommentController {
         return "redirect:/";
     }
 
-    private Comment createCommentPattern(long postId, CommentDTO commentDTO, Principal principal) {
+    private void createCommentPattern(long postId, CommentDTO commentDTO, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         Post post = postService.getPostById(postId);
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setUser(user);
         comment.setDescription(commentDTO.getDescription());
-        return commentService.createComment(comment);
+        commentService.createComment(comment);
     }
 }

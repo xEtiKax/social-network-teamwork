@@ -17,12 +17,10 @@ import java.security.Principal;
 @RequestMapping("/api/posts")
 public class PostRestController {
     private PostService postService;
-    private UserService userService;
 
     @Autowired
-    public PostRestController(PostService postService, UserService userService) {
+    public PostRestController(PostService postService) {
         this.postService = postService;
-        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -40,7 +38,7 @@ public class PostRestController {
     }
 
     @PostMapping("/update/{id}")
-    public void updatePost(@PathVariable long id, @RequestBody PostDTO postDTO, Principal principal) {
+    public void updatePost(@PathVariable long id, @RequestBody PostDTO postDTO) {
         postService.updatePost(id, postDTO);
     }
 

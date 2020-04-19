@@ -10,13 +10,13 @@ public interface RequestService {
 
     Request getRequestById(long id);
 
-    Request createRequest(RequestDTO requestDTO);
+    void createRequest(RequestDTO requestDTO);
 
     void deleteRequest(long id);
 
     boolean checkIfRequestExist(long sender, long receiver);
 
-    Request getRequestBySenderAndReciever(long sender, long receiver);
+    Request getRequestBySenderAndReceiver(long sender, long receiver);
 
     List<Request> getUserRequests(User userId);
 }

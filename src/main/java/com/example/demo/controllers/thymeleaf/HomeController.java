@@ -1,6 +1,5 @@
 package com.example.demo.controllers.thymeleaf;
 
-import com.example.demo.models.Comment;
 import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
@@ -37,38 +36,13 @@ public class HomeController {
             model.addAttribute("user", user);
         } catch (Exception ignored) {
         }
-        model.addAttribute("friendsCounter",friendsCounter);
+        model.addAttribute("friendsCounter", friendsCounter);
         model.addAttribute("users", userService.getAll());
         model.addAttribute("comment", new CommentDTO());
 
         return "index";
     }
 
-    @GetMapping("/admin")
-    public String showAdminPage() {
-        return "admin";
-    }
-// @GetMapping("/")
-//    public String showHomePage(Model model, Principal principal) {
-//
-//        User user = userService.getByUsername(principal.getName());
-//
-
-    //
-//        model.addAttribute("user", user);
-//        model.addAttribute("posts", postService.getAllPublicPosts());
-//        model.addAttribute("users", userService.getAll());
-//        model.addAttribute("comment", new CommentDTO());
-//
-//        return "index";
-//    }
-//
-//
-//    @GetMapping("/admin")
-//    public String showAdminPage() {
-//        return "admin";
-//    }
-//
     private void checkLike(User user) {
         List<Post> posts = postService.getAllPublicPosts();
         for (Post post : posts) {

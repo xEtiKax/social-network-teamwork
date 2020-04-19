@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserDTO userDTO) throws IOException {
+    public void createUser(UserDTO userDTO) throws IOException {
         User user = userDTOtoUserMapper(userDTO);
         if (checkUserExist(user.getUsername())) {
             throw new DuplicateEntityException("User with this username already exist");
@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException("User with this email already exist");
         }
         userRepository.save(user);
-        return user;
     }
 
     @Override

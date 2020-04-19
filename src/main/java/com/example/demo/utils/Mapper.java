@@ -31,31 +31,24 @@ public class Mapper {
 
     public static Byte[] generateDefaultCoverPhoto() throws IOException {
 
-        URL url = new URL("https://atiinc.org/wp-content/uploads/2017/01/cover-default.jpg?fbclid=IwAR0HYPjoqiQbHkrYUD0rYbX6AMr0m6Tpc3FazFCdfeiU5i-LAHWl40JTW88");
-        BufferedImage bImage = ImageIO.read(url);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ImageIO.write(bImage, "jpg", bos);
-
-        byte[] pictureBytes = bos.toByteArray();
-        Byte[] byteObjects = new Byte[pictureBytes.length];
-        int i=0;
-        for(byte b: pictureBytes)
-            byteObjects[i++] = b;
-
-        return byteObjects;
+        return getBytes("https://atiinc.org/wp-content/uploads/2017/01/cover-default.jpg?fbclid=IwAR0HYPjoqiQbHkrYUD0rYbX6AMr0m6Tpc3FazFCdfeiU5i-LAHWl40JTW88", "jpg");
     }
 
     public static Byte[] generateDefaultUserPhoto() throws IOException {
 
-        URL url = new URL("https://genslerzudansdentistry.com/wp-content/uploads/2015/11/anonymous-user.png");
+        return getBytes("https://genslerzudansdentistry.com/wp-content/uploads/2015/11/anonymous-user.png", "png");
+    }
+
+    private static Byte[] getBytes(String s, String png) throws IOException {
+        URL url = new URL(s);
         BufferedImage bImage = ImageIO.read(url);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ImageIO.write(bImage, "png", bos);
+        ImageIO.write(bImage, png, bos);
 
         byte[] pictureBytes = bos.toByteArray();
         Byte[] byteObjects = new Byte[pictureBytes.length];
-        int i=0;
-        for(byte b: pictureBytes)
+        int i = 0;
+        for (byte b : pictureBytes)
             byteObjects[i++] = b;
 
         return byteObjects;

@@ -9,11 +9,11 @@ public interface CommentService {
 
     List<Comment> getCommentsByPostId(long postId);
 
-    Comment createComment(Comment comments);
+    void createComment(Comment comments);
 
     List<Comment> getCommentsByUserId(long userId);
 
-    Comment updateComment(Comment comments);
+    void updateComment(Comment comments);
 
     void deleteComment(long id, String username);
 
