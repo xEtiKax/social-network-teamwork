@@ -1,5 +1,6 @@
 package com.example.demo.services.interfaces;
 
+import com.example.demo.models.Picture;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageService {
@@ -8,4 +9,6 @@ public interface ImageService {
     void saveUserPhoto(long userId, MultipartFile file);
 
     void saveUserCover(long userId, MultipartFile file);
-}
+
+    void setPrivacy(Picture picture, boolean isPublic);
+;}

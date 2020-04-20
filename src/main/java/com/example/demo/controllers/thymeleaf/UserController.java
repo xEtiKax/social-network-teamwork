@@ -7,6 +7,7 @@ import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
+import com.example.demo.services.interfaces.ImageService;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.RequestService;
 import com.example.demo.services.interfaces.UserService;
@@ -28,14 +29,16 @@ public class UserController {
     private RequestService requestService;
     private PostService postService;
     private PasswordEncoder passwordEncoder;
+    private ImageService imageService;
 
     @Autowired
     public UserController(UserService userService, PostService postService,
-                          PasswordEncoder passwordEncoder, RequestService requestService) {
+                          PasswordEncoder passwordEncoder, RequestService requestService, ImageService imageService) {
         this.userService = userService;
         this.postService = postService;
         this.passwordEncoder = passwordEncoder;
         this.requestService = requestService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/showUserProfile/{userId}")
@@ -208,5 +211,17 @@ public class UserController {
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new CommentDTO());
         return "my-profile-feed";
+    }
+
+    @RequestMapping(value = "/photoPrivacy", method = RequestMethod.GET)
+    public String photoPrivacy(Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        if (user.getPhoto().isPublic()) {
+            imageService.setPrivacy(user.getPhoto(), false);
+        }
+        else{
+            imageService.setPrivacy(user.getPhoto(), true);
+        }
+        return "redirect:/user/privacy";
     }
 }

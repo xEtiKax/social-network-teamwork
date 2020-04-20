@@ -4,7 +4,9 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
+import com.example.demo.models.Picture;
 import com.example.demo.models.User;
+import com.example.demo.repositories.PictureRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,14 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private PictureRepository pictureRepository;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PictureRepository pictureRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.pictureRepository = pictureRepository;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserDTO userDTO) throws IOException {
+    public User createUser(UserDTO userDTO) throws IOException {
         User user = userDTOtoUserMapper(userDTO);
         if (checkUserExist(user.getUsername())) {
             throw new DuplicateEntityException("User with this username already exist");
@@ -74,6 +78,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException("User with this email already exist");
         }
         userRepository.save(user);
+        return user;
     }
 
     @Override
@@ -117,11 +122,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addProfilePicture(String username, MultipartFile profilePicture) {
         User user = getByUsername(username);
+        Picture picture = new Picture();
         try {
-            user.setPhoto(multiPartToByteArr(profilePicture));
+            picture.setData(multiPartToByteArr(profilePicture));
+            user.setPhoto(picture);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        pictureRepository.save(picture);
         userRepository.save(user);
     }
 

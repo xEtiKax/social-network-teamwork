@@ -34,9 +34,9 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @Lob
-    @Column(name = "picture", columnDefinition = "LONGBLOB")
-    private Byte[] photo;
+    @OneToOne
+    @JoinColumn(name = "picture_id", columnDefinition = "LONGBLOB")
+    private Picture photo;
 
     @JsonIgnore
     @Lob
@@ -48,7 +48,6 @@ public class User {
 
     @Column(name = "job_title")
     private String jobTitle;
-
 
     @Column(name = "age")
     private int age;
@@ -103,11 +102,20 @@ public class User {
         this.password = password;
     }
 
-    public Byte[] getPhoto() {
+//    public Byte[] getPhoto() {
+//        return photo;
+//    }
+//
+//    public void setPhoto(Byte[] photo) {
+//        this.photo = photo;
+//    }
+
+
+    public Picture getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Byte[] photo) {
+    public void setPhoto(Picture photo) {
         this.photo = photo;
     }
 
@@ -198,4 +206,5 @@ public class User {
     public void setCoverPhoto(Byte[] coverPhoto) {
         this.coverPhoto = coverPhoto;
     }
+
 }

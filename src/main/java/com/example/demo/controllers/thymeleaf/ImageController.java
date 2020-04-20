@@ -47,13 +47,13 @@ public class ImageController {
     @GetMapping("user/{id}/userImage")
     public void renderUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
-        renderImage(response, user.getPhoto());
+        renderImage(response, user.getPhoto().getData());
     }
 
     @GetMapping("public/user/{id}/userImage")
     public void renderPublicUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
-        renderImage(response, user.getPhoto());
+        renderImage(response, user.getPhoto().getData());
     }
 
     @GetMapping("user/{userId}/cover")

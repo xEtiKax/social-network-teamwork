@@ -8,11 +8,14 @@ import com.example.demo.repositories.PostRepository;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
+
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -37,8 +40,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostById(long id) {
-        Post post = postRepository.getById(id);
-        return post;
+        return postRepository.getById(id);
     }
 
     @Override
@@ -68,6 +70,12 @@ public class PostServiceImpl implements PostService {
     public List<Post> getAllPublicPosts() {
         return postRepository.getAllPublicPosts();
     }
+//    @Override
+//    public List<Post> getNewsFeed(int page, int size, Principal principal) {
+//        User user = userService.getByUsername(principal.getName());
+//        Pageable pageable = PageRequest.of(page, size);
+//        return postRepository.generateFeedByDate(user.getId(), pageable).getContent();
+//    }
 
     @Override
     public boolean checkIfPostExist(long id) {

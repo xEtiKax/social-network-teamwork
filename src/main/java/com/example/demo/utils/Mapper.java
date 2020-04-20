@@ -23,7 +23,7 @@ public class Mapper {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEnabled(1);
-        user.setPhoto(generateDefaultUserPhoto());
+//        user.setPhoto(generateDefaultUserPhoto());
         user.setCoverPhoto(generateDefaultCoverPhoto());
         user.setPassword(userDTO.getPassword());
         return user;

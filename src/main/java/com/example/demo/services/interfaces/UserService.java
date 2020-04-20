@@ -5,6 +5,7 @@ import com.example.demo.models.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -19,7 +20,7 @@ public interface UserService {
 
     List<User> getByNameLikeThis(String username);
 
-    void createUser(UserDTO userDTO) throws IOException;
+    User createUser(UserDTO userDTO) throws IOException;
 
     User updateUser(User user);
 

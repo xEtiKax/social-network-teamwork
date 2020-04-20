@@ -23,4 +23,5 @@ public interface PostService {
 
     List<Post> getAllPublicPosts();
 
+//    List<Post> getNewsFeed(int page, int size, Principal principal);
 }

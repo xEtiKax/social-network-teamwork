@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
+import com.example.demo.models.Picture;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
+import com.example.demo.repositories.PictureRepository;
 import com.example.demo.repositories.PostRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.ImageService;
@@ -16,10 +18,12 @@ public class ImageServiceImpl implements ImageService {
 
     private PostRepository postRepository;
     private UserRepository userRepository;
+    private PictureRepository pictureRepository;
 
-    public ImageServiceImpl(PostRepository postRepository, UserRepository userRepository) {
+    public ImageServiceImpl(PostRepository postRepository, UserRepository userRepository, PictureRepository pictureRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.pictureRepository = pictureRepository;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class ImageServiceImpl implements ImageService {
             User user = userRepository.findById(userId).get();
 
             Byte[] byteObjects = multiPartToByteArr(file);
-            user.setPhoto(byteObjects);
+            user.getPhoto().setData(byteObjects);
             userRepository.save(user);
         }catch (IOException e){
             e.printStackTrace();
@@ -71,5 +75,10 @@ public class ImageServiceImpl implements ImageService {
             byteObjects[i++] = b;
         }
         return byteObjects;
+    }
+    @Override
+    public void setPrivacy(Picture picture, boolean isPublic) {
+        picture.setPublic(isPublic);
+        pictureRepository.save(picture);
     }
 }
