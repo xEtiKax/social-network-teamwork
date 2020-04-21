@@ -96,7 +96,7 @@ public class UserServiceImpl_Tests {
 
     @Test(expected = EntityNotFoundException.class)
     public void getUserByIdShouldThrow_WhenUserDoesNotExist() {
-        mockUserService.getById(anyInt());
+        mockUserService.getById(anyLong());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class UserServiceImpl_Tests {
 
     @Test
     public void updateUser_Should_CallRepository() {
-        Mockito.when(mockUserRepository.existsById(anyInt())).thenReturn(true);
+        Mockito.when(mockUserRepository.existsById(anyLong())).thenReturn(true);
 
         mockUserService.updateUser(createUser());
 
@@ -144,7 +144,7 @@ public class UserServiceImpl_Tests {
     @Test
     public void updateUserShould_ReturnUpdatedUser() {
         User user = createUser();
-        Mockito.when(mockUserRepository.existsById(anyInt())).thenReturn(true);
+        Mockito.when(mockUserRepository.existsById(anyLong())).thenReturn(true);
         Mockito.when(mockUserRepository.save(any(User.class))).thenReturn(user);
 
         User returnedUser = mockUserService.updateUser(user);
@@ -155,7 +155,7 @@ public class UserServiceImpl_Tests {
     @Test
     public void updateUserDetailsShould_CallRepository() {
         User user = createUser();
-        Mockito.when(mockUserRepository.existsById(anyInt())).thenReturn(true);
+        Mockito.when(mockUserRepository.existsById(anyLong())).thenReturn(true);
         Mockito.when(mockUserRepository.save(user)).thenReturn(user);
 
         mockUserService.updateUser(user);
@@ -174,7 +174,7 @@ public class UserServiceImpl_Tests {
     public void updateUserDetailsShould_UpdateUserDetails() {
         User expectedUser = createUser();
         Mockito.when(mockUserRepository.save(any(User.class))).thenReturn(expectedUser);
-        Mockito.when(mockUserRepository.existsById(anyInt())).thenReturn(true);
+        Mockito.when(mockUserRepository.existsById(anyLong())).thenReturn(true);
 
         mockUserService.updateUserDetails(createUser(), "username", "email", "email",25,"developer");
 
@@ -184,7 +184,7 @@ public class UserServiceImpl_Tests {
     @Test
     public void addProfilePicture_Should_CallRepository() {
         User user = createUser();
-        when(mockUserRepository.existsById(anyInt())).thenReturn(true);
+        when(mockUserRepository.existsById(anyLong())).thenReturn(true);
         when(mockUserService.updateUser(user)).thenReturn(user);
         MultipartFile file = new MultipartFile() {
             @Override

@@ -19,6 +19,7 @@ import java.io.InputStream;
 import static com.example.demo.Factory.createPost;
 import static com.example.demo.Factory.createUser;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +38,7 @@ public class ImageServiceImpl_Tests {
     @Test
     public void updateUser_ShouldUpdateUsername() {
         User user = createUser();
-        when(repository.existsById(anyInt())).thenReturn(true);
+        when(repository.existsById(anyLong())).thenReturn(true);
         MultipartFile file = new MultipartFile() {
             @Override
             public String getName() {
@@ -87,7 +88,7 @@ public class ImageServiceImpl_Tests {
     @Test
     public void updateBeer_ShouldUpdatePostPhoto() {
         Post post = createPost();
-        when(mockPostRepository.existsById(anyInt())).thenReturn(true);
+        when(mockPostRepository.existsById(anyLong())).thenReturn(true);
         MultipartFile file = new MultipartFile() {
             @Override
             public String getName() {

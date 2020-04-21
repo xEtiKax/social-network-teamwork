@@ -29,7 +29,7 @@
         <div class="container">
             <div class="header-data">
                 <div class="logo">
-                    <a title="" th:href="@{/}"><img th:src="@{/images/logo.png}" alt=""></a>
+                    <a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
                 </div><!--logo end-->
                 <div class="search-bar">
                     <form th:action="@{/user/searchUser}" th:object="${user}" method="post">
@@ -46,7 +46,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="profiles.html" title="">
+                            <a th:href="@{/user/showAllUsers}"  title="">
                                 <span><img th:src="@{/images/icon4.png}" alt=""></span>
                                 Profiles
                             </a>
@@ -92,6 +92,15 @@
                                             <span>2 min ago</span>
                                         </div><!--notification-info -->
                                     </div>
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="../static/images/resources/ny-img2.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
                                     <div class="view-all-nots">
                                         <a href="#" title="">View All Notification</a>
                                     </div>
@@ -113,7 +122,8 @@
                     </ul>
                 </nav><!--nav end-->
                 <div class="menu-btn">
-                    <a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
+                    <!--TODO menu button-->
+                    <a href="#" title=""><i class="fa fa-bars"></i></a>
                 </div><!--menu-btn end-->
                 <div class="user-account">
                     <div class="user-info" th:if="${user != null}">

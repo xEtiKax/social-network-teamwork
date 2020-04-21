@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.io.Serializable;
 import java.util.List;
 
-public interface PostRepository extends CrudRepository<Post, Serializable> {
+public interface PostRepository extends CrudRepository<Post, Long> {
 
     @Query(value = "SELECT * FROM social_network.posts WHERE id = ?1 AND enabled != 0", nativeQuery = true)
     Post getById(long id);
