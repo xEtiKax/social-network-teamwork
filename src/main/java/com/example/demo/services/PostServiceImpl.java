@@ -70,12 +70,6 @@ public class PostServiceImpl implements PostService {
     public List<Post> getAllPublicPosts() {
         return postRepository.getAllPublicPosts();
     }
-//    @Override
-//    public List<Post> getNewsFeed(int page, int size, Principal principal) {
-//        User user = userService.getByUsername(principal.getName());
-//        Pageable pageable = PageRequest.of(page, size);
-//        return postRepository.generateFeedByDate(user.getId(), pageable).getContent();
-//    }
 
     @Override
     public boolean checkIfPostExist(long id) {
