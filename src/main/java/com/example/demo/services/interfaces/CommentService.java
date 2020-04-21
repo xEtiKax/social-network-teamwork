@@ -16,6 +16,4 @@ public interface CommentService {
     void updateComment(Comment comments);
 
     void deleteComment(long id, String username);
-
-
 }

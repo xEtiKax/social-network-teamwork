@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -56,16 +57,18 @@ public class UserController {
         if (user.getFriends().contains(me)) {
             isFriend = true;
         }
-        List<Post> posts = checkLike(userId, user);
+        List<Post> posts = checkLike(userId, me, postService.getPostsByUserId(userId));
 
         int friendsCounter = user.getFriends().size();
 
         model.addAttribute("isSentRequest", isSentRequest);
         model.addAttribute("user", user);
+        model.addAttribute("me", me);
         model.addAttribute("isFriend", isFriend);
         model.addAttribute("isFriendAndIsSentRequest", isFriendAndIsSentRequest);
         model.addAttribute("posts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
+        model.addAttribute("comment", new CommentDTO());
         return "user-profile";
     }
 
@@ -74,12 +77,12 @@ public class UserController {
 
         User user = userService.getByUsername(principal.getName());
         int friendsCounter = user.getFriends().size();
-        List<Post> posts = checkLike(user.getId(), user);
+
+        List<Long> friendIds = getFriendIds(user);
+        List<Post> posts = checkLike(user.getId(), user, postService.getMyFeed(friendIds));
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
-        model.addAttribute("post", new Post());
-        model.addAttribute("myPosts", postService.getPostsByUserId(user.getId()));
         model.addAttribute("friendsCounter", friendsCounter);
         model.addAttribute("comment", new CommentDTO());
         return "my-profile-feed";
@@ -190,18 +193,6 @@ public class UserController {
         return "index";
     }
 
-    public List<Post> checkLike(@PathVariable long userId, User user) {
-        List<Post> posts = postService.getPostsByUserId(userId);
-        for (Post post : posts) {
-            for (Like like : post.getLikes()) {
-                if (like.getUser().getId() == user.getId()) {
-                    post.setLiked(true);
-                }
-            }
-        }
-        return posts;
-    }
-
     @GetMapping("/showMyPosts")
     public String showUserPosts(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
@@ -212,6 +203,28 @@ public class UserController {
         model.addAttribute("comment", new CommentDTO());
         return "my-profile-feed";
     }
+
+    public List<Long> getFriendIds(User user) {
+        List<Long> friendIds = new ArrayList<>();
+        friendIds.add(user.getId());
+        for (User u : user.getFriends()) {
+            friendIds.add(u.getId());
+        }
+        return friendIds;
+    }
+
+    public List<Post> checkLike(@PathVariable long userId, User user, List<Post> posts) {
+        for (Post post : posts) {
+            for (Like like : post.getLikes()) {
+                if (like.getUser().getId() == user.getId()) {
+                    post.setLiked(true);
+                }
+            }
+        }
+        return posts;
+    }
+
+
 
     @RequestMapping(value = "/photoPrivacy", method = RequestMethod.GET)
     public String photoPrivacy(Principal principal) {

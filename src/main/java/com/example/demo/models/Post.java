@@ -5,8 +5,8 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "posts")
@@ -49,11 +49,23 @@ public class Post {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public Post() {
     }
 
+    public List<Comment> sortByDate(List<Comment> sortByDate) {
+
+        Comparator<Comment> byDate = new Comparator<Comment>() {
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                return o1.getDateTime().compareTo(o2.getDateTime());
+            }
+        };
+//        Collections.sort(sortByDate);
+
+        return sortByDate.stream().sorted(byDate).collect(Collectors.toList());
+    }
 
     public long getId() {
         return id;
@@ -107,11 +119,13 @@ public class Post {
         this.picture = picture;
     }
 
-    public Set<Comment> getComments() {
-        return new HashSet<>(comments);
+    public List<Comment> getComments() {
+        List<Comment> sortedComments = new ArrayList<>();
+        sortedComments = sortByDate(this.comments);
+        return sortedComments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 

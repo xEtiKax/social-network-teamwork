@@ -104,4 +104,8 @@ public class PostServiceImpl implements PostService {
         post.setCanDelete(false);
     }
 
+    @Override
+    public List<Post> getMyFeed(List<Long> friendIds) {
+        return postRepository.getMyFeed(friendIds);
+    }
 }

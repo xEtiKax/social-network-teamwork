@@ -229,11 +229,13 @@
 											<div class="post-bar" th:each="post, iter : ${myPosts}">
 												<div class="post_topbar">
 													<div class="usy-dt">
-														<img th:if="${user.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-														<img th:if="${user.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+														<img th:if="${post.createdBy.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${post.createdBy.getId()} + '/userImage'}"  alt="">
+														<img th:if="${post.createdBy.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 														<div class="usy-name">
-															<h3 th:text="${post.createdBy.username}">John Doe</h3>
-															<span th:text="${post.getDateTime()}"><img th:src="@{/images/clock.png}" alt="">3 min ago</span>
+															<h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
+															<span th:text="${post.getDateTime()}">
+                                                            <img th:src="@{/images/clock.png}" alt="">3 min ago
+                                                        </span>
 														</div>
 													</div>
 													<div class="ed-opts">
@@ -266,9 +268,10 @@
 																			 alt="">
 																	</div>
 																	<div class="comment">
-																		<h3 th:text="${comment.getUser().getUsername()}">John Doe</h3>
-																		<span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}"
-																													  alt=""></span>
+																		<img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/public/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
+																		<img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+																		<h1><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h1>
+																		<span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}" alt=""></span>
 																		<p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
 																	</div>
 																</div><!--comment-list end-->

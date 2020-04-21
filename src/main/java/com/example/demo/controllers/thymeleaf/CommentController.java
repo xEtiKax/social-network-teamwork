@@ -45,6 +45,12 @@ public class CommentController {
         return "redirect:/user/showMyProfile";
     }
 
+    @PostMapping("/user-profile/add/{postId}/{userId}")
+    public String createUserProfileComment(@PathVariable long postId, @PathVariable long userId, CommentDTO commentDTO, Principal principal) {
+        createCommentPattern(postId, commentDTO, principal);
+        return "redirect:/user/showUserProfile/" + userId;
+    }
+
     @PostMapping("/update/{id}")
     public String updatePost(@PathVariable long id, @ModelAttribute CommentDTO commentDTO, Model model) {
         try {
