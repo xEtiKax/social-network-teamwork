@@ -145,6 +145,10 @@ public class Post {
         likes.remove(like);
     }
 
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+    }
+
     public boolean isLiked() {
         return isLiked;
     }

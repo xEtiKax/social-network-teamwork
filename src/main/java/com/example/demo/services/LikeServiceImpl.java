@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.Like;
@@ -38,8 +39,12 @@ public class LikeServiceImpl implements LikeService {
         if (!checkLikeExists(user.getId(), post.getId())) {
             throw new EntityNotFoundException("");
         }
-        post.removeLike(like);
-        likeRepository.delete(like);
+        if (like.getUser().getUsername().equals(user.getUsername())) {
+            post.removeLike(like);
+            likeRepository.delete(like);
+        }else{
+            throw new AuthorizationException("You have no permissions to dislike post");
+        }
     }
 
     @Override

@@ -102,15 +102,6 @@ public class User {
         this.password = password;
     }
 
-//    public Byte[] getPhoto() {
-//        return photo;
-//    }
-//
-//    public void setPhoto(Byte[] photo) {
-//        this.photo = photo;
-//    }
-
-
     public Picture getPhoto() {
         return photo;
     }
@@ -181,6 +172,14 @@ public class User {
 
     public void removeFriend(User user) {
         this.friends.remove(user);
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        this.comments.remove(comment);
     }
 
     public String getFirstName() {

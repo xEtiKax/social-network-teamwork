@@ -76,7 +76,7 @@ public class CommentRestController {
         Comment comment = commentService.getById(commentId);
         try {
             comment.setDescription(commentDTO.getDescription());
-            commentService.updateComment(comment);
+            commentService.updateComment(commentId,commentDTO);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

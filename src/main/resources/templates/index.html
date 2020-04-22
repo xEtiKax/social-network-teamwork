@@ -28,6 +28,7 @@
 
 <body>
 <div class="wrapper" th:classappend="${post} ? overlay : ''" style="height: 100vh">
+<!--    <div class="wrapper" th:classappend="${comment} ? overlay : ''" style="height: 100vh">-->
     <header>
         <div class="container">
             <div class="header-data">
@@ -191,7 +192,7 @@
                                             <div class="post_topbar">
                                                 <div class="usy-dt" th:if="${post.createdBy}">
                                                     <img th:if="${post.createdBy.photo} and ${post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
-                                                    <img th:if="${post.createdBy.photo == null} or ${!post.createdBy.getFriends().contains(user)} " style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+                                                    <img th:if="${post.createdBy.photo == null} or ${!post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                                     <div class="usy-name">
                                                         <h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
                                                         <span th:text="${post.getDateTime()}">
@@ -233,10 +234,9 @@
                                             </div>
                                         </div><!--post-bar end-->
                                         <div class="comment-section">
-                                            <div class="comment-sec"
-                                                 th:if="${post.getComments().size() > 0}">
+                                            <div th:if="${post.getComments().size() > 0}">
                                                 <ul>
-                                                    <li th:each="comment : ${post.getComments()}">
+                                                    <li th:each="comment,iter : ${post.getComments()}">
                                                         <div class="comment-list">
                                                             <div class="bg-img">
                                                                 <img th:src="@{/images/resources/bg-img1.png}"
@@ -249,6 +249,16 @@
                                                                 <span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}"
                                                                            alt=""></span>
                                                                 <p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
+                                                            </div>
+                                                            <div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == comment.getUser().username}">
+                                                                <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                                <ul class="ed-options">
+                                                                    <li><a th:href="@{'comment/edit/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
+                                                                    <li><a th:href="@{'comment/delete/' + ${comment.id}}" style="margin-top:2px"  href="#" title="">Delete comment</a></li>
+                                                                    <form style="visibility: hidden; max-height: 0" th:id="*{iter.index}" action="javascript:void(0)" method="post">
+                                                                        <button class="btn btn-danger" type="submit">Delete Comment</button>
+                                                                    </form>
+                                                                </ul>
                                                             </div>
                                                         </div><!--comment-list end-->
                                                     </li>
@@ -269,13 +279,6 @@
                                             </div><!--post-comment end-->
                                         </div><!--comment-section end-->
                                 </div>
-<!--                                    <div class="process-comm">-->
-<!--                                        <div class="spinner">-->
-<!--                                            <div class="bounce1"></div>-->
-<!--                                            <div class="bounce2"></div>-->
-<!--                                            <div class="bounce3"></div>-->
-<!--                                        </div>-->
-<!--                                    </div>&lt;!&ndash;process-comm end&ndash;&gt;-->
                                 </div><!--posty end-->
                             </div><!--main-ws-sec end-->
                         </div>
@@ -322,9 +325,34 @@
                     </div>
                 </form>
             </div><!--post-project-fields end-->
-<!--            <a title="" th:href="@{/}"><i class="la la-times-circle-o"></i></a>-->
         </div><!--post-project end-->
     </div><!--post-project-popup end-->
+
+
+<!--    <div th:if="${comment}" class="post-popup job_post" th:classappend="${comment} ? active : ''">-->
+<!--        <div class="post-project">-->
+<!--            <h3 th:text="'Edit comment'">Edit comment</h3>-->
+<!--            <div class="post-project-fields">-->
+<!--                <form action="#" th:action=" '/comment/update/' + ${comment.id} '" method="post" th:object="${comment}">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-12">-->
+<!--                            <textarea name="description" placeholder="Description" th:field="${comment.description}"></textarea>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-12">-->
+<!--                            <ul>-->
+<!--                                <li>-->
+<!--                                    <button class="active" type="submit" value="post" th:text="'Edit'"></button>-->
+<!--                                </li>-->
+<!--                                <li><a href="#" title="" th:href="@{/}">Cancel</a></li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>&lt;!&ndash;post-project-fields end&ndash;&gt;-->
+<!--        </div>&lt;!&ndash;post-project end&ndash;&gt;-->
+<!--    </div>-->
+
+    </div>
 </div><!--theme-layout end-->
 <script>
     function completeAndRedirect(postId, elementId){
@@ -334,6 +362,17 @@
             document.getElementById(elementId).submit();
         }
     }
+</script>
+
+<script>
+    function completeAndRedirectComment(commentId, elementId){
+        let c = confirm("Are you sure you want to delete this comment?");
+        if (c == true) {
+            document.getElementById(elementId).action = '/comment/delete/' + commentId;
+            document.getElementById(elementId).submit();
+        }
+    }
+
 </script>
 
 
