@@ -1,10 +1,13 @@
 package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.models.DTO.CommentDTO;
+import com.example.demo.models.DTO.RequestDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
+import com.example.demo.services.interfaces.LikeService;
 import com.example.demo.services.interfaces.PostService;
+import com.example.demo.services.interfaces.RequestService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +21,18 @@ import java.util.List;
 public class HomeController {
     PostService postService;
     UserService userService;
+    LikeService likeService;
+    RequestService requestService;
 
     @Autowired
-    public HomeController(PostService postService, UserService userService) {
+    public HomeController(PostService postService,
+                          UserService userService,
+                          LikeService likeService,
+                          RequestService requestService) {
         this.postService = postService;
         this.userService = userService;
+        this.likeService = likeService;
+        this.requestService = requestService;
     }
 
     @GetMapping("/")
@@ -38,7 +48,8 @@ public class HomeController {
         }
         model.addAttribute("friendsCounter", friendsCounter);
         model.addAttribute("users", userService.getAll());
-        model.addAttribute("newComment", new CommentDTO());
+        model.addAttribute("comment", new CommentDTO());
+        model.addAttribute("request", new RequestDTO());
 
         return "index";
     }

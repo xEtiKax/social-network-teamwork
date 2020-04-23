@@ -56,13 +56,13 @@ CREATE TABLE IF NOT EXISTS `likes` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table social_network.pictures
+-- Dumping structure for table social_network.	tures
 CREATE TABLE IF NOT EXISTS `pictures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `data` longblob DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
   KEY `requests_users_id_fk_2` (`receiver_id`),
   CONSTRAINT `requests_users_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
   CONSTRAINT `requests_users_id_fk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -111,7 +111,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `cover_photo` longblob DEFAULT NULL,
-  `picture_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_authorities_username_fk` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;

@@ -59,7 +59,7 @@ public class User {
     private Set<User> friends = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
     private Set<Request> requests = new HashSet<>();
 
     @JsonIgnore

@@ -3,7 +3,7 @@
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="UTF-8">
-	<title>WorkWise Html Template</title>
+	<title>WorkWise</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
@@ -24,141 +24,119 @@
 
 
 <body>
-<div class="wrapper">
-	<header>
-		<div class="container">
-			<div class="header-data">
-				<div class="logo">
-					<a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
-				</div><!--logo end-->
-				<div class="search-bar">
-					<form th:action="@{/user/searchUser}" th:object="${user}" method="post">
-						<input type="text" name="username" placeholder="Search...">
-						<button type="submit"><i class="la la-search"></i></button>
-					</form>
-				</div><!--search-bar end-->
-				<nav>
-					<ul>
-						<li>
-							<a th:href="@{/}" title="">
-								<span><img th:src="@{/images/icon1.png}" alt=""></span>
-								Home
-							</a>
-						</li>
-						<li>
-							<a th:href="@{/user/showAllUsers}" title="">
-								<span><img th:src="@{/images/icon4.png}" alt=""></span>
-								Profiles
-							</a>
-							<ul>
-								<li><a th:href="@{/user/showMyProfile}" title="">User Profile</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="#" title="" class="not-box-open">
-								<span><img th:src="@{/images/icon7.png}" alt=""></span>
-								Notification
-							</a>
-							<div class="notification-box noti" id="notification">
-								<div class="nt-title">
-									<h4>Setting</h4>
-									<a href="#" title="">Clear all</a>
-								</div>
-								<div class="nott-list">
-									<div class="notfication-details">
-										<div class="noty-user-img">
-											<img src="../static/images/resources/ny-img1.png" alt="">
+	<div class="wrapper">
+		<header>
+			<div class="container">
+				<div class="header-data">
+					<div class="logo">
+						<a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
+					</div><!--logo end-->
+					<div class="search-bar">
+						<form th:action="@{/user/searchUser}" th:object="${user}" method="post">
+							<input type="text" name="username" placeholder="Search...">
+							<button type="submit"><i class="la la-search"></i></button>
+						</form>
+					</div><!--search-bar end-->
+					<nav>
+						<ul>
+							<li>
+								<a th:href="@{/}" title="">
+									<span><img th:src="@{/images/icon1.png}" alt=""></span>
+									Home
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/user/showAllUsers}" title="">
+									<span><img th:src="@{/images/icon4.png}" alt=""></span>
+									Profiles
+								</a>
+								<ul>
+									<li><a th:href="@{/user/showMyProfile}" title="">My Profile</a></li>
+								</ul>
+							</li>
+							<li th:if="${user != null}">
+								<a href="#" title="" class="not-box-open">
+									<span><img th:src="@{/images/icon7.png}" alt=""></span>
+									Requests
+								</a>
+								<div class="notification-box noti" id="notification" >
+									<div class="nott-list" th:if="${me.getRequests().size() > 0}" >
+										<div class="notfication-details" th:each="request : ${me.getRequests()}" th:object="${request}">
+											<div class="noty-user-img">
+												<img th:if="${request.getSender().getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${request.getSender().getId()} + '/userImage'}"  alt="">
+												<img th:if="${request.getSender().getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+											</div>
+											<div class="notification-info">
+												<h3><a href="#" title="" th:text="${request.sender.username}">Jassica William</a> Send you a friend request.</h3>
+											</div><!--notification-info -->
 										</div>
-										<div class="notification-info">
-											<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-											<span>2 min ago</span>
-										</div><!--notification-info -->
-									</div>
-									<div class="notfication-details">
-										<div class="noty-user-img">
-											<img src="../static/images/resources/ny-img2.png" alt="">
+										<div class="view-all-nots">
+											<a th:href="@{request/showRequests}" title="">View Requests</a>
 										</div>
-										<div class="notification-info">
-											<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-											<span>2 min ago</span>
-										</div><!--notification-info -->
-									</div>
-									<div class="notfication-details">
-										<div class="noty-user-img">
-											<img src="../static/images/resources/ny-img3.png" alt="">
-										</div>
-										<div class="notification-info">
-											<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-											<span>2 min ago</span>
-										</div><!--notification-info -->
-									</div>
-									<div class="view-all-nots">
-										<a href="#" title="">View All Notification</a>
-									</div>
-								</div><!--nott-list end-->
-							</div><!--notification-box end-->
-						</li>
-						<li th:if="${user == null}">
-							<a th:href="@{/login}" title="">
-								<span><img th:src="@{/images/icon3.png}" alt=""></span>
-								Login
-							</a>
-						</li>
-						<li th:if="${user != null}">
-							<a th:href="@{/logout}" title="">
-								<span><img th:src="@{/images/icon3.png}" alt=""></span>
-								Logout
-							</a>
-						</li>
-					</ul>
-				</nav><!--nav end-->
-				<div class="menu-btn">
-					<a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
-				</div><!--menu-btn end-->
-				<div class="user-account">
-					<div class="user-info" th:if="${me != null}">
-						<img th:if="${me.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${me.getId()} + '/userImage'}"  alt="">
-						<img th:if="${me.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-						<a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
+									</div><!--nott-list end-->
+								</div><!--notification-box end-->
+							</li>
+							<li th:if="${user == null}">
+								<a th:href="@{/login}" title="">
+									<span><img th:src="@{/images/icon3.png}" alt=""></span>
+									Login
+								</a>
+							</li>
+							<li th:if="${user != null}">
+								<a th:href="@{/logout}" title="">
+									<span><img th:src="@{/images/icon3.png}" alt=""></span>
+									Logout
+								</a>
+							</li>
+						</ul>
+					</nav><!--nav end-->
+					<div class="menu-btn">
+						<a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
+					</div><!--menu-btn end-->
+					<div class="user-account">
+							<div class="user-info" th:if="${me != null}">
+								<img th:if="${me.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${me.getId()} + '/userImage'}"  alt="">
+								<img th:if="${me.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+								<a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
+							</div>
+						</div>
+				</div><!--header-data end-->
+			</div>
+		</header><!--header end-->
+		<section class="cover-sec">
+			<img th:if="${user.coverPhoto}" style="height: 450px;width: 1600px;" th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"  alt="">
+			<img th:if="${user.coverPhoto == null}" style="height: 450px;width: 1600px;" th:src="@{/images/resources/cover-default.jpg}" alt="">
+				<div class="container">
+					<div class="row no-gutters">
+						<div class="col-lg-12 col-sm-12">
+						</div>
 					</div>
 				</div>
-			</div><!--header-data end-->
-		</div>
-	</header><!--header end-->
-	<section class="cover-sec">
-		<img th:if="${user.coverPhoto}" style="height: 450px;width: 1600px;" th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"  alt="">
-		<img th:if="${user.coverPhoto == null}" style="height: 450px;width: 1600px;" th:src="@{/images/resources/cover-default.jpg}" alt="">
-		<div class="container">
-			<div class="row no-gutters">
-				<div class="col-lg-12 col-sm-12">
-				</div>
-			</div>
-		</div>
-	</section>
-	<main>
-		<div class="main-section">
-			<div class="container">
-				<div class="main-section-data">
-					<div class="row">
-						<div class="col-lg-3">
-							<div class="main-left-sidebar">
-								<div class="user_profile">
-									<div class="user-pro-img">
-										<img th:if="${isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-										<img th:if="${!isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-									</div><!--user-pro-img end-->
-									<div class="user_pro_status">
-										<ul class="flw-hr">
-											<li><a th:if="${!isFriendAndIsSentRequest} and ${user.getId() != me.getId()}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
-											<li><a th:if="${isSentRequest} and ${user.getId() != me.getId()}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
-											<li><a th:if="${isFriend} and ${user.getId() != me.getId()}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
-										</ul>
+		</section>
+		<main>
+			<div class="main-section">
+				<div class="container">
+					<div class="main-section-data">
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="main-left-sidebar">
+									<div class="user_profile">
+										<div class="user-pro-img">
+											<img th:if="${user.getPhoto()}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+											<img th:if="${user.getPhoto() == null}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
-											<ul class="user-fw-status">
-												<li>
-													<b th:text="${friendsCounter + ' Friends'}" >Friends</b>
-												</li>
+											<ul class="flw-hr">
+												<li><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
+												<li><a th:if="${isSentRequest}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
+												<li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
 											</ul>
+											<div class="user_pro_status">
+												<ul class="user-fw-status">
+													<li>
+														<b th:text="${friendsCounter + ' Friends'}" >Friends</b>
+													</li>
+												</ul>
 										</div><!--user_pro_status end-->
 									</div>
 								</div><!--user_profile end-->

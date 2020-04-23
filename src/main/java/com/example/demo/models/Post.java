@@ -41,7 +41,7 @@ public class Post {
     private boolean enabled = true;
 
     @Transient
-    private boolean CanDelete;
+    private boolean CanDeleteUpdate;
 
     @JsonIgnore
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
@@ -56,13 +56,7 @@ public class Post {
 
     public List<Comment> sortByDate(List<Comment> sortByDate) {
 
-        Comparator<Comment> byDate = new Comparator<Comment>() {
-            @Override
-            public int compare(Comment o1, Comment o2) {
-                return o1.getDateTime().compareTo(o2.getDateTime());
-            }
-        };
-//        Collections.sort(sortByDate);
+        Comparator<Comment> byDate = Comparator.comparing(Comment::getDateTime);
 
         return sortByDate.stream().sorted(byDate).collect(Collectors.toList());
     }
@@ -129,12 +123,12 @@ public class Post {
         this.comments = comments;
     }
 
-    public boolean getCanDelete() {
-        return CanDelete;
+    public boolean getCanDeleteUpdate() {
+        return CanDeleteUpdate;
     }
 
-    public void setCanDelete(boolean canDelete) {
-        CanDelete = canDelete;
+    public void setCanDeleteUpdate(boolean canDeleteUpdate) {
+        CanDeleteUpdate = canDeleteUpdate;
     }
 
     public void addLike(Like like) {

@@ -44,6 +44,11 @@ public class PostRestController {
 
     @DeleteMapping("/delete/{id}")
     public void deletePost(@PathVariable long id, Principal principal, HttpServletRequest request) {
-        postService.deletePost(id, principal, request);
+        try {
+            postService.deletePost(id, principal, request);
+        }catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
     }
 }

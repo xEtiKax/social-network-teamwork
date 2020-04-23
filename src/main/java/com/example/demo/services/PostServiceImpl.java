@@ -8,8 +8,6 @@ import com.example.demo.repositories.PostRepository;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,7 +59,7 @@ public class PostServiceImpl implements PostService {
     public void deletePost(long id, Principal principal, HttpServletRequest request) {
         throwIfPostDoesNotExists(id);
         Post post = postRepository.getById(id);
-        canUserDeletePost(post, principal, request);
+        canUserDeleteUpdatePost(post, principal, request);
         post.setEnabled(false);
         postRepository.save(post);
     }
@@ -90,13 +88,14 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    private void canUserDeletePost(Post post, Principal principal, HttpServletRequest request) {
+    private void canUserDeleteUpdatePost(Post post, Principal principal, HttpServletRequest request) {
         if (principal != null && (principal.getName().equals(post.getCreatedBy().getUsername()) ||
                 request.isUserInRole("ROLE_ADMIN"))) {
-            post.setCanDelete(true);
+            post.setCanDeleteUpdate(true);
         }
-        post.setCanDelete(false);
+        post.setCanDeleteUpdate(false);
     }
+
 
     @Override
     public List<Post> getMyFeed(List<Long> friendIds) {

@@ -4,21 +4,27 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>WorkWise Html Template</title>
+    <title>WorkWise</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" href="../static/css/animate.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/flatpickr.min.css}" href="../static/css/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/css/line-awesome.css}" href="../static/css/line-awesome.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}" href="../static/css/line-awesome-font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome.css}" href="../static/css/line-awesome.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}"
+          href="../static/css/line-awesome-font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+          href="../static/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"
+          href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.mCustomScrollbar.min.css}"
+          href="../static/css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}" href="../static/lib/slick/slick-theme.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}"
+          href="../static/lib/slick/slick-theme.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../static/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 </head>
 
 <body>
@@ -54,55 +60,24 @@
                                 <li><a th:href="@{/user/showMyProfile}" title="">My Profile</a></li>
                             </ul>
                         </li>
-                        <li>
+                        <li th:if="${user != null}">
                             <a href="#" title="" class="not-box-open">
                                 <span><img th:src="@{/images/icon7.png}" alt=""></span>
-                                Notification
+                                Requests
                             </a>
-                            <div class="notification-box noti" id="notification">
-                                <div class="nt-title">
-                                    <h4>Setting</h4>
-                                    <a href="#" title="">Clear all</a>
-                                </div>
-                                <div class="nott-list">
-                                    <div class="notfication-details">
+                            <div class="notification-box noti" id="notification" >
+                                <div class="nott-list" th:if="${user.getRequests().size() > 0}" >
+                                    <div class="notfication-details" th:each="request : ${user.getRequests()}" th:object="${request}">
                                         <div class="noty-user-img">
-                                            <img src="../static/images/resources/ny-img1.png" alt="">
+                                            <img th:if="${request.getSender().getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${request.getSender().getId()} + '/userImage'}"  alt="">
+                                            <img th:if="${request.getSender().getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                         </div>
                                         <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div><!--notification-info -->
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="../static/images/resources/ny-img2.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div><!--notification-info -->
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="../static/images/resources/ny-img3.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div><!--notification-info -->
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="../static/images/resources/ny-img2.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
+                                            <h3><a href="#" title="" th:text="${request.sender.username}">Jassica William</a> Send you a friend request.</h3>
                                         </div><!--notification-info -->
                                     </div>
                                     <div class="view-all-nots">
-                                        <a href="#" title="">View All Notification</a>
+                                        <a th:href="@{request/showRequests}" title="">View Requests</a>
                                     </div>
                                 </div><!--nott-list end-->
                             </div><!--notification-box end-->
@@ -122,7 +97,6 @@
                     </ul>
                 </nav><!--nav end-->
                 <div class="menu-btn">
-                    <!--TODO menu button-->
                     <a href="#" title=""><i class="fa fa-bars"></i></a>
                 </div><!--menu-btn end-->
                 <div class="user-account">

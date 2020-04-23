@@ -1,9 +1,11 @@
 package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.CommentDTO;
+import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
@@ -105,15 +107,19 @@ public class UserController {
     }
 
     @PostMapping(value = "/searchUser")
-    public String searchUser(@RequestParam(value = "username") String username, Model model) {
+    public String searchUser(@RequestParam(value = "username") String username, Model model, Principal principal) {
         List<User> result = userService.getByNameLikeThis(username);
+        User user = userService.getByUsername(principal.getName());
         model.addAttribute("result", result);
+        model.addAttribute("user", user);
         return "search-result";
     }
 
     @GetMapping("/showAllUsers")
-    public String showUsers(Model model) {
+    public String showUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getAll());
+        User user = userService.getByUsername(principal.getName());
+        model.addAttribute("user", user);
         return "profiles";
     }
 
@@ -201,14 +207,19 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/showMyPosts")
+    @GetMapping("/post/new")
     public String showUserPosts(Model model, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        List<Post> posts = postService.getPostsByUserId(user.getId());
-        model.addAttribute("user", user);
-        model.addAttribute("myPosts", posts);
-        model.addAttribute("post", new Post());
-        model.addAttribute("comment", new CommentDTO());
+        try {
+            User user = userService.getByUsername(principal.getName());
+            model.addAttribute("user", user);
+            model.addAttribute("friendsCounter", user.getFriends().size());
+        }
+        catch (EntityNotFoundException e){
+            model.addAttribute("error", e);
+            return "error";
+        }
+        model.addAttribute("post", new PostDTO());
+
         return "my-profile-feed";
     }
 
@@ -233,14 +244,12 @@ public class UserController {
     }
 
 
-
     @RequestMapping(value = "/photoPrivacy", method = RequestMethod.GET)
     public String photoPrivacy(Principal principal) {
         User user = userService.getByUsername(principal.getName());
         if (user.getPhoto().isPublic()) {
             imageService.setPrivacy(user.getPhoto(), false);
-        }
-        else{
+        } else {
             imageService.setPrivacy(user.getPhoto(), true);
         }
         return "redirect:/user/privacy";

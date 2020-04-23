@@ -28,8 +28,16 @@ public class PostController {
     }
 
     @GetMapping("/new")
-    public String showNewPostForm(Model model) {
+    public String showNewPostForm(Model model, Principal principal) {
         model.addAttribute("post", new PostDTO());
+        try {
+            User user = userService.getByUsername(principal.getName());
+            model.addAttribute("user", user);
+            model.addAttribute("friendsCounter", user.getFriends().size());
+        } catch (EntityNotFoundException e){
+            model.addAttribute("error", e);
+            return "error";
+        }
         return "index";
     }
 
@@ -114,7 +122,6 @@ public class PostController {
         }
         return "redirect:/user/showMyProfile";
     }
-
 
 
 }
