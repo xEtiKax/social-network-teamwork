@@ -11,6 +11,7 @@ import com.example.demo.services.interfaces.ImageService;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.RequestService;
 import com.example.demo.services.interfaces.UserService;
+import org.graalvm.compiler.core.phases.EconomyHighTier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,12 @@ public class UserController {
 
         boolean isFriend = false;
         boolean isFriendAndIsSentRequest = true;
+        boolean isVisiblePicture = true;
+
+        if (user.getPhoto() == null || !user.getFriends().contains(me) || !user.getPhoto().isPublic()) {
+            isVisiblePicture = false;
+        }
+
         if (!user.getFriends().contains(me) && !isSentRequest) {
             isFriendAndIsSentRequest = false;
         }
@@ -68,6 +75,7 @@ public class UserController {
         model.addAttribute("isFriendAndIsSentRequest", isFriendAndIsSentRequest);
         model.addAttribute("posts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
+        model.addAttribute("isVisiblePicture",isVisiblePicture);
         model.addAttribute("comment", new CommentDTO());
         return "user-profile";
     }

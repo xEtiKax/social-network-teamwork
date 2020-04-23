@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -25,178 +24,179 @@
 
 
 <body>
-	<div class="wrapper">
-		<header>
-			<div class="container">
-				<div class="header-data">
-					<div class="logo">
-						<a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
-					</div><!--logo end-->
-					<div class="search-bar">
-						<form th:action="@{/user/searchUser}" th:object="${user}" method="post">
-							<input type="text" name="username" placeholder="Search...">
-							<button type="submit"><i class="la la-search"></i></button>
-						</form>
-					</div><!--search-bar end-->
-					<nav>
-						<ul>
-							<li>
-								<a th:href="@{/}" title="">
-									<span><img th:src="@{/images/icon1.png}" alt=""></span>
-									Home
-								</a>
-							</li>
-							<li>
-								<a th:href="@{/user/showAllUsers}" title="">
-									<span><img th:src="@{/images/icon4.png}" alt=""></span>
-									Profiles
-								</a>
-								<ul>
-									<li><a th:href="@{/user/showMyProfile}" title="">User Profile</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#" title="" class="not-box-open">
-									<span><img th:src="@{/images/icon7.png}" alt=""></span>
-									Notification
-								</a>
-								<div class="notification-box noti" id="notification">
-									<div class="nt-title">
-										<h4>Setting</h4>
-										<a href="#" title="">Clear all</a>
+<div class="wrapper">
+	<header>
+		<div class="container">
+			<div class="header-data">
+				<div class="logo">
+					<a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
+				</div><!--logo end-->
+				<div class="search-bar">
+					<form th:action="@{/user/searchUser}" th:object="${user}" method="post">
+						<input type="text" name="username" placeholder="Search...">
+						<button type="submit"><i class="la la-search"></i></button>
+					</form>
+				</div><!--search-bar end-->
+				<nav>
+					<ul>
+						<li>
+							<a th:href="@{/}" title="">
+								<span><img th:src="@{/images/icon1.png}" alt=""></span>
+								Home
+							</a>
+						</li>
+						<li>
+							<a th:href="@{/user/showAllUsers}" title="">
+								<span><img th:src="@{/images/icon4.png}" alt=""></span>
+								Profiles
+							</a>
+							<ul>
+								<li><a th:href="@{/user/showMyProfile}" title="">User Profile</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#" title="" class="not-box-open">
+								<span><img th:src="@{/images/icon7.png}" alt=""></span>
+								Notification
+							</a>
+							<div class="notification-box noti" id="notification">
+								<div class="nt-title">
+									<h4>Setting</h4>
+									<a href="#" title="">Clear all</a>
+								</div>
+								<div class="nott-list">
+									<div class="notfication-details">
+										<div class="noty-user-img">
+											<img src="../static/images/resources/ny-img1.png" alt="">
+										</div>
+										<div class="notification-info">
+											<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+											<span>2 min ago</span>
+										</div><!--notification-info -->
 									</div>
-									<div class="nott-list">
-										<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="../static/images/resources/ny-img1.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="../static/images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="../static/images/resources/ny-img3.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="view-all-nots">
-						  					<a href="#" title="">View All Notification</a>
-						  				</div>
-									</div><!--nott-list end-->
-								</div><!--notification-box end-->
-							</li>
-							<li th:if="${user == null}">
-								<a th:href="@{/login}" title="">
-									<span><img th:src="@{/images/icon3.png}" alt=""></span>
-									Login
-								</a>
-							</li>
-							<li th:if="${user != null}">
-								<a th:href="@{/logout}" title="">
-									<span><img th:src="@{/images/icon3.png}" alt=""></span>
-									Logout
-								</a>
-							</li>
-						</ul>
-					</nav><!--nav end-->
-					<div class="menu-btn">
-						<a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
-					</div><!--menu-btn end-->
-					<div class="user-account">
-							<div class="user-info" th:if="${me != null}">
-								<img th:if="${me.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${me.getId()} + '/userImage'}"  alt="">
-								<img th:if="${me.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-								<a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
-							</div>
-						</div>
-				</div><!--header-data end-->
-			</div>
-		</header><!--header end-->
-		<section class="cover-sec">
-			<img th:if="${user.coverPhoto}" style="height: 450px;width: 1600px;" th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"  alt="">
-			<img th:if="${user.coverPhoto == null}" style="height: 450px;width: 1600px;" th:src="@{/images/resources/cover-default.jpg}" alt="">
-				<div class="container">
-					<div class="row no-gutters">
-						<div class="col-lg-12 col-sm-12">
-						</div>
+									<div class="notfication-details">
+										<div class="noty-user-img">
+											<img src="../static/images/resources/ny-img2.png" alt="">
+										</div>
+										<div class="notification-info">
+											<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+											<span>2 min ago</span>
+										</div><!--notification-info -->
+									</div>
+									<div class="notfication-details">
+										<div class="noty-user-img">
+											<img src="../static/images/resources/ny-img3.png" alt="">
+										</div>
+										<div class="notification-info">
+											<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+											<span>2 min ago</span>
+										</div><!--notification-info -->
+									</div>
+									<div class="view-all-nots">
+										<a href="#" title="">View All Notification</a>
+									</div>
+								</div><!--nott-list end-->
+							</div><!--notification-box end-->
+						</li>
+						<li th:if="${user == null}">
+							<a th:href="@{/login}" title="">
+								<span><img th:src="@{/images/icon3.png}" alt=""></span>
+								Login
+							</a>
+						</li>
+						<li th:if="${user != null}">
+							<a th:href="@{/logout}" title="">
+								<span><img th:src="@{/images/icon3.png}" alt=""></span>
+								Logout
+							</a>
+						</li>
+					</ul>
+				</nav><!--nav end-->
+				<div class="menu-btn">
+					<a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
+				</div><!--menu-btn end-->
+				<div class="user-account">
+					<div class="user-info" th:if="${me != null}">
+						<img th:if="${me.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${me.getId()} + '/userImage'}"  alt="">
+						<img th:if="${me.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+						<a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
 					</div>
 				</div>
-		</section>
-		<main>
-			<div class="main-section">
-				<div class="container">
-					<div class="main-section-data">
-						<div class="row">
-							<div class="col-lg-3">
-								<div class="main-left-sidebar">
-									<div class="user_profile">
-										<div class="user-pro-img">
-											<img th:if="${user.getPhoto()} " style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-											<img th:if="${user.getPhoto() == null}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-										</div><!--user-pro-img end-->
+			</div><!--header-data end-->
+		</div>
+	</header><!--header end-->
+	<section class="cover-sec">
+		<img th:if="${user.coverPhoto}" style="height: 450px;width: 1600px;" th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"  alt="">
+		<img th:if="${user.coverPhoto == null}" style="height: 450px;width: 1600px;" th:src="@{/images/resources/cover-default.jpg}" alt="">
+		<div class="container">
+			<div class="row no-gutters">
+				<div class="col-lg-12 col-sm-12">
+				</div>
+			</div>
+		</div>
+	</section>
+	<main>
+		<div class="main-section">
+			<div class="container">
+				<div class="main-section-data">
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="main-left-sidebar">
+								<div class="user_profile">
+									<div class="user-pro-img">
+										<img th:if="${isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+										<img th:if="${!isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+									</div><!--user-pro-img end-->
+									<div class="user_pro_status">
+										<ul class="flw-hr">
+											<li><a th:if="${!isFriendAndIsSentRequest} and ${user.getId() != me.getId()}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
+											<li><a th:if="${isSentRequest} and ${user.getId() != me.getId()}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
+											<li><a th:if="${isFriend} and ${user.getId() != me.getId()}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
+										</ul>
 										<div class="user_pro_status">
-											<ul class="flw-hr">
-												<li><a th:if="${!isFriendAndIsSentRequest} and ${user.getId() != me.getId()}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
-												<li><a th:if="${isSentRequest} and ${user.getId() != me.getId()}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
-												<li><a th:if="${isFriend} and ${user.getId() != me.getId()}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
+											<ul class="user-fw-status">
+												<li>
+													<b th:text="${friendsCounter + ' Friends'}" >Friends</b>
+												</li>
 											</ul>
-											<div class="user_pro_status">
-												<ul class="user-fw-status">
-													<li>
-														<b th:text="${friendsCounter + ' Friends'}" >Friends</b>
-													</li>
-												</ul>
 										</div><!--user_pro_status end-->
 									</div>
-									</div><!--user_profile end-->
-								</div><!--main-left-sidebar end-->
-							</div>
-							<div class="col-lg-6">
-								<div class="main-ws-sec">
-									<div class="user-tab-sec">
-										<h3 th:text=" ${user.getFirstName()}" ></h3>
-										<h3 th:text=" ${user.getLastName()}" ></h3>
-										<div class="star-descp">
-											<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>
-										</div><!--star-descp end-->
-										<div class="tab-feed st2 settingjb">
-											<ul>
-												<li data-tab="feed-dd" class="active">
-													<a href="#" title="">
-														<img src="../static/images/ic1.png" alt="">
-														<span>Feed</span>
-													</a>
-												</li>
-												<li data-tab="info-dd">
-													<a href="#" title="">
-														<img src="../static/images/ic2.png" alt="">
-														<span>Info</span>
-													</a>
-												</li>
-											</ul>
-										</div><!-- tab-feed end-->
-									</div><!--user-tab-sec end-->
-									<div class="product-feed-tab current" id="feed-dd">
-										<div class="posts-section">
-											<div class="post-bar" th:each="post, iter : ${posts}">
+								</div><!--user_profile end-->
+							</div><!--main-left-sidebar end-->
+						</div>
+						<div class="col-lg-6">
+							<div class="main-ws-sec">
+								<div class="user-tab-sec">
+									<h3 th:text=" ${user.getFirstName()}" ></h3>
+									<h3 th:text=" ${user.getLastName()}" ></h3>
+									<div class="star-descp">
+										<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>
+									</div><!--star-descp end-->
+									<div class="tab-feed st2 settingjb">
+										<ul>
+											<li data-tab="feed-dd" class="active">
+												<a href="#" title="">
+													<img src="../static/images/ic1.png" alt="">
+													<span>Feed</span>
+												</a>
+											</li>
+											<li data-tab="info-dd">
+												<a href="#" title="">
+													<img src="../static/images/ic2.png" alt="">
+													<span>Info</span>
+												</a>
+											</li>
+										</ul>
+									</div><!-- tab-feed end-->
+								</div><!--user-tab-sec end-->
+								<div class="product-feed-tab current" id="feed-dd">
+									<div class="posts-section">
+										<div class="posty" th:each="post, iter : ${posts}" style="margin-bottom: 10px;">
+											<div class="post-bar no-margin">
 												<div class="post_topbar">
-													<div class="usy-dt">
-														<img th:if="${user.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-														<img th:if="${user.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+													<div class="usy-dt" th:if="${post.createdBy}">
+														<img th:if="${post.createdBy.photo} and ${post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
+														<img th:if="${post.createdBy.photo == null} or ${!post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 														<div class="usy-name">
 															<h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
 															<span th:text="${post.getDateTime()}">
@@ -204,11 +204,11 @@
                                                         </span>
 														</div>
 													</div>
-													<div class="ed-opts">
+													<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == post.createdBy.username}">
 														<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
 														<ul class="ed-options">
-															<li><a th:href="@{'/post/edit/' + ${post.id}}" title="">Edit Post</a></li>
-															<li><a th:onclick="|completeAndRedirect('${post.id}', '*{iter.index}')|" title="">Delete post</a></li>
+															<li><a th:href="@{'post/edit/' + ${post.id}}" href="#" title="">Edit Post</a></li>
+															<li><a th:onclick="|completeAndRedirect('${post.id}', '*{iter.index}')|" style="margin-top:2px"  href="#" title="">Delete post</a></li>
 															<form style="visibility: hidden; max-height: 0" th:id="*{iter.index}" action="javascript:void(0)" method="post">
 																<button class="btn btn-danger" type="submit">Delete Post</button>
 															</form>
@@ -218,51 +218,17 @@
 												<div class="epi-sec">
 													<ul class="descp">
 														<li><img th:src="@{/images/icon9.png}" alt=""><span>Bulgaria</span>
+														</li>
 													</ul>
 												</div>
 												<div class="job_descp">
 													<p th:text="${post.text}">Lorem ipsum dolor sit amet <a href="#" title="">view more</a></p>
 												</div>
-												<div class="comment-section">
-													<div class="comment-sec"
-														 th:if="${post.getComments().size() > 0}">
-														<ul>
-															<li th:each="comment : ${post.getComments()}">
-																<div class="comment-list">
-																	<div class="bg-img">
-																		<img th:src="@{/images/resources/bg-img1.png}"
-																			 alt="">
-																	</div>
-																	<div class="comment">
-																		<img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
-																		<img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-																		<h1><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h1>
-																		<span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}" alt=""></span>
-																		<p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
-																	</div>
-																</div><!--comment-list end-->
-															</li>
-														</ul>
-													</div>
-													<div class="comment-sec"
-														 th:if="${post.getComments().size() == 0}">
-														<p>No comments</p>
-													</div>
-													<!--comment-sec end-->
-													<div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
-														<div class="comment_box">
-															<form th:action="@{'/comment/user-profile/add/' + ${post.id} + '/' + ${user.id}}" method="post" th:object="${comment}">
-																<input type="text" placeholder="Post a comment" th:field="*{description}">
-																<button type="submit">Send</button>
-															</form>
-														</div>
-													</div><!--post-comment end-->
-												</div><!--comment-section end-->
 												<div class="job-status-bar">
-													<ul class="like-com">
+													<ul class="like-com" sec:authorize="hasRole('ROLE_USER')">
 														<li>
-															<a th:if="${!post.isLiked()}" th:href="@{'/like/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
-															<a th:if="${post.isLiked()}" th:href="@{'/dislike/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
+															<a th:if="${!post.isLiked()}" th:href="@{'/likePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
+															<a th:if="${post.isLiked()}" th:href="@{'/dislikePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
 															<img th:src="@{/images/liked-img.png}" alt="">
 															<span th:text=" ${post.getLikes().size()}">Likes</span>
 														</li>
@@ -270,41 +236,87 @@
 													</ul>
 												</div>
 											</div><!--post-bar end-->
-										</div><!--posts-section end-->
-									</div><!--product-feed-tab end-->
-								</div><!--main-ws-sec end-->
-							</div>
+											<div class="comment-section">
+												<div th:if="${post.getComments().size() > 0}">
+													<ul>
+														<li th:each="comment,iter : ${post.getComments()}">
+															<div class="comment-list">
+																<div class="bg-img">
+																	<img th:src="@{/images/resources/bg-img1.png}"
+																		 alt="">
+																</div>
+																<div class="comment">
+																	<img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
+																	<img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+																	<h3><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h3>
+																	<span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}"
+																												  alt=""></span>
+																	<p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
+																</div>
+																<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == comment.getUser().username}">
+																	<a href="#" title="" class="ed-opts-open"><i class="fa fa-heart-broken"></i></a>
+																	<ul class="ed-options">
+																		<li><a th:href="@{'/comment/edit/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
+																		<li><a th:href="@{'/comment/delete/profile/' + ${comment.id}}" style="margin-top:2px"  href="#" title="">Delete comment</a></li>
+																		<form style="visibility: hidden; max-height: 0" th:id="*{iter.index}" action="javascript:void(0)" method="post">
+																			<button class="btn btn-danger" type="submit">Delete Comment</button>
+																		</form>
+																	</ul>
+																</div>
+															</div><!--comment-list end-->
+														</li>
+													</ul>
+												</div>
+												<div class="comment-sec"
+													th:if="${post.getComments().size() == 0}">
+													<p>No comments</p>
+												</div>
+												<!--comment-sec end-->
+												<div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
+													<div class="comment_box">
+														<form th:action="@{'/comment/add/' + ${post.id}}" method="post" th:object="${comment}">
+															<input type="text" placeholder="Post a comment" th:field="*{description}">
+															<button type="submit">Send</button>
+														</form>
+													</div>
+												</div><!--post-comment end-->
+											</div><!--comment-section end-->
+										</div>
+									</div><!--posty end-->
 						</div>
-					</div><!-- main-section-data end-->
-				</div> 
+					</div>
+				</div><!-- main-section-data end-->
 			</div>
-		</main>
+		</div>
+	</div>
+	</div>
+	</main>
 
-		<div class="overview-box" id="create-portfolio">
-			<div class="overview-edit">
-				<h3>Create Portfolio</h3>
-				<form>
-					<input type="text" name="pf-name" placeholder="Portfolio Name">
-					<div class="file-submit">
-						<input type="file" name="file">
-					</div>
-					<div class="pf-img">
-						<img src="../static/images/resources/np.png" alt="">
-					</div>
-					<input type="text" name="website-url" placeholder="htp://www.example.com">
-					<button type="submit" class="save">Save</button>
-					<button type="submit" class="cancel">Cancel</button>
-				</form>
-				<a href="#" title="" class="close-box"><i class="la la-close"></i></a>
-			</div><!--overview-edit end-->
-		</div><!--overview-box end-->
-	</div><!--theme-layout end-->
+	<div class="overview-box" id="create-portfolio">
+		<div class="overview-edit">
+			<h3>Create Portfolio</h3>
+			<form>
+				<input type="text" name="pf-name" placeholder="Portfolio Name">
+				<div class="file-submit">
+					<input type="file" name="file">
+				</div>
+				<div class="pf-img">
+					<img src="../static/images/resources/np.png" alt="">
+				</div>
+				<input type="text" name="website-url" placeholder="htp://www.example.com">
+				<button type="submit" class="save">Save</button>
+				<button type="submit" class="cancel">Cancel</button>
+			</form>
+			<a href="#" title="" class="close-box"><i class="la la-close"></i></a>
+		</div><!--overview-edit end-->
+	</div><!--overview-box end-->
+</div><!--theme-layout end-->
 
 
-	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/popper.js}"></script>
-	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" th:src="@{/lib/slick/slick.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/script.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/slick/slick.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

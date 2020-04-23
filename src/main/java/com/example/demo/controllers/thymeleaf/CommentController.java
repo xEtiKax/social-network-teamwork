@@ -32,11 +32,24 @@ public class CommentController {
         this.userService = userService;
         this.commentService = commentService;
     }
-//    @GetMapping("/new")
-//    public String showNewCommentForm(Model model) {
-//        model.addAttribute("comment", new CommentDTO());
-//        return "index";
-//    }
+    @GetMapping("/edit/{commentId}")
+    public String showUpdateCommentForm(@PathVariable int commentId, Model model) {
+        Comment comment = commentService.getById(commentId);
+        model.addAttribute("comment",comment);
+        return "index";
+    }
+
+    @GetMapping("/edit/profile/{commentId}")
+    public String showEditCommentForm(@PathVariable long commentId, Model model) {
+        model.addAttribute("comment", commentService.getById(commentId));
+        return "index";
+    }
+
+    @GetMapping("/edit/myprofile/{commentId}")
+    public String showEditCommentFormMyProfile(@PathVariable long commentId, Model model) {
+        model.addAttribute("comment", commentService.getById(commentId));
+        return "index";
+    }
 
     @PostMapping("/add/{postId}")
     public String createComment(@PathVariable long postId, CommentDTO commentDTO, Principal principal) {
@@ -50,14 +63,15 @@ public class CommentController {
         return "redirect:/user/showMyProfile";
     }
 
-    @PostMapping("/profile/add/{postId}/{userId}")
-    public String createUserProfileComment(@PathVariable long postId, @PathVariable long userId,
+    @PostMapping("/profile/add/{postId}")
+    public String createUserProfileComment(@PathVariable long postId,
                                            CommentDTO commentDTO, Principal principal) {
         createCommentPattern(postId, commentDTO, principal);
+        long userId = postService.getPostById(postId).getCreatedBy().getId();
         return "redirect:/user/showUserProfile/" + userId;
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/edit/{id}")
     public String updateComment(@PathVariable long id, @ModelAttribute CommentDTO commentDTO, Model model) {
         try {
             commentService.updateComment(id,commentDTO);
@@ -66,6 +80,28 @@ public class CommentController {
             return "error";
         }
         return "redirect:/";
+    }
+
+    @PostMapping("/edit/profile/{id}")
+    public String updateCommentProfile(@PathVariable long id, @ModelAttribute CommentDTO commentDTO, Model model) {
+        try {
+            commentService.updateComment(id,commentDTO);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/user/showUserProfile/" + commentService.getById(id).getPost().getCreatedBy().getId();
+    }
+
+    @PostMapping("/edit/myprofile/{id}")
+    public String updateCommentMyProfile(@PathVariable long id, @ModelAttribute CommentDTO commentDTO, Model model) {
+        try {
+            commentService.updateComment(id,commentDTO);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/user/showUserProfile/" + commentService.getById(id).getPost().getCreatedBy().getId();
     }
 
     @RequestMapping(value = "/delete/{commentId}", method = RequestMethod.GET)
@@ -83,15 +119,27 @@ public class CommentController {
         return "redirect:/";
     }
 
-    @GetMapping("/edit/profile/{commentId}")
-    public String showEditCommentForm(@PathVariable long commentId, Model model) {
-        model.addAttribute("comment", commentService.getById(commentId));
-        return "index";
-    }
+
 
     @RequestMapping(value = "/delete/profile/{commentId}", method = RequestMethod.GET)
     public String deleteCommentProfile(@PathVariable long commentId, Model model,
                                 Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        long userId = commentService.getById(commentId).getPost().getCreatedBy().getId();
+        try {
+            commentService.deleteComment(commentId, user.getUsername());
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }catch (AuthorizationException auth) {
+            model.addAttribute("auth",auth);
+        }
+        return "redirect:/user/showUserProfile/" + userId;
+    }
+
+    @RequestMapping(value = "/delete/myprofile/{commentId}", method = RequestMethod.GET)
+    public String deleteCommentMyProfile(@PathVariable long commentId, Model model,
+                                       Principal principal) {
         User user = userService.getByUsername(principal.getName());
         try {
             commentService.deleteComment(commentId, user.getUsername());
@@ -101,14 +149,10 @@ public class CommentController {
         }catch (AuthorizationException auth) {
             model.addAttribute("auth",auth);
         }
-        return "redirect:/showUserProfile/" + commentService.getById(commentId).getPost().getCreatedBy().getId();
+        return "redirect:/user/showMyProfile";
     }
 
-    @GetMapping("/edit/{commentId}")
-    public String showEditCommentFormProfile(@PathVariable long commentId, Model model) {
-        model.addAttribute("comment", commentService.getById(commentId));
-        return "redirect:/showUserProfile/" + commentService.getById(commentId).getPost().getCreatedBy().getId();
-    }
+
 
     private void createCommentPattern(long postId, CommentDTO commentDTO, Principal principal) {
         User user = userService.getByUsername(principal.getName());

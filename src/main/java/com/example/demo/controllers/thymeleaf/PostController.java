@@ -33,6 +33,8 @@ public class PostController {
         return "index";
     }
 
+
+
     @PostMapping("/add")
     public String addPost(@Valid @ModelAttribute("post") PostDTO postDTO, Model model, Principal principal) {
         try {

@@ -28,7 +28,6 @@
 
 <body>
 <div class="wrapper" th:classappend="${post} ? overlay : ''" style="height: 100vh">
-<!--    <div class="wrapper" th:classappend="${comment} ? overlay : ''" style="height: 100vh">-->
     <header>
         <div class="container">
             <div class="header-data">
@@ -213,7 +212,6 @@
                                             </div>
                                             <div class="epi-sec">
                                                 <ul class="descp">
-                                                    <!--TODO location-->
                                                     <li><img th:src="@{/images/icon9.png}" alt=""><span>Bulgaria</span>
                                                     </li>
                                                 </ul>
@@ -271,7 +269,7 @@
                                             <!--comment-sec end-->
                                             <div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
                                                 <div class="comment_box">
-                                                    <form th:action="@{'/comment/add/' + ${post.id}}" method="post" th:object="${comment}">
+                                                    <form th:action="@{'/comment/add/' + ${post.id}}" method="post" th:object="${newComment}">
                                                         <input type="text" placeholder="Post a comment" th:field="*{description}">
                                                         <button type="submit">Send</button>
                                                     </form>
@@ -329,28 +327,28 @@
     </div><!--post-project-popup end-->
 
 
-<!--    <div th:if="${comment}" class="post-popup job_post" th:classappend="${comment} ? active : ''">-->
-<!--        <div class="post-project">-->
-<!--            <h3 th:text="'Edit comment'">Edit comment</h3>-->
-<!--            <div class="post-project-fields">-->
-<!--                <form action="#" th:action=" '/comment/update/' + ${comment.id} '" method="post" th:object="${comment}">-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-12">-->
-<!--                            <textarea name="description" placeholder="Description" th:field="${comment.description}"></textarea>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-12">-->
-<!--                            <ul>-->
-<!--                                <li>-->
-<!--                                    <button class="active" type="submit" value="post" th:text="'Edit'"></button>-->
-<!--                                </li>-->
-<!--                                <li><a href="#" title="" th:href="@{/}">Cancel</a></li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>&lt;!&ndash;post-project-fields end&ndash;&gt;-->
-<!--        </div>&lt;!&ndash;post-project end&ndash;&gt;-->
-<!--    </div>-->
+    <div th:if="${comment}" class="post-popup job_post" th:classappend="${comment} ? active : ''">
+        <div class="post-project">
+            <h3 th:text="'Edit comment'">Edit comment</h3>
+            <div class="post-project-fields">
+                <form action="#" th:action=" '/comment/edit/' + ${comment.id}" method="post" th:object="${comment}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <textarea name="description" placeholder="Description" th:field="${comment.description}"></textarea>
+                        </div>
+                        <div class="col-lg-12">
+                            <ul>
+                                <li>
+                                    <button class="active" type="submit" value="post" th:text="'Edit'"></button>
+                                </li>
+                                <li><a href="#" title="" th:href="@{/}">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div><!--post-project-fields end-->
+        </div><!--post-project end-->
+    </div>
 
     </div>
 </div><!--theme-layout end-->
