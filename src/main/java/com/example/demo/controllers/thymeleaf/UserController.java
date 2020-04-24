@@ -50,10 +50,11 @@ public class UserController {
         User user = userService.getById(userId);
 
         boolean isSentRequest = requestService.checkIfRequestExist(me.getId(), userId);
-
         boolean isFriend = false;
         boolean isFriendAndIsSentRequest = true;
         boolean isVisiblePicture = true;
+        int friendsCounter = user.getFriends().size();
+
 
         if (user.getPhoto() == null || !user.getFriends().contains(me) || !user.getPhoto().isPublic()) {
             isVisiblePicture = false;
@@ -65,9 +66,7 @@ public class UserController {
         if (user.getFriends().contains(me)) {
             isFriend = true;
         }
-        List<Post> posts = checkLike(userId, me, postService.getPostsByUserId(userId));
-
-        int friendsCounter = user.getFriends().size();
+        List<Post> posts = checkLike(me, postService.getPostsByUserId(userId));
 
         model.addAttribute("isSentRequest", isSentRequest);
         model.addAttribute("user", user);
@@ -76,7 +75,7 @@ public class UserController {
         model.addAttribute("isFriendAndIsSentRequest", isFriendAndIsSentRequest);
         model.addAttribute("posts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
-        model.addAttribute("isVisiblePicture",isVisiblePicture);
+        model.addAttribute("isVisiblePicture", isVisiblePicture);
         model.addAttribute("comment", new CommentDTO());
         return "user-profile";
     }
@@ -88,7 +87,7 @@ public class UserController {
         int friendsCounter = user.getFriends().size();
 
         List<Long> friendIds = getFriendIds(user);
-        List<Post> posts = checkLike(user.getId(), user, postService.getMyFeed(friendIds));
+        List<Post> posts = checkLike(user, postService.getMyFeed(friendIds));
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
@@ -200,7 +199,7 @@ public class UserController {
         if (passwordMatch) {
             userService.deleteUser(user.getId());
         } else {
-            model.addAttribute("wrongPassword", "Wrong email or password");
+            model.addAttribute("wrongPassword", "Wrong password");
             return "deactivate-account";
         }
         return "index";
@@ -231,7 +230,7 @@ public class UserController {
         return friendIds;
     }
 
-    public List<Post> checkLike(@PathVariable long userId, User user, List<Post> posts) {
+    public List<Post> checkLike(User user, List<Post> posts) {
         for (Post post : posts) {
             for (Like like : post.getLikes()) {
                 if (like.getUser().getId() == user.getId()) {

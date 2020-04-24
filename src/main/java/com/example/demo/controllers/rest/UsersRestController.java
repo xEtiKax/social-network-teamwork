@@ -56,17 +56,15 @@ public class UsersRestController {
     public User createUser(@RequestBody UserDTO userDTO) {
         try {
             userService.createUser(userDTO);
-        } catch (DuplicateEntityException | IOException e) {
+        } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
         return userService.getByUsername(userDTO.getUsername());
     }
 
-    @PutMapping("/update/{id}")
-    public User updateUser(@RequestBody UserDTO userDTO, @PathVariable long id) {
-        User user = userService.getById(id);
+    @PutMapping("/update")
+    public User updateUser(@RequestBody User user) {
         try {
-            user.setUsername(userDTO.getUsername());
             userService.updateUser(user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

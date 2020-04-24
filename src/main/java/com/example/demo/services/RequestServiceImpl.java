@@ -17,6 +17,7 @@ import java.util.List;
 public class RequestServiceImpl implements RequestService {
     public static final String REQUEST_DOES_NOT_EXISTS = "Request does not exists.";
     public static final String REQUEST_ALREADY_WAS_SEND = "Request already was send";
+    public static final String REQUEST_SENT = "You have already sent a request";
     private RequestRepository requestRepository;
     private UserRepository userRepository;
 
@@ -38,7 +39,7 @@ public class RequestServiceImpl implements RequestService {
         requestMerge(request, requestDTO);
         User receiver = request.getReceiver();
         if (receiver.getRequests().contains(request)) {
-            throw new DuplicateEntityException("You are already sent a request");
+            throw new DuplicateEntityException(REQUEST_SENT);
         }
         receiver.addRequest(request);
         requestRepository.save(request);
