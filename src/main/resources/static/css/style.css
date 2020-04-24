@@ -257,6 +257,10 @@ nav ul li:hover > ul,
 	position: relative;
 }
 
+.wrapper.overlay {
+	overflow: hidden;
+}
+
 .overlay:before {
 	content: '';
 	position: absolute;

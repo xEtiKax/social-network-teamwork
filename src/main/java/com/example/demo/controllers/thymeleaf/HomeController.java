@@ -48,7 +48,7 @@ public class HomeController {
         }
         model.addAttribute("friendsCounter", friendsCounter);
         model.addAttribute("users", userService.getAll());
-        model.addAttribute("comment", new CommentDTO());
+        model.addAttribute("newComment", new CommentDTO());
         model.addAttribute("request", new RequestDTO());
 
         return "index";

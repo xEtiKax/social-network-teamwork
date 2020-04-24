@@ -19,7 +19,6 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../static/css/responsive.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-
 </head>
 <body>
 	<div class="wrapper" th:classappend="${post} ? overlay : ''">
@@ -123,55 +122,53 @@
 				<div class="container">
 					<div class="main-section-data">
 						<div class="row">
-							<div class="col-lg-3">
+							<div class="col-lg-3 col-md-4 pd-left-none no-pd">
 								<div class="main-left-sidebar">
 									<div class="user-data full-width">
-									<div class="user_profile">
-										<div class="user-pro-img" th:if="${user != null}">
-											<img th:if="${user.getPhoto()}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-											<img th:if="${user.getPhoto() == null}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-										</div>
-										<form action="#" th:action="@{/user/changeProfilePicture}" th:object="${user}" method="post" enctype="multipart/form-data">
-											<div class="add-pic-box">
-												<div class="container">
-													<div class="row no-gutters" style="margin-left: 27px;">
-														<div class="col-lg-10">
-															<input name="profilePicture" type="file" id="profilePicture">
-															<label for="profilePicture">Browse</label>
+										<div class="user_profile">
+											<div class="user-pro-img" th:if="${user != null}">
+												<img th:if="${user.getPhoto()}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+												<img th:if="${user.getPhoto() == null}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+											</div>
+											<form action="#" th:action="@{/user/changeProfilePicture}" th:object="${user}" method="post" enctype="multipart/form-data">
+												<div class="add-pic-box">
+													<div class="container">
+														<div class="row no-gutters" style="margin-left: 27px;">
+															<div class="col-lg-10">
+																<input name="profilePicture" type="file" id="profilePicture">
+																<label for="profilePicture">Browse</label>
+															</div>
 														</div>
 													</div>
 												</div>
+												<button type="submit" class="btn btn-primary"><i></i>Update</button>
+											</form>
+											<div class="user-specs">
+												<ul class="user-fw-status">
+													<li>
+														<span th:text=" ${user.getJobTitle()}">Graphic Designer at Self Employed</span>
+													</li>
+													<li>
+														<span th:text="${friendsCounter + ' Friends'}" >Friends</span>
+													</li>
+													<li>
+														<a th:href="@{/user/showMyFriends}" >Show friends</a>
+													</li>
+												</ul>
 											</div>
-											<button type="submit" class="btn btn-primary"><i></i>Update</button>
-										</form>
-										<div class="user-specs">
-											<ul class="user-fw-status">
-												<li>
-													<span th:text=" ${user.getJobTitle()}">Graphic Designer at Self Employed</span>
-												</li>
-												<li>
-													<span th:text="${friendsCounter + ' Friends'}" >Friends</span>
-												</li>
-												<li>
-													<a th:href="@{/user/showMyFriends}" >Show friends</a>
-												</li>
-											</ul>
-										</div>
-									</div><!--user-profile end-->
-									</ul>
+										</div><!--user-profile end-->
 									</div><!--user_profile end-->
 								</div><!--main-left-sidebar end-->
 							</div>
-
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-md-8 no-pd">
 								<div class="main-ws-sec">
-									<div class="user-tab-sec rewivew">
-										<div class="star-descp">
+									<div>
+										<div>
 											<h3 th:text=" ${user.getFirstName()}" ></h3>
 											<h3 th:text=" ${user.getLastName()}" ></h3>
 											<div class="star-descp">
 												<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>
-										</div><!--star-descp end-->
+											</div><!--star-descp end-->
                                             <div class="tab-feed st2 settingjb">
 											<ul>
 												<li data-tab="feed-dd" class="active">
@@ -188,14 +185,14 @@
 												</li>
 											</ul>
 										</div><!-- tab-feed end-->
-										<div class="message-btn" style="float: left;">
-											<a th:href="@{/user/edit}" href="user-settings.html" title=""><i class="fas fa-cog"></i> Edit Profile</a>
-										</div>
-										<div class="post-topbar" sec:authorize="hasRole('ROLE_USER')">
-											<div class="user-picy" th:if="${user != null}" >
-												<img th:if="${user.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-												<img th:if="${user.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+											<div class="message-btn" style="float: left;">
+												<a th:href="@{/user/edit}" href="user-settings.html" title=""><i class="fas fa-cog"></i> Edit Profile</a>
 											</div>
+											<div class="post-topbar" sec:authorize="hasRole('ROLE_USER')">
+												<div class="user-picy" th:if="${user != null}" >
+													<img th:if="${user.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+													<img th:if="${user.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+												</div>
 											<div class="post-st">
 												<ul>
 													<li>
@@ -204,105 +201,105 @@
 												</ul>
 											</div><!--post-st end-->
 										</div><!--post-topbar end-->
-									<div class="product-feed-tab current" id="feed-dd">
-										<div class="posts-section">
-											<div class="post-bar" th:each="post, iter : ${myPosts}">
-												<div class="post_topbar">
-													<div class="usy-dt">
-														<img th:if="${post.createdBy.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${post.createdBy.getId()} + '/userImage'}"  alt="">
-														<img th:if="${post.createdBy.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-														<div class="usy-name">
-															<h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
-															<span th:text="${post.getDateTime()}">
-                                                            <img th:src="@{/images/clock.png}" alt="">3 min ago
-                                                        </span>
+											<div class="posts-section">
+												<div class="posty" th:each="post, iter : ${myPosts}" style="margin-bottom: 10px;">
+													<div class="post-bar no-margin">
+														<div class="post_topbar">
+															<div class="usy-dt">
+																<img th:if="${post.createdBy.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${post.createdBy.getId()} + '/userImage'}"  alt="">
+																<img th:if="${post.createdBy.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+																<div class="usy-name">
+																	<h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
+																	<span th:text="${post.getDateTime()}">
+																		<img th:src="@{/images/clock.png}" alt="">3 min ago
+																	</span>
+																</div>
+															</div>
+															<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == post.createdBy.username}">
+																<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+																<ul class="ed-options">
+																	<li><a th:href="@{'/post/edit/' + ${post.id}}" title="">Edit Post</a></li>
+																	<li><a href="#" th:onclick="|completeAndRedirect('${post.id}', '*{iter.index}')|" title="">Delete post</a></li>
+																	<form style="visibility: hidden; max-height: 0" th:id="*{iter.index}" action="javascript:void(0)" method="post">
+																		<button class="btn btn-danger" type="submit">Delete Post</button>
+																	</form>
+																</ul>
+															</div>
 														</div>
-													</div>
-													<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == post.createdBy.username}">
-														<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-														<ul class="ed-options">
-															<li><a th:href="@{'/post/edit/' + ${post.id}}" title="">Edit Post</a></li>
-															<li><a th:onclick="|completeAndRedirect('${post.id}', '*{iter.index}')|" title="">Delete post</a></li>
-															<form style="visibility: hidden; max-height: 0" th:id="*{iter.index}" action="javascript:void(0)" method="post">
-																<button class="btn btn-danger" type="submit">Delete Post</button>
-															</form>
-														</ul>
-													</div>
-												</div>
-												<div class="epi-sec">
-													<ul class="descp">
-														<li><img th:src="@{/images/icon9.png}" alt=""><span>Bulgaria</span>
-													</ul>
-												</div>
-												<div class="job_descp">
-													<p th:text="${post.text}">Lorem ipsum dolor sit amet <a href="#" title="">view more</a></p>
-												</div>
-												<div class="comment-section">
-													<div class="comment-sec"
-														 th:if="${post.getComments().size() > 0}">
-														<ul>
-															<li th:each="comment : ${post.getComments()}">
-																<div class="comment-list">
-																	<div class="bg-img">
-																		<img th:src="@{/images/resources/bg-img1.png}"
-																			 alt="">
-																	</div>
-																	<div class="comment">
-																		<img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/public/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
-																		<img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-																		<h1><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h1>
-																		<span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}" alt=""></span>
-																		<p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
-																	</div>
-																	<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == comment.getUser().username}">
-																		<a href="#" title="" class="ed-opts-open"><i class="fa fa-heart-broken"></i></a>
-																		<ul class="ed-options">
-																			<li><a th:href="@{'/comment/edit/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
-																			<li><a th:href="@{'/comment/delete/myprofile/' + ${comment.id}}" style="margin-top:2px"  href="#" title="">Delete comment</a></li>
-																			<form style="visibility: hidden; max-height: 0" th:id="*{iter.index}" action="javascript:void(0)" method="post">
-																				<button class="btn btn-danger" type="submit">Delete Comment</button>
-																			</form>
-																		</ul>
-																	</div>
-																</div><!--comment-list end-->
-															</li>
-														</ul>
-													</div>
-													<div class="comment-sec"
-														 th:if="${post.getComments().size() == 0}">
-														<p>No comments</p>
-													</div>
-													<!--comment-sec end-->
-													<div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
-														<div class="comment_box">
-															<form th:action="@{'/comment/user/add/' + ${post.id}}" method="post" th:object="${comment}">
-																<input type="text" placeholder="Post a comment" th:field="*{description}">
-																<button type="submit">Send</button>
-															</form>
+														<div class="epi-sec">
+															<ul class="descp">
+																<li><img th:src="@{/images/icon9.png}" alt=""><span>Bulgaria</span>
+															</ul>
 														</div>
-													</div><!--post-comment end-->
-												</div><!--comment-section end-->
-												<div class="job-status-bar">
-													<ul class="like-com">
-														<li>
-															<a th:if="${!post.isLiked()}" th:href="@{'/like/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
-															<a th:if="${post.isLiked()}" th:href="@{'/dislike/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
-															<img th:src="@{/images/liked-img.png}" alt="">
-															<span th:text=" ${post.getLikes().size()}">Likes</span>
-														</li>
-														<li><a href="#" th:text=" ${post.getComments().size() + '  Comments'}" class="com"><i class="fas fa-comment-alt"></i> Comment 15</a></li>
-													</ul>
-<!--													<a href="#"><i class="fas fa-eye"></i>Views 50</a>-->
+														<div class="job_descp">
+															<p th:text="${post.text}">Lorem ipsum dolor sit amet <a href="#" title="">view more</a></p>
+														</div>
+														<div class="job-status-bar">
+															<ul class="like-com">
+																<li>
+																	<a th:if="${!post.isLiked()}" th:href="@{'/like/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
+																	<a th:if="${post.isLiked()}" th:href="@{'/dislike/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
+																	<img th:src="@{/images/liked-img.png}" alt="">
+																	<span th:text=" ${post.getLikes().size()}">Likes</span>
+																</li>
+																<li><a href="#" th:text=" ${post.getComments().size() + '  Comments'}" class="com"><i class="fas fa-comment-alt"></i> Comment 15</a></li>
+															</ul>
+															<!--													<a href="#"><i class="fas fa-eye"></i>Views 50</a>-->
+														</div>
+													</div><!--post-bar end-->
+													<div class="comment-section">
+														<div th:if="${post.getComments().size() > 0}">
+															<ul>
+																<li th:each="comment : ${post.getComments()}">
+																	<div class="comment-list">
+																		<div class="bg-img">
+																			<img th:src="@{/images/resources/bg-img1.png}"
+																				 alt="">
+																		</div>
+																		<div class="comment">
+																			<img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/public/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
+																			<img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+																			<h3><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h3>
+																			<span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}" alt=""></span>
+																			<p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
+																		</div>
+																		<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == comment.getUser().username}">
+																			<a href="#" title="" class="ed-opts-open" ><i class="la la-ellipsis-v"></i></a>
+																			<ul class="ed-options" th:if="active">
+																				<li><a th:href="@{'/comment/edit/myprofile/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
+																				<li><a href="#" th:onclick="|completeAndRedirectComment('${comment.id}', '*{iter.index  + 1000}')|" title="">Delete comment</a></li>
+																				<form style="visibility: hidden; max-height: 0" th:id="*{iter.index  + 1000}" action="javascript:void(0)" method="post">
+																					<button class="btn btn-danger" type="submit">Delete Comment</button>
+																				</form>
+																			</ul>
+																		</div>
+																	</div><!--comment-list end-->
+																</li>
+															</ul>
+														</div>
+														<div class="comment-sec"
+															 th:if="${post.getComments().size() == 0}">
+															<p>No comments</p>
+														</div>
+														<!--comment-sec end-->
+														<div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
+															<div class="comment_box">
+																<form th:action="@{'/comment/user/add/' + ${post.id}}" method="post" th:object="${newComment}">
+																	<input type="text" placeholder="Post a comment" th:field="*{description}">
+																	<button type="submit">Send</button>
+																</form>
+															</div>
+														</div><!--post-comment end-->
+													</div><!--comment-section end-->
 												</div>
-											</div><!--post-bar end-->
-										</div><!--posts-section end-->
-									</div><!--product-feed-tab end-->
-								</div><!--main-ws-sec end-->
-							</div>
+											</div><!--posts-section end-->
+										</div><!--main-ws-sec end-->
+									</div>
+								</div>
+							</div><!-- main-section-data end-->
 						</div>
-					</div><!-- main-section-data end-->
+					</div>
 				</div>
-			</div>
 			</div>
 		</main>
 
@@ -334,6 +331,29 @@
 				</div><!--post-project-fields end-->
 			</div><!--post-project end-->
 		</div><!--post-project-popup end-->
+
+		<div th:if="${comment}" class="post-popup job_post" th:classappend="${comment} ? active : ''">
+			<div class="post-project">
+				<h3 th:text="'Edit comment'">Edit comment</h3>
+				<div class="post-project-fields">
+					<form action="#" th:action=" '/comment/edit/myprofile/' + ${comment.id}" method="post" th:object="${comment}">
+						<div class="row">
+							<div class="col-lg-12">
+								<textarea name="description" placeholder="Description" th:field="${comment.description}"></textarea>
+							</div>
+							<div class="col-lg-12">
+								<ul>
+									<li>
+										<button class="active" type="submit" value="post" th:text="'Edit'"></button>
+									</li>
+									<li><a href="#" title="" th:href="@{/user/showMyProfile}">Cancel</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div><!--post-project-fields end-->
+			</div><!--post-project end-->
+		</div>
 	</div><!--theme-layout end-->
 	<script>
 		function completeAndRedirect(postId, elementId){
@@ -343,6 +363,17 @@
 				document.getElementById(elementId).submit();
 			}
 		}
+	</script>
+
+	<script>
+		function completeAndRedirectComment(commentId, elementId){
+			let c = confirm("Are you sure you want to delete this comment?");
+			if (c == true) {
+				document.getElementById(elementId).action = '/comment/delete/myprofile/' + commentId;
+				document.getElementById(elementId).submit();
+			}
+		}
+
 	</script>
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.js}"></script>

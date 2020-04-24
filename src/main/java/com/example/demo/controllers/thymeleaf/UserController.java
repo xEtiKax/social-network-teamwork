@@ -13,7 +13,6 @@ import com.example.demo.services.interfaces.ImageService;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.RequestService;
 import com.example.demo.services.interfaces.UserService;
-import org.graalvm.compiler.core.phases.EconomyHighTier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +93,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
-        model.addAttribute("comment", new CommentDTO());
+        model.addAttribute("newComment", new CommentDTO());
         return "my-profile-feed";
     }
 

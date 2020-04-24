@@ -90,7 +90,15 @@ public class PostController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditPostForm(@PathVariable long id, Model model) {
+    public String showEditPostForm(@PathVariable long id, Model model, Principal principal) {
+        try {
+            User user = userService.getByUsername(principal.getName());
+            model.addAttribute("user", user);
+            model.addAttribute("friendsCounter", user.getFriends().size());
+        } catch (EntityNotFoundException e){
+            model.addAttribute("error", e);
+            return "error";
+        }
         model.addAttribute("post", postService.getPostById(id));
         return "index";
     }
