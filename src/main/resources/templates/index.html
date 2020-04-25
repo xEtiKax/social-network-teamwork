@@ -162,7 +162,7 @@
                                                     <img th:if="${post.createdBy.photo == null} or ${!post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                                     <div class="usy-name">
                                                         <h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
-                                                        <span th:text="${post.getDateTime()}">
+                                                        <span th:text="${#temporals.format(post.getDateTime(), 'dd-MM-yyyy HH:mm')}">
                                                             <img th:src="@{/images/clock.png}" alt="">3 min ago
                                                         </span>
                                                     </div>
@@ -212,7 +212,7 @@
                                                                 <img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
                                                                 <img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                                                                 <h3><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h3>
-                                                                <span th:text="${comment.getDateTime()}"><img th:src="@{/images/clock.png}"
+                                                                <span th:text="${#temporals.format(comment.getDateTime(), 'dd-MM-yyyy HH:mm')}"><img th:src="@{/images/clock.png}"
                                                                            alt=""></span>
                                                                 <p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
                                                             </div>
