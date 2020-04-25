@@ -34,14 +34,12 @@ public class PostController {
             User user = userService.getByUsername(principal.getName());
             model.addAttribute("user", user);
             model.addAttribute("friendsCounter", user.getFriends().size());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
         }
         return "index";
     }
-
-
 
     @PostMapping("/add")
     public String addPost(@Valid @ModelAttribute("post") PostDTO postDTO, Model model, Principal principal) {
@@ -49,6 +47,42 @@ public class PostController {
             User createdBy = userService.getByUsername(principal.getName());
             postService.createPost(postDTO, createdBy.getId());
         } catch (DuplicateEntityException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditPostForm(@PathVariable long id, Model model, Principal principal) {
+        try {
+            User user = userService.getByUsername(principal.getName());
+            model.addAttribute("user", user);
+            model.addAttribute("friendsCounter", user.getFriends().size());
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        model.addAttribute("post", postService.getPostById(id));
+        return "index";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model) {
+        try {
+            postService.updatePost(id, postDTO);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deletePost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
+        try {
+            postService.deletePost(id, principal, request);
+        } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
         }
@@ -67,57 +101,10 @@ public class PostController {
         return "redirect:/user/showMyProfile";
     }
 
-    @PostMapping("/delete/{id}")
-    public String deletePost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
-        try {
-            postService.deletePost(id, principal, request);
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("error", e);
-            return "error";
-        }
-        return "redirect:/";
-    }
-
-    @PostMapping("user/delete/{id}")
-    public String deleteUserPost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
-        try {
-            postService.deletePost(id, principal, request);
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("error", e);
-            return "error";
-        }
-        return "redirect:/user/showMyProfile";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String showEditPostForm(@PathVariable long id, Model model, Principal principal) {
-        try {
-            User user = userService.getByUsername(principal.getName());
-            model.addAttribute("user", user);
-            model.addAttribute("friendsCounter", user.getFriends().size());
-        } catch (EntityNotFoundException e){
-            model.addAttribute("error", e);
-            return "error";
-        }
-        model.addAttribute("post", postService.getPostById(id));
-        return "index";
-    }
-
     @GetMapping("/user/edit/{id}")
     public String showUserEditPostForm(@PathVariable long id, Model model) {
         model.addAttribute("post", postService.getPostById(id));
         return "redirect:/user/showMyProfile";
-    }
-
-    @PostMapping("/update/{id}")
-    public String updatePost(@PathVariable long id, @ModelAttribute PostDTO postDTO, Model model) {
-        try {
-            postService.updatePost(id, postDTO);
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("error", e);
-            return "error";
-        }
-        return "redirect:/";
     }
 
     @PostMapping("/user/update/{id}")
@@ -131,5 +118,14 @@ public class PostController {
         return "redirect:/user/showMyProfile";
     }
 
-
+    @PostMapping("user/delete/{id}")
+    public String deleteUserPost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
+        try {
+            postService.deletePost(id, principal, request);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "redirect:/user/showMyProfile";
+    }
 }

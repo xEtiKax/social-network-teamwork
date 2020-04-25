@@ -77,7 +77,7 @@ public class UserController {
         model.addAttribute("posts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
         model.addAttribute("isVisiblePicture",isVisiblePicture);
-        model.addAttribute("comment", new CommentDTO());
+        model.addAttribute("newComment", new CommentDTO());
         return "user-profile";
     }
 

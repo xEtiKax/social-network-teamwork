@@ -49,16 +49,17 @@ public class Post {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private Set<Comment> comments = new LinkedHashSet<>();
 
     public Post() {
     }
 
-    public List<Comment> sortByDate(List<Comment> sortByDate) {
+    public LinkedHashSet<Comment> sortByDate(Set<Comment> sortByDate) {
 
         Comparator<Comment> byDate = Comparator.comparing(Comment::getDateTime);
 
-        return sortByDate.stream().sorted(byDate).collect(Collectors.toList());
+        List<Comment> comments = sortByDate.stream().sorted(byDate).collect(Collectors.toList());
+        return new LinkedHashSet<>(comments);
     }
 
     public long getId() {
@@ -113,13 +114,13 @@ public class Post {
         this.picture = picture;
     }
 
-    public List<Comment> getComments() {
-        List<Comment> sortedComments = new ArrayList<>();
+    public LinkedHashSet<Comment> getComments() {
+        LinkedHashSet<Comment> sortedComments = new LinkedHashSet<>();
         sortedComments = sortByDate(this.comments);
         return sortedComments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(LinkedHashSet<Comment> comments) {
         this.comments = comments;
     }
 

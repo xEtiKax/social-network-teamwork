@@ -127,7 +127,7 @@
 										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
 											<ul class="flw-hr">
-												<li><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
+												<li th:if="${isFriendAndIsSentRequest != null} "><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
 												<li><a th:if="${isSentRequest}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
 												<li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
 											</ul>
@@ -234,8 +234,8 @@
 																<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == comment.getUser().username}">
 																	<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
 																	<ul class="ed-options">
-																		<li><a th:href="@{'/comment/edit/profile/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
-																		<li><a th:onclick="|completeAndRedirectComment('${comment.id}', '*{iter.index  + 1000}')|" title="">Delete comment</a></li>
+																		<li><a th:href="@{'/comment/edit/profile/' + ${user.id} + '/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
+																		<li><a href="#" th:onclick="|completeAndRedirectComment('${comment.id}', '*{iter.index  + 1000}')|" title="">Delete comment</a></li>
 																		<form style="visibility: hidden; max-height: 0" th:id="*{iter.index  + 1000}" action="javascript:void(0)" method="post">
 																			<button class="btn btn-danger" type="submit">Delete Comment</button>
 																		</form>
@@ -252,7 +252,7 @@
 												<!--comment-sec end-->
 												<div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
 													<div class="comment_box">
-														<form th:action="@{'/comment/profile/add/' + ${post.id}}" method="post" th:object="${comment}">
+														<form th:action="@{'/comment/profile/add/' + ${post.id}}" method="post" th:object="${newComment}">
 															<input type="text" placeholder="Post a comment" th:field="*{description}">
 															<button type="submit">Send</button>
 														</form>
@@ -275,7 +275,7 @@
 			<div class="post-project">
 				<h3 th:text="'Edit comment'">Edit comment</h3>
 				<div class="post-project-fields">
-					<form action="#" th:action=" '/comment/edit/' + ${comment.id}" method="post" th:object="${comment}">
+					<form action="#" th:action=" '/comment/edit/profile/' + ${comment.id}" method="post" th:object="${comment}">
 						<div class="row">
 							<div class="col-lg-12">
 								<textarea name="description" placeholder="Description" th:field="${comment.description}"></textarea>
@@ -285,7 +285,7 @@
 									<li>
 										<button class="active" type="submit" value="post" th:text="'Edit'"></button>
 									</li>
-									<li><a href="#" title="" th:href="@{/}">Cancel</a></li>
+									<li><a href="#" title="" th:href="@{'/user/showUserProfile/' + ${user.id}}">Cancel</a></li>
 								</ul>
 							</div>
 						</div>
