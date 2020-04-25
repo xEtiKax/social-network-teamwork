@@ -75,7 +75,7 @@ public class ImageController {
             User user = userService.getByUsername(principal.getName());
             userService.addProfilePicture(user.getUsername(), profilePicture);
             model.addAttribute("success", "Picture changed successful");
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | IOException e) {
             model.addAttribute("error", e.getMessage());
         }
         return "redirect:/user/showMyProfile";
@@ -88,7 +88,7 @@ public class ImageController {
             User user = userService.getByUsername(principal.getName());
             userService.addCoverPhoto(user.getUsername(), coverPhoto);
             model.addAttribute("success", "Picture changed successful");
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | IOException e) {
             model.addAttribute("error", e.getMessage());
         }
         return "redirect:/user/showMyProfile";

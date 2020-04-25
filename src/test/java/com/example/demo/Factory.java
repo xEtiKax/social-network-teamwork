@@ -9,6 +9,7 @@ public class Factory {
         User user = new User();
         user.setUsername("user");
         user.setJobTitle("Developer");
+        user.setEmail("user@email.com");
         user.setAge(30);
         user.setPassword("pass");
         return user;

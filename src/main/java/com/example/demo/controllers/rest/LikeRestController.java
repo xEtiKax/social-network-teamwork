@@ -32,9 +32,6 @@ public class LikeRestController {
     public void likePost(@PathVariable long postId, @RequestHeader String userWhoLike) {
         User user = userService.getByUsername(userWhoLike);
         Post post = postService.getPostById(postId);
-        Like like = new Like();
-        like.setPost(post);
-        like.setUser(user);
         try {
             likeService.createLike(user, post);
         } catch (DuplicateEntityException e) {

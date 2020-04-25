@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
 
 import java.io.IOException;
 
@@ -32,6 +32,13 @@ public class UserServiceImpl implements UserService {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
+    public static final String USERNAME_ALREADY_EXIST = "User with this username already exist";
+    public static final String USER_DOES_NOT_EXIST = "User does not exist";
+    public static final String WRONG_EMAIL_FORMAT = "Wrong email format";
+    public static final String Е_MAIL_ALREADY_EXIST = "Е-mail already exist";
+    public static final String PASSWORDS_DOESNT_MATCH = "Passwords does not match";
+    public static final String WRONG_PASSWORD = "Wrong password";
+
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private PictureRepository pictureRepository;
@@ -44,13 +51,16 @@ public class UserServiceImpl implements UserService {
         this.pictureRepository = pictureRepository;
     }
 
+
     @Override
     public User getById(long id) {
+        throwIfUserDoesNotExists(id);
         return userRepository.getById(id);
     }
 
     @Override
     public User getByUsername(String username) {
+        throwIfUsernameDoesNotExist(username);
         return userRepository.getUserByUsername(username);
     }
 
@@ -69,13 +79,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserDTO userDTO) throws IOException {
+    public User createUser(UserDTO userDTO) {
         User user = userDTOtoUserMapper(userDTO);
         if (checkUserExist(user.getUsername())) {
-            throw new DuplicateEntityException("User with this username already exist");
-        }
-        if (checkEmailExist(user.getEmail())) {
-            throw new DuplicateEntityException("User with this email already exist");
+            throw new DuplicateEntityException(USERNAME_ALREADY_EXIST);
         }
         userRepository.save(user);
         return user;
@@ -83,17 +90,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        if (!checkUserExist(user.getUsername())) {
-            throw new EntityNotFoundException("User %s does not exist");
-        }
+        throwIfUserDoesNotExists(user.getId());
         userRepository.save(user);
         return user;
     }
 
     @Override
     public void updateUserDetails(User user, String firstName, String lastName, String email, int age, String jobTitle) {
+        throwIfUserDoesNotExists(user.getId());
+        throwIfEmailAlreadyExists(email);
         if (!validate(email)) {
-            throw new WrongEmailException("Wrong email format");
+            throw new WrongEmailException(WRONG_EMAIL_FORMAT);
         } else {
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -107,7 +114,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(String username, String oldPassword, String newPassword, String passwordConfirm) {
         if (!newPassword.equals(passwordConfirm)) {
-            throw new WrongPasswordException("Passwords does not match");
+            throw new WrongPasswordException(PASSWORDS_DOESNT_MATCH);
         }
         User user = getByUsername(username);
         boolean oldPasswordMatched = passwordEncoder.matches(oldPassword, user.getPassword());
@@ -115,20 +122,16 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
         } else {
-            throw new WrongPasswordException("Wrong password");
+            throw new WrongPasswordException(WRONG_PASSWORD);
         }
     }
 
     @Override
-    public void addProfilePicture(String username, MultipartFile profilePicture) {
+    public void addProfilePicture(String username, MultipartFile profilePicture) throws IOException {
         User user = getByUsername(username);
         Picture picture = new Picture();
-        try {
-            picture.setData(multiPartToByteArr(profilePicture));
-            user.setPhoto(picture);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        picture.setData(multiPartToByteArr(profilePicture));
+        user.setPhoto(picture);
         pictureRepository.save(picture);
         userRepository.save(user);
     }
@@ -140,21 +143,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addCoverPhoto(String username, MultipartFile coverPhoto) {
+    public void addCoverPhoto(String username, MultipartFile coverPhoto) throws IOException {
         User user = getByUsername(username);
-        try {
-            user.setCoverPhoto(multiPartToByteArr(coverPhoto));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        user.setCoverPhoto(multiPartToByteArr(coverPhoto));
         userRepository.save(user);
     }
 
     @Override
     public void deleteUser(long id) {
-        if (!checkUserExistById(id)) {
-            throw new EntityNotFoundException("User %s does not exist");
-        }
+        throwIfUserDoesNotExists(id);
         userRepository.deleteUser(id);
     }
 
@@ -164,13 +161,29 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkEmailExist(String email) {
-        User user = userRepository.getUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         return user != null;
     }
 
     private boolean checkUserExistById(long id) {
-        User user = userRepository.getById(id);
-        return user != null;
+        return userRepository.existsById(id);
+    }
+
+    private void throwIfUserDoesNotExists(long id) {
+        if (!checkUserExistById(id)) {
+            throw new EntityNotFoundException(USER_DOES_NOT_EXIST);
+        }
+    }
+
+    private void throwIfEmailAlreadyExists(String email) {
+        if (checkEmailExist(email)) {
+            throw new DuplicateEntityException(Е_MAIL_ALREADY_EXIST);
+        }
+    }
+    private void throwIfUsernameDoesNotExist(String username) {
+        if (!checkUserExist(username)){
+            throw new EntityNotFoundException(USER_DOES_NOT_EXIST);
+        }
     }
 
     public Byte[] multiPartToByteArr(@RequestParam("imageFile") MultipartFile file) throws IOException {

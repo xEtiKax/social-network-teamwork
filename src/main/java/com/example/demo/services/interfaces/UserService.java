@@ -20,7 +20,7 @@ public interface UserService {
 
     List<User> getByNameLikeThis(String username);
 
-    User createUser(UserDTO userDTO) throws IOException;
+    User createUser(UserDTO userDTO);
 
     User updateUser(User user);
 
@@ -30,9 +30,9 @@ public interface UserService {
 
     void updateUserDetails(User user, String firstName, String lastName, String email, int age, String jobTitle);
 
-    void addProfilePicture(String username, MultipartFile profilePicture);
+    void addProfilePicture(String username, MultipartFile profilePicture) throws IOException;
 
-    void addCoverPhoto(String username, MultipartFile profilePicture);
+    void addCoverPhoto(String username, MultipartFile profilePicture) throws IOException;
 
     void removeFriend(User me, User friend);
 

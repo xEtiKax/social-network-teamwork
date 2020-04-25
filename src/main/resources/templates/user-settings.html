@@ -91,7 +91,6 @@
                     </ul>
                 </nav><!--nav end-->
                 <div class="menu-btn">
-                    <!--TODO menu button-->
                     <a href="#" title=""><i class="fa fa-bars"></i></a>
                 </div><!--menu-btn end-->
                 <div class="user-account">
@@ -104,7 +103,6 @@
             </div><!--header-data end-->
         </div>
     </header><!--header end-->
-
     <section class="profile-account-setting">
         <div class="container">
             <div class="account-tabs-setting">
@@ -153,6 +151,8 @@
                                                 <i class="fa fa-lock"></i>
                                             </div>
                                             <label style="color:red;" class="wrongEmail" th:if="${wrongEmail}" text="${wrongEmail}">     *please input valid e-mail</label>
+                                            <label style="color:red;" class="existEmail" th:if="${error}" text="${wrongEmail}">     *email already exists</label>
+
                                         </div>
                                         <div class="cp-field">
                                             <h5>Change Age</h5>
