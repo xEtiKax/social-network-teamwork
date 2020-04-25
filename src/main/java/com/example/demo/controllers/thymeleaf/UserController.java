@@ -96,9 +96,9 @@ public class UserController {
         return "my-profile-feed";
     }
 
-    @GetMapping("/showMyFriends")
-    public String showFriends(Model model, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
+    @GetMapping("/showMyFriends/{userId}")
+    public String showFriends(@PathVariable long userId, Model model) {
+        User user = userService.getById(userId);
         List<User> friends = userService.getUserFriends(user.getId());
         model.addAttribute("friends", friends);
         return "friends";

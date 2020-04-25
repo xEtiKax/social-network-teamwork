@@ -118,7 +118,7 @@
 				<div class="container">
 					<div class="main-section-data">
 						<div class="row">
-							<div class="col-lg-3">
+							<div class="col-lg-3 col-md-4 pd-left-none no-pd">
 								<div class="main-left-sidebar">
 									<div class="user_profile">
 										<div class="user-pro-img">
@@ -127,29 +127,36 @@
 										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
 											<ul class="flw-hr">
-												<li th:if="${isFriendAndIsSentRequest != null} "><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
+												<li th:if="${isFriendAndIsSentRequest != null && user.getId() != me.getId()} "><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
 												<li><a th:if="${isSentRequest}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
 												<li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
 											</ul>
-											<div class="user_pro_status">
 												<ul class="user-fw-status">
 													<li>
-														<b th:text="${friendsCounter + ' Friends'}" >Friends</b>
+														<span th:text=" ${user.getJobTitle()}">Graphic Designer at Self Employed</span>
+													</li>
+													<li>
+														<span th:text="${friendsCounter + ' Friends'}" >Friends</span>
+													</li>
+													<li>
+														<a th:href="@{/user/showMyFriends/{id}(id=${user.id})}" >Show friends</a>
 													</li>
 												</ul>
-										</div><!--user_pro_status end-->
 									</div>
 								</div><!--user_profile end-->
 							</div><!--main-left-sidebar end-->
 						</div>
-						<div class="col-lg-6">
+						<div class="col-lg-6 col-md-8 no-pd">
 							<div class="main-ws-sec">
 								<div class="user-tab-sec">
+								<div>
+								</div>
 									<h3 th:text=" ${user.getFirstName()}" ></h3>
 									<h3 th:text=" ${user.getLastName()}" ></h3>
-									<div class="star-descp">
-										<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>
-									</div><!--star-descp end-->
+<!--									<div class="star-descp">-->
+<!--										<span th:text=" ${user.getFirstName()}" >Graphic Designer at Self Employed</span>-->
+<!--										<span th:text=" ${user.getLastName()}" >Graphic Designer at Self Employed</span>-->
+<!--									</div>&lt;!&ndash;star-descp end&ndash;&gt;-->
 									<div class="tab-feed st2 settingjb">
 										<ul>
 											<li data-tab="feed-dd" class="active">
@@ -173,7 +180,7 @@
 											<div class="post-bar no-margin">
 												<div class="post_topbar">
 													<div class="usy-dt" th:if="${post.createdBy}">
-														<img th:if="${post.createdBy.photo} or ${post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
+														<img th:if="${post.createdBy.photo} and ${post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
 														<img th:if="${post.createdBy.photo == null} or ${!post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 														<div class="usy-name">
 															<h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
@@ -261,7 +268,7 @@
 											</div><!--comment-section end-->
 										</div>
 									</div><!--posty end-->
-
+								</div>
 						</div>
 					</div>
 				</div><!-- main-section-data end-->
