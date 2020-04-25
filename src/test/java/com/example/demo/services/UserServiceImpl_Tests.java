@@ -4,7 +4,7 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
-import com.example.demo.models.Picture;
+import com.example.demo.models.DTO.UserDTO;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PictureRepository;
 import com.example.demo.repositories.UserRepository;
@@ -46,58 +46,57 @@ public class UserServiceImpl_Tests {
 
     @Test
     public void getAllUsersShould_CallRepository() {
-        //Arrange
+
         List<User> users = new ArrayList<>();
         users.add(createUser());
         Mockito.when(mockUserRepository.findAll()).thenReturn(users);
 
-        //Act
+
         mockUserService.getAll();
 
-        //Assert
+
         Mockito.verify(mockUserRepository,
                 times(1)).findAll();
     }
     @Test
     public void getByNameLikeShould_CallRepository() {
-        //Arrange
+
         User user = createUser();
         List<User> users = new ArrayList<>();
         users.add(user);
         Mockito.when(mockUserRepository.findAllByUsernameIsContaining(anyString())).thenReturn(users);
 
-        //Act
+
         mockUserService.getByNameLikeThis(createUser().getUsername());
 
-        //Assert
+
         Mockito.verify(mockUserRepository,
                 times(1)).findAllByUsernameIsContaining(anyString());
     }
 
     @Test
     public void getUserFriendsShould_CallRepository() {
-        //Arrange
+
         User user = createUser();
         List<User> friends = new ArrayList<>();
         friends.add(user);
         Mockito.when(mockUserRepository.getUserFriendsByUSerId(anyLong())).thenReturn(friends);
 
-        //Act
+
         mockUserService.getUserFriends(createUser().getId());
 
-        //Assert
+
         Mockito.verify(mockUserRepository,
                 times(1)).getUserFriendsByUSerId(anyLong());
     }
 
     @Test(expected = DuplicateEntityException.class)
     public void createUserShouldThrow_When_UserNameAlreadyExists() {
-        //Arrange
+
         User user = createUser();
         Mockito.when(mockUserRepository.getUserByUsername(anyString()))
                 .thenReturn(user);
 
-        //Act
         mockUserService.createUser(createUserDTO());
     }
 
@@ -134,7 +133,8 @@ public class UserServiceImpl_Tests {
     @Test
     public void getUserIdShould_ReturnUser_When_UserExists() {
         User user = createUser();
-        Mockito.when(mockUserRepository.getById(anyLong())).thenReturn(user);
+        Mockito.when(mockUserRepository.getById(user.getId())).thenReturn(user);
+        Mockito.when(mockUserRepository.existsById(user.getId())).thenReturn(true);
 
         User returnedUser = mockUserService.getById(user.getId());
 
@@ -164,6 +164,16 @@ public class UserServiceImpl_Tests {
         Mockito.when(mockUserRepository.existsById(anyLong())).thenReturn(true);
 
         mockUserService.updateUser(user);
+
+        Mockito.verify(mockUserRepository, times(1)).save(any(User.class));
+
+    }
+
+    @Test
+    public void createUser_Should_CallRepository() {
+        UserDTO userDTO = createUserDTO();
+
+        mockUserService.createUser(userDTO);
 
         Mockito.verify(mockUserRepository, times(1)).save(any(User.class));
 
@@ -215,7 +225,6 @@ public class UserServiceImpl_Tests {
     @Test(expected = WrongEmailException.class)
     public void updateUserDetailsShouldThrow_WhenWrongEmailFormat() {
         User user = createUser();
-//        Mockito.when(mockUserRepository.save(any(User.class))).thenReturn(user);
         Mockito.when(mockUserRepository.existsById(anyLong())).thenReturn(true);
 
         mockUserService.updateUserDetails(user, "username", "email", "email", 25, "developer");
@@ -270,7 +279,6 @@ public class UserServiceImpl_Tests {
         };
         Mockito.when(mockUserRepository.getUserByUsername(user.getUsername())).thenReturn(user);
         Mockito.when(mockUserService.getByUsername(user.getUsername())).thenReturn(user);
-//        Mockito.when(mockPictureRepository.getById(picture.getId())).thenReturn(picture);
 
         mockUserService.addProfilePicture(user.getUsername(), file);
 
@@ -348,8 +356,6 @@ public class UserServiceImpl_Tests {
     @Test(expected = WrongPasswordException.class)
     public void changeUserPasswordShouldThrow_WhenPassDontMatch() {
         User user = createUser();
-//        Mockito.when(mockUserRepository.getUserByUsername(user.getUsername())).thenReturn(user);
-//        Mockito.when(passwordEncoder.matches("pass", "pass")).thenReturn(true);
 
         mockUserService.changePassword(user.getUsername(), "pass", "pass", "pass1");
 
@@ -357,7 +363,7 @@ public class UserServiceImpl_Tests {
 
     @Test(expected = WrongPasswordException.class)
     public void changeUserPasswordShould_Throw_WhenPasswordDoesntMatch() {
-        mockUserService.changePassword(createUser().getUsername(), "pass", "p", "asd");
+        mockUserService.changePassword(createUser().getUsername(), "p", "pkom", "asd");
     }
 
     @Test
@@ -372,5 +378,19 @@ public class UserServiceImpl_Tests {
     @Test(expected = EntityNotFoundException.class)
     public void deleteUser_ShouldThrow_WhenUserDoesNotExist() {
         mockUserService.deleteUser(anyLong());
+    }
+
+    @Test
+    public void removeFriend_ShouldRemoveFriend() {
+
+        User user = createUser();
+        User user2 = createUser();
+        User user3 = createUser();
+        user.addFriend(user2);
+        user.addFriend(user3);
+
+        mockUserService.removeFriend(user,user2);
+
+        Assert.assertEquals(user.getFriends().size(),1);
     }
 }

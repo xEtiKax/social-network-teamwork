@@ -68,7 +68,7 @@ public class ImageController {
         renderImage(response, user.getCoverPhoto());
     }
 
-    @RequestMapping(value = "/user/changeProfilePicture", method = RequestMethod.POST)
+    @PostMapping("/user/changeProfilePicture")
     public String changeProfilePicture(Principal principal, Model model,
                                        @RequestParam("profilePicture") MultipartFile profilePicture) {
         try {
@@ -81,7 +81,7 @@ public class ImageController {
         return "redirect:/user/showMyProfile";
     }
 
-    @RequestMapping(value = "/user/changeCoverPhoto", method = RequestMethod.POST)
+    @PostMapping("/user/changeCoverPhoto")
     public String changeCoverPhoto(Principal principal, Model model,
                                    @RequestParam("coverPhoto") MultipartFile coverPhoto) {
         try {

@@ -104,7 +104,7 @@ public class UserController {
         return "friends";
     }
 
-    @PostMapping(value = "/searchUser")
+    @PostMapping("/searchUser")
     public String searchUser(@RequestParam(value = "username") String username, Model model, Principal principal) {
         List<User> result = userService.getByNameLikeThis(username);
         User user = userService.getByUsername(principal.getName());
@@ -135,7 +135,7 @@ public class UserController {
         return "privacy";
     }
 
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    @PostMapping("/changePassword")
     public String changePassword(@RequestParam(name = "oldPassword") String oldPassword,
                                  @RequestParam(name = "newPassword") String newPassword,
                                  @RequestParam("passwordConfirm") String passwordConfirm,
@@ -150,7 +150,7 @@ public class UserController {
         return "change-password";
     }
 
-    @GetMapping(value = "/edit")
+    @GetMapping("/edit")
     public String editUserDetails(Model model,
                                   Principal principal) {
         User user = userService.getByUsername(principal.getName());
@@ -158,7 +158,7 @@ public class UserController {
         return "user-settings";
     }
 
-    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+    @PostMapping("/updateProfile")
     public String updateUserProfile(@RequestParam("firstName") String firstName,
                                     @RequestParam("lastName") String lastName,
                                     @RequestParam("email") String email,
@@ -179,7 +179,7 @@ public class UserController {
         return "user-settings";
     }
 
-    @GetMapping(value = "/deleteProfile")
+    @GetMapping("/deleteProfile")
     public String deleteUserProfile(Model model,
                                     Principal principal) {
         User user = userService.getByUsername(principal.getName());
@@ -187,7 +187,7 @@ public class UserController {
         return "deactivate-account";
     }
 
-    @RequestMapping(value = "/deleteProfile")
+    @PostMapping("/deleteProfile")
     public String deleteProfile(Principal principal, Model model,
                                 @RequestParam("password") String password, HttpServletRequest request) {
         User user = userService.getByUsername(principal.getName());
@@ -242,7 +242,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/photoPrivacy", method = RequestMethod.GET)
+    @GetMapping("/photoPrivacy")
     public String photoPrivacy(Principal principal) {
         User user = userService.getByUsername(principal.getName());
         if (user.getPhoto().isPublic()) {
