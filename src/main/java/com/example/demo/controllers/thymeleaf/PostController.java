@@ -4,13 +4,16 @@ import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -80,12 +83,15 @@ public class PostController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deletePost(@PathVariable long id, Model model,User user) {
+    public String deletePost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
         try {
-            postService.deletePost(id, user);
+            User user = userService.getByUsername(principal.getName());
+            postService.deletePost(id, user, request.isUserInRole("ROLE_ADMIN"));
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
+        } catch (AuthorizationException auth) {
+            model.addAttribute("auth", auth);
         }
         return "redirect:/";
     }
@@ -122,14 +128,13 @@ public class PostController {
     @PostMapping("user/delete/{id}")
     public String deleteUserPost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
         try {
-            if(principal!=null || request.isUserInRole("ROLE_ADMIN")){
             User user = userService.getByUsername(principal.getName());
-            postService.deletePost(id, user);}
+            postService.deletePost(id, user, request.isUserInRole("ROLE_ADMIN"));
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
-        } catch (AuthorizationException auth){
-            model.addAttribute("auth",auth);
+        } catch (AuthorizationException auth) {
+            model.addAttribute("auth", auth);
         }
         return "redirect:/user/showMyProfile";
     }

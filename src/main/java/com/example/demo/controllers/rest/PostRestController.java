@@ -49,16 +49,13 @@ public class PostRestController {
     @DeleteMapping("/delete/{id}")
     public void deletePost(@PathVariable long id, Principal principal, HttpServletRequest request) {
         try {
-            if (principal != null || request.isUserInRole("ROLE_ADMIN")) {
                 User user = userService.getByUsername(principal.getName());
-                postService.deletePost(id, user);
-            }
+                postService.deletePost(id, user, request.isUserInRole("ROLE_ADMIN"));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (
-                AuthorizationException auth) {
+        }catch (AuthorizationException auth){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, auth.getMessage());
         }
-
     }
+
 }

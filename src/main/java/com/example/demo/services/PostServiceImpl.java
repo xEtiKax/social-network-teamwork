@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
@@ -54,13 +55,13 @@ public class PostServiceImpl implements PostService {
         postToUpdate.setText(postDTO.getText());
         postToUpdate.setIsPublic(postDTO.getIsPublic());
         postRepository.save(postToUpdate);
-}
+    }
 
     @Override
-    public void deletePost(long id, User user) {
+    public void deletePost(long id, User user, boolean isAdmin) {
         throwIfPostDoesNotExists(id);
         Post post = postRepository.getById(id);
-        canUserDeleteUpdatePost(post,user);
+        canUserDeleteUpdatePost(post, user, isAdmin);
         post.setEnabled(false);
         postRepository.save(post);
     }
@@ -88,9 +89,9 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    private void canUserDeleteUpdatePost(Post post, User user) {
-        if (user.getUsername().equals(post.getCreatedBy().getUsername())){
-            post.setCanDeleteUpdate(true);
+    private void canUserDeleteUpdatePost(Post post, User user, boolean isAdmin) {
+        if (!user.getUsername().equals(post.getCreatedBy().getUsername()) && !isAdmin) {
+            throw new AuthorizationException();
         }
     }
 

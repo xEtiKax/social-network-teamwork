@@ -20,7 +20,7 @@ public interface PostService {
 
     boolean checkIfPostExist(long id);
 
-    void deletePost(long id, User user);
+    void deletePost(long id, User user, boolean isAdmin);
 
     List<Post> getAllPublicPosts();
 

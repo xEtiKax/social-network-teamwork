@@ -79,7 +79,7 @@ public class UserController {
         model.addAttribute("isFriendAndIsSentRequest", isFriendAndIsSentRequest);
         model.addAttribute("posts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
-        model.addAttribute("isVisiblePicture",isVisiblePicture);
+        model.addAttribute("isVisiblePicture", isVisiblePicture);
         model.addAttribute("newComment", new CommentDTO());
         return "user-profile";
     }
@@ -192,12 +192,14 @@ public class UserController {
     }
 
     @PostMapping("/deleteProfile")
-    public String deleteProfile(Principal principal, Model model,
-                                @RequestParam("password") String password) {
+    public String deleteProfile(Principal principal,
+                                Model model,
+                                @RequestParam("password") String password,
+                                HttpServletRequest request) {
         User user = userService.getByUsername(principal.getName());
 
         for (Post post : postService.getPostsByUserId(user.getId())) {
-            postService.deletePost(post.getId(), user);
+            postService.deletePost(post.getId(), user, request.isUserInRole("ROLE_ADMIN"));
         }
         boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
         if (passwordMatch) {
@@ -215,8 +217,7 @@ public class UserController {
             User user = userService.getByUsername(principal.getName());
             model.addAttribute("user", user);
             model.addAttribute("friendsCounter", user.getFriends().size());
-        }
-        catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
         }

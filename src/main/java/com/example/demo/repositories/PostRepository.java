@@ -19,7 +19,7 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     @Query(value = "SELECT * FROM social_network.posts WHERE is_public != 0 AND enabled != 0 ORDER BY created_at DESC ", nativeQuery = true)
     List<Post> getAllPublicPosts();
 
-    @Query(value = "SELECT * FROM social_network.posts WHERE enabled != 0 AND created_by IN (:friendIds) ORDER BY created_at DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM social_network.posts WHERE enabled != 0 AND created_by IN (:friendIds) ORDER BY posts.created_at DESC", nativeQuery = true)
     List<Post> getMyFeed(@Param("friendIds") List<Long> friendIds);
 
 }
