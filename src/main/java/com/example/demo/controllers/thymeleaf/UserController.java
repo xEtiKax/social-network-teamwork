@@ -56,8 +56,12 @@ public class UserController {
         int friendsCounter = user.getFriends().size();
 
 
-        if (user.getPhoto() == null || !user.getFriends().contains(me) || !user.getPhoto().isPublic()) {
+        if (user.getPhoto() == null || !user.getFriends().contains(me)) {
             isVisiblePicture = false;
+        }
+        assert user.getPhoto() != null;
+        if (user.getPhoto().isPublic()) {
+            isVisiblePicture = true;
         }
 
         if (!user.getFriends().contains(me) && !isSentRequest) {

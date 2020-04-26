@@ -122,8 +122,8 @@
 								<div class="main-left-sidebar">
 									<div class="user_profile">
 										<div class="user-pro-img">
-											<img th:if="${user.getPhoto()}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-											<img th:if="${user.getPhoto() == null}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+											<img th:if="${isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
+											<img th:if="${!isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 										</div><!--user-pro-img end-->
 										<div class="user_pro_status">
 											<ul class="flw-hr">
@@ -179,9 +179,9 @@
 										<div class="posty" th:each="post, iter : ${posts}" style="margin-bottom: 10px;">
 											<div class="post-bar no-margin">
 												<div class="post_topbar">
-													<div class="usy-dt" th:if="${post.createdBy}">
-														<img th:if="${post.createdBy.photo} and ${post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{'public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
-														<img th:if="${post.createdBy.photo == null} or ${!post.createdBy.getFriends().contains(user)}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
+													<div class="usy-dt">
+														<img th:if="${post.createdBy.getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
+														<img th:if="${post.createdBy.getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 														<div class="usy-name">
 															<h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
 															<span th:text="${#temporals.format(post.getDateTime(), 'dd-MM-yyyy HH:mm')}">
