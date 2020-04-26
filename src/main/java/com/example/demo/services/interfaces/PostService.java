@@ -2,6 +2,7 @@ package com.example.demo.services.interfaces;
 
 import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
+import com.example.demo.models.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -19,7 +20,7 @@ public interface PostService {
 
     boolean checkIfPostExist(long id);
 
-    void deletePost(long id, Principal principal, HttpServletRequest request);
+    void deletePost(long id, User user);
 
     List<Post> getAllPublicPosts();
 

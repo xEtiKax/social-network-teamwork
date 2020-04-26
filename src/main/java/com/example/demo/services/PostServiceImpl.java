@@ -56,10 +56,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(long id, Principal principal, HttpServletRequest request) {
+    public void deletePost(long id, User user) {
         throwIfPostDoesNotExists(id);
         Post post = postRepository.getById(id);
-        canUserDeleteUpdatePost(post, principal, request);
+        canUserDeleteUpdatePost(post,user);
         post.setEnabled(false);
         postRepository.save(post);
     }
@@ -88,9 +88,8 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    private void canUserDeleteUpdatePost(Post post, Principal principal, HttpServletRequest request) {
-        if (principal != null && (principal.getName().equals(post.getCreatedBy().getUsername()) ||
-                request.isUserInRole("ROLE_ADMIN"))) {
+    private void canUserDeleteUpdatePost(Post post, User user) {
+        if (user.getUsername().equals(post.getCreatedBy().getUsername())){
             post.setCanDeleteUpdate(true);
         }
         post.setCanDeleteUpdate(false);

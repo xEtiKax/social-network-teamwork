@@ -1,5 +1,6 @@
 package com.example.demo.controllers.thymeleaf;
 
+import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
@@ -79,9 +80,9 @@ public class PostController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deletePost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
+    public String deletePost(@PathVariable long id, Model model,User user) {
         try {
-            postService.deletePost(id, principal, request);
+            postService.deletePost(id, user);
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
@@ -121,10 +122,14 @@ public class PostController {
     @PostMapping("user/delete/{id}")
     public String deleteUserPost(@PathVariable long id, Model model, Principal principal, HttpServletRequest request) {
         try {
-            postService.deletePost(id, principal, request);
+            if(principal!=null || request.isUserInRole("ROLE_ADMIN")){
+            User user = userService.getByUsername(principal.getName());
+            postService.deletePost(id, user);}
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
+        } catch (AuthorizationException auth){
+            model.addAttribute("auth",auth);
         }
         return "redirect:/user/showMyProfile";
     }

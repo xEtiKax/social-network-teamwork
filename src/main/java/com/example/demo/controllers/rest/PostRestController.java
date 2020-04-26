@@ -1,8 +1,10 @@
 package com.example.demo.controllers.rest;
 
+import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
+import com.example.demo.models.User;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import java.security.Principal;
 @RequestMapping("/api/posts")
 public class PostRestController {
     private PostService postService;
+    private UserService userService;
 
     @Autowired
-    public PostRestController(PostService postService) {
+    public PostRestController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -45,9 +49,15 @@ public class PostRestController {
     @DeleteMapping("/delete/{id}")
     public void deletePost(@PathVariable long id, Principal principal, HttpServletRequest request) {
         try {
-            postService.deletePost(id, principal, request);
-        }catch (EntityNotFoundException e){
+            if (principal != null || request.isUserInRole("ROLE_ADMIN")) {
+                User user = userService.getByUsername(principal.getName());
+                postService.deletePost(id, user);
+            }
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (
+                AuthorizationException auth) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, auth.getMessage());
         }
 
     }

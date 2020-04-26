@@ -189,11 +189,11 @@ public class UserController {
 
     @RequestMapping(value = "/deleteProfile")
     public String deleteProfile(Principal principal, Model model,
-                                @RequestParam("password") String password, HttpServletRequest request) {
+                                @RequestParam("password") String password) {
         User user = userService.getByUsername(principal.getName());
 
         for (Post post : postService.getPostsByUserId(user.getId())) {
-            postService.deletePost(post.getId(), principal, request);
+            postService.deletePost(post.getId(), user);
         }
         boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
         if (passwordMatch) {
