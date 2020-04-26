@@ -38,6 +38,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostById(long id) {
+        throwIfPostDoesNotExists(id);
         return postRepository.getById(id);
     }
 
@@ -53,7 +54,7 @@ public class PostServiceImpl implements PostService {
         postToUpdate.setText(postDTO.getText());
         postToUpdate.setIsPublic(postDTO.getIsPublic());
         postRepository.save(postToUpdate);
-    }
+}
 
     @Override
     public void deletePost(long id, User user) {
@@ -83,13 +84,19 @@ public class PostServiceImpl implements PostService {
 
     private void throwIfPostDoesNotExists(long id) {
         if (!checkIfPostExist(id)) {
-            throw new EntityNotFoundException(
-                    String.format(POST_DOES_NOT_EXISTS, id));
+            throw new EntityNotFoundException(POST_DOES_NOT_EXISTS);
         }
     }
 
+<<<<<<< HEAD
     private void canUserDeleteUpdatePost(Post post, User user) {
         if (user.getUsername().equals(post.getCreatedBy().getUsername())){
+=======
+    private void canUserDeleteUpdatePost(Post post, Principal principal, HttpServletRequest request) {
+        if (principal != null &&
+                (principal.getName().equals(post.getCreatedBy().getUsername()) ||
+                request.isUserInRole("ROLE_ADMIN"))) {
+>>>>>>> c83e90622fc16dfa948652392ecb24a9210af71f
             post.setCanDeleteUpdate(true);
         }
         post.setCanDeleteUpdate(false);

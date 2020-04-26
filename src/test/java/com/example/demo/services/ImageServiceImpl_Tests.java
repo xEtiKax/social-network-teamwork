@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
+import com.example.demo.models.Picture;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
+import com.example.demo.repositories.PictureRepository;
 import com.example.demo.repositories.PostRepository;
 import com.example.demo.repositories.UserRepository;
 import org.junit.Assert;
@@ -9,19 +11,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 
-import static com.example.demo.Factory.createPost;
-import static com.example.demo.Factory.createUser;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static com.example.demo.Factory.*;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ImageServiceImpl_Tests {
@@ -32,28 +32,31 @@ public class ImageServiceImpl_Tests {
     @Mock
     PostRepository mockPostRepository;
 
+    @Mock
+    PictureRepository pictureRepository;
+
     @InjectMocks
     ImageServiceImpl imageService;
 
 
-    @Test
-    public void updateUser_ShouldUpdateUsername() {
+    @Test(expected = NoSuchElementException.class)
+    public void saveUserPhotoShouldThrow_When_PictureIsNull(){
         User user = createUser();
-        when(repository.existsById(anyLong())).thenReturn(true);
+
         MultipartFile file = new MultipartFile() {
             @Override
             public String getName() {
-                return null;
+                return "fileName";
             }
 
             @Override
             public String getOriginalFilename() {
-                return null;
+                return "originalName";
             }
 
             @Override
             public String getContentType() {
-                return null;
+                return "jpg";
             }
 
             @Override
@@ -68,7 +71,7 @@ public class ImageServiceImpl_Tests {
 
             @Override
             public byte[] getBytes() throws IOException {
-                return new byte[0];
+                return "Picture bytes".getBytes();
             }
 
             @Override
@@ -82,57 +85,122 @@ public class ImageServiceImpl_Tests {
             }
         };
 
-        Assert.assertThrows(NullPointerException.class,() -> imageService.saveUserPhoto(user.getId(),file));
+        imageService.saveUserPhoto(user.getId(), file);
 
+        Mockito.verify(repository, times(1)).save(user);
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void saveCoverPhotoShouldThrow_When_PictureIsNull(){
+        User user = createUser();
+
+        MultipartFile file = new MultipartFile() {
+            @Override
+            public String getName() {
+                return "fileName";
+            }
+
+            @Override
+            public String getOriginalFilename() {
+                return "originalName";
+            }
+
+            @Override
+            public String getContentType() {
+                return "jpg";
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public long getSize() {
+                return 0;
+            }
+
+            @Override
+            public byte[] getBytes() throws IOException {
+                return "Picture bytes".getBytes();
+            }
+
+            @Override
+            public InputStream getInputStream() throws IOException {
+                return null;
+            }
+
+            @Override
+            public void transferTo(File dest) throws IOException, IllegalStateException {
+
+            }
+        };
+
+        imageService.saveUserCover(user.getId(), file);
+
+        Mockito.verify(repository, times(1)).save(user);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void savePostPhotoShouldThrow_When_PictureIsNull(){
+        Post post = createPost();
+
+        MultipartFile file = new MultipartFile() {
+            @Override
+            public String getName() {
+                return "fileName";
+            }
+
+            @Override
+            public String getOriginalFilename() {
+                return "originalName";
+            }
+
+            @Override
+            public String getContentType() {
+                return "jpg";
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public long getSize() {
+                return 0;
+            }
+
+            @Override
+            public byte[] getBytes() throws IOException {
+                return "Picture bytes".getBytes();
+            }
+
+            @Override
+            public InputStream getInputStream() throws IOException {
+                return null;
+            }
+
+            @Override
+            public void transferTo(File dest) throws IOException, IllegalStateException {
+
+            }
+        };
+
+        imageService.savePostPhoto(post.getId(), file);
+
+        Mockito.verify(mockPostRepository, times(1)).save(post);
     }
 
     @Test
-    public void updateBeer_ShouldUpdatePostPhoto() {
-        Post post = createPost();
-        when(mockPostRepository.existsById(anyLong())).thenReturn(true);
-        MultipartFile file = new MultipartFile() {
-            @Override
-            public String getName() {
-                return null;
-            }
+    public void setPrivacyShould_SetPrivacy() throws IOException {
+        User user = createUser();
+        Picture picture = createPicture();
+        user.setPhoto(picture);
 
-            @Override
-            public String getOriginalFilename() {
-                return null;
-            }
+        imageService.setPrivacy(picture,true);
 
-            @Override
-            public String getContentType() {
-                return null;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public long getSize() {
-                return 0;
-            }
-
-            @Override
-            public byte[] getBytes() throws IOException {
-                return new byte[0];
-            }
-
-            @Override
-            public InputStream getInputStream() throws IOException {
-                return null;
-            }
-
-            @Override
-            public void transferTo(File dest) throws IOException, IllegalStateException {
-
-            }
-        };
-
-        Assert.assertThrows(NullPointerException.class,() -> imageService.savePostPhoto(post.getId(),file));
-
+        Assert.assertSame(user.getPhoto().isPublic(), true);
     }
 }

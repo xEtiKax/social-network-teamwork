@@ -61,7 +61,7 @@ public class RequestController {
         return "redirect:/request/showRequests";
     }
 
-    @RequestMapping(value = "/remove/{friendId}", method = RequestMethod.GET)
+    @GetMapping("/remove/{friendId}")
     public String removeFriend(@PathVariable long friendId, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         User friend = userService.getById(friendId);
@@ -76,7 +76,7 @@ public class RequestController {
         return "redirect:/request/showRequests";
     }
 
-    @RequestMapping(value = "/cancel/{userId}")
+    @RequestMapping( "/cancel/{userId}")
     public String cancelRequest(@PathVariable long userId, Principal principal) {
         User sender = userService.getByUsername(principal.getName());
         Request request = requestService.getRequestBySenderAndReceiver(sender.getId(), userId);
@@ -85,7 +85,7 @@ public class RequestController {
         return "redirect:/user/showUserProfile/" + receiver.getId();
     }
 
-    @GetMapping(value = "/showRequests")
+    @GetMapping("/showRequests")
     public String getFriendRequests(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         List<Request> friendRequests = requestService.getUserRequests(user);

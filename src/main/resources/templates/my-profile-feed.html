@@ -152,23 +152,24 @@
 														<span th:text="${friendsCounter + ' Friends'}" >Friends</span>
 													</li>
 													<li>
-														<a th:href="@{/user/showMyFriends}" >Show friends</a>
+														<a th:href="@{/user/showMyFriends/{id}(id=${user.id})}" >Show friends</a>
 													</li>
 												</ul>
 											</div>
+
 										</div><!--user-profile end-->
 									</div><!--user_profile end-->
 								</div><!--main-left-sidebar end-->
 							</div>
-							<div class="col-lg-6 col-md-8 no-pd">
+							<div class="col-lg-6">
 								<div class="main-ws-sec">
-									<div>
+									<div class="user-tab-sec">
 										<div>
 											<h3 th:text=" ${user.getFirstName()}" ></h3>
 											<h3 th:text=" ${user.getLastName()}" ></h3>
-											<div class="star-descp">
-												<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>
-											</div><!--star-descp end-->
+<!--											<div class="star-descp">-->
+<!--												<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>-->
+<!--											</div>&lt;!&ndash;star-descp end&ndash;&gt;-->
                                             <div class="tab-feed st2 settingjb">
 											<ul>
 												<li data-tab="feed-dd" class="active">
@@ -184,7 +185,8 @@
 													</a>
 												</li>
 											</ul>
-										</div><!-- tab-feed end-->
+										</div>
+									</div><!-- tab-feed end-->
 											<div class="message-btn" style="float: left;">
 												<a th:href="@{/user/edit}" href="user-settings.html" title=""><i class="fas fa-cog"></i> Edit Profile</a>
 											</div>
@@ -205,7 +207,7 @@
 												<div class="posty" th:each="post, iter : ${myPosts}" style="margin-bottom: 10px;">
 													<div class="post-bar no-margin">
 														<div class="post_topbar">
-															<div class="usy-dt">
+															<div class="usy-dt" >
 																<img th:if="${post.createdBy.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${post.createdBy.getId()} + '/userImage'}"  alt="">
 																<img th:if="${post.createdBy.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 																<div class="usy-name">

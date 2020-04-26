@@ -28,7 +28,7 @@ public class LikeRestController {
         this.likeService = likeService;
     }
 
-    @PostMapping("/like/{postId}")
+    @PostMapping("/like/post/{postId}")
     public void likePost(@PathVariable long postId, @RequestHeader String userWhoLike) {
         User user = userService.getByUsername(userWhoLike);
         Post post = postService.getPostById(postId);

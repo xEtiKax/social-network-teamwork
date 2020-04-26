@@ -35,7 +35,7 @@ public class ImageServiceImpl implements ImageService {
             Byte[] byteObjects = multiPartToByteArr(file);
             user.getPhoto().setData(byteObjects);
             userRepository.save(user);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -44,12 +44,12 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public void saveUserCover(long userId, MultipartFile file) {
         try {
-            User user = userRepository.findById(userId).get();
+            User user = userRepository.getById(userId);
 
             Byte[] byteObjects = multiPartToByteArr(file);
             user.setCoverPhoto(byteObjects);
             userRepository.save(user);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -63,7 +63,7 @@ public class ImageServiceImpl implements ImageService {
             Byte[] byteObjects = multiPartToByteArr(file);
             post.setPicture(byteObjects);
             postRepository.save(post);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -76,6 +76,7 @@ public class ImageServiceImpl implements ImageService {
         }
         return byteObjects;
     }
+
     @Override
     public void setPrivacy(Picture picture, boolean isPublic) {
         picture.setPublic(isPublic);
