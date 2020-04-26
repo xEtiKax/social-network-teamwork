@@ -88,20 +88,11 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-<<<<<<< HEAD
     private void canUserDeleteUpdatePost(Post post, User user) {
         if (user.getUsername().equals(post.getCreatedBy().getUsername())){
-=======
-    private void canUserDeleteUpdatePost(Post post, Principal principal, HttpServletRequest request) {
-        if (principal != null &&
-                (principal.getName().equals(post.getCreatedBy().getUsername()) ||
-                request.isUserInRole("ROLE_ADMIN"))) {
->>>>>>> c83e90622fc16dfa948652392ecb24a9210af71f
             post.setCanDeleteUpdate(true);
         }
-        post.setCanDeleteUpdate(false);
     }
-
 
     @Override
     public List<Post> getMyFeed(List<Long> friendIds) {
