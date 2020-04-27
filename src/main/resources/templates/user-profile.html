@@ -153,28 +153,24 @@
 								</div>
 									<h3 th:text=" ${user.getFirstName()}" ></h3>
 									<h3 th:text=" ${user.getLastName()}" ></h3>
-<!--									<div class="star-descp">-->
-<!--										<span th:text=" ${user.getFirstName()}" >Graphic Designer at Self Employed</span>-->
-<!--										<span th:text=" ${user.getLastName()}" >Graphic Designer at Self Employed</span>-->
-<!--									</div>&lt;!&ndash;star-descp end&ndash;&gt;-->
 									<div class="tab-feed st2 settingjb">
 										<ul>
 											<li data-tab="feed-dd" class="active">
-												<a href="#" title="">
-													<img src="../static/images/ic1.png" alt="">
+												<a th:href="@{/user/showUserProfile/{id}(id=${user.id})}" title="">
+													<img th:src="@{/images/ic1.png}" alt="">
 													<span>Feed</span>
 												</a>
 											</li>
 											<li data-tab="info-dd">
-												<a href="#" title="">
-													<img src="../static/images/ic2.png" alt="">
+												<a th:href="@{/user/info/{id}(id=${user.id})}" title="">
+													<img th:src="@{/images/ic2.png}" alt="">
 													<span>Info</span>
 												</a>
 											</li>
 										</ul>
 									</div><!-- tab-feed end-->
 								</div><!--user-tab-sec end-->
-								<div class="product-feed-tab current" id="feed-dd">
+								<div th:if="${!isInfo}" class="product-feed-tab current" id="feed-dd">
 									<div class="posts-section">
 										<div class="posty" th:each="post, iter : ${posts}" style="margin-bottom: 10px;">
 											<div class="post-bar no-margin">
@@ -269,13 +265,33 @@
 										</div>
 									</div><!--posty end-->
 								</div>
-						</div>
+								<div th:else class="product-feed-tab" id="info-dd">
+									<div class="user-profile-ov">
+										<h3>User Information</h3>
+										<h4>Name</h4>
+										<h5 th:text="${user.getUsername()}"></h5>
+										<span></span>
+										<span></span>
+										<h4>Age</h4>
+										<h5 th:text="${user.getAge()}"></h5>
+										<span></span>
+										<span></span>
+										<h4>Job Title</h4>
+										<h5 th:text=" ${user.getJobTitle()}" >Job</h5>
+										<span></span>
+										<span></span>
+										<h4>Email</h4>
+										<h5 th:text=" ${user.getEmail()}" >Email</h5>
+										<span></span>
+										<span></span>
+									</div><!--user-profile-ov end-->
+								</div><!--product-feed-tab end-->
+							</div>
 					</div>
 				</div><!-- main-section-data end-->
 			</div>
 		</div>
 	</div>
-			</div>
 		</main>
 
 		<div th:if="${comment}" class="post-popup job_post" th:classappend="${comment} ? active : ''">

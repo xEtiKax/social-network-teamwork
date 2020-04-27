@@ -34,7 +34,7 @@ public class PostServiceImpl_Tests {
     private UserService userService;
 
     @Mock
-    Principal principal;
+    private Principal principal;
 
     @Mock
     private HttpServletRequest httpServletRequest;
@@ -92,7 +92,7 @@ public class PostServiceImpl_Tests {
         User user = createUser();
         PostDTO postDTO = createPostDTO();
 
-        mockPostService.createPost(postDTO,user.getId());
+        mockPostService.createPost(postDTO, user.getId());
 
         Mockito.verify(mockPostRepository, times(1)).save(any(Post.class));
 
@@ -101,18 +101,20 @@ public class PostServiceImpl_Tests {
     @Test
     public void deletePostShould_CallRepository() {
         Post post = createPost();
+        User user = createUser();
         Mockito.when(mockPostRepository.getById(post.getId())).thenReturn(post);
         Mockito.when(mockPostRepository.existsById(anyLong())).thenReturn(true);
         Mockito.when(mockPostRepository.save(any(Post.class))).thenReturn(post);
+        post.setCreatedBy(user);
 
-        mockPostService.deletePost(post.getId(),principal,httpServletRequest);
+        mockPostService.deletePost(post.getId(), createUser(),true);
 
         Mockito.verify(mockPostRepository, times(1)).save(any(Post.class));
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void deletePost_ShouldThrow_WhenPostDoesNotExist() {
-        mockPostService.deletePost(anyLong(),principal,httpServletRequest);
+        mockPostService.deletePost(anyLong(), createUser(),true);
     }
 
     @Test
@@ -123,7 +125,7 @@ public class PostServiceImpl_Tests {
         Mockito.when(mockPostRepository.save(any(Post.class))).thenReturn(post);
 
         PostDTO updatedPost = createPostDTO();
-        mockPostService.updatePost(post.getId(),updatedPost);
+        mockPostService.updatePost(post.getId(), updatedPost);
 
         Assert.assertSame(post.getText(), "text");
     }
@@ -136,11 +138,9 @@ public class PostServiceImpl_Tests {
         Mockito.when(mockPostRepository.save(any(Post.class))).thenReturn(post);
 
         PostDTO updatedPost = createPostDTO();
-        mockPostService.updatePost(post.getId(),updatedPost);
+        mockPostService.updatePost(post.getId(), updatedPost);
 
         Mockito.verify(mockPostRepository, times(1)).save(any(Post.class));
 
     }
-
-
 }

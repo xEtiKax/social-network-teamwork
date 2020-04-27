@@ -167,26 +167,24 @@
 										<div>
 											<h3 th:text=" ${user.getFirstName()}" ></h3>
 											<h3 th:text=" ${user.getLastName()}" ></h3>
-<!--											<div class="star-descp">-->
-<!--												<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>-->
-<!--											</div>&lt;!&ndash;star-descp end&ndash;&gt;-->
                                             <div class="tab-feed st2 settingjb">
 											<ul>
 												<li data-tab="feed-dd" class="active">
-													<a href="#" title="">
-														<img src="../static/images/ic1.png" alt="">
+													<a th:href="@{/user/showUserProfile/{id}(id=${user.id})}" title="">
+														<img th:src="@{/images/ic1.png}" alt="">
 														<span>Feed</span>
 													</a>
 												</li>
 												<li data-tab="info-dd">
-													<a href="#" title="">
-														<img src="../static/images/ic2.png" alt="">
+													<a th:href="@{/user/my/info/{id}(id=${user.id})}" title="">
+														<img th:src="@{/images/ic2.png}" alt="">
 														<span>Info</span>
 													</a>
 												</li>
 											</ul>
 										</div>
 									</div><!-- tab-feed end-->
+										<div th:if="${!isInfo}" class="product-feed-tab current" id="feed-dd">
 											<div class="message-btn" style="float: left;">
 												<a th:href="@{/user/edit}" href="user-settings.html" title=""><i class="fas fa-cog"></i> Edit Profile</a>
 											</div>
@@ -296,6 +294,27 @@
 												</div>
 											</div><!--posts-section end-->
 										</div><!--main-ws-sec end-->
+										<div th:else class="product-feed-tab" id="info-dd">
+											<div class="user-profile-ov">
+												<h3>User Information</h3>
+												<h4>Name</h4>
+												<h5 th:text="${user.getUsername()}"></h5>
+												<span></span>
+												<span></span>
+												<h4>Age</h4>
+												<h5 th:text="${user.getAge()}"></h5>
+												<span></span>
+												<span></span>
+												<h4>Job Title</h4>
+												<h5 th:text=" ${user.getJobTitle()}" >Job</h5>
+												<span></span>
+												<span></span>
+												<h4>Email</h4>
+												<h5 th:text=" ${user.getEmail()}" >Email</h5>
+												<span></span>
+												<span></span>
+											</div><!--user-profile-ov end-->
+										</div>
 									</div>
 								</div>
 							</div><!-- main-section-data end-->

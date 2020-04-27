@@ -13,10 +13,10 @@ import com.example.demo.services.interfaces.ImageService;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.RequestService;
 import com.example.demo.services.interfaces.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +78,7 @@ public class UserController {
         model.addAttribute("isFriend", isFriend);
         model.addAttribute("isFriendAndIsSentRequest", isFriendAndIsSentRequest);
         model.addAttribute("posts", posts);
+        model.addAttribute("isInfo", false);
         model.addAttribute("friendsCounter", friendsCounter);
         model.addAttribute("isVisiblePicture", isVisiblePicture);
         model.addAttribute("newComment", new CommentDTO());
@@ -96,7 +97,24 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
         model.addAttribute("friendsCounter", friendsCounter);
+        model.addAttribute("isInfo", false);
         model.addAttribute("newComment", new CommentDTO());
+        return "my-profile-feed";
+    }
+
+    @GetMapping("/info/{userId}")
+    public String viewUserInfo(@PathVariable long userId, Model model) {
+        User user = userService.getById(userId);
+        model.addAttribute("user", user);
+        model.addAttribute("isInfo", true);
+        return "user-profile";
+    }
+
+    @GetMapping("/my/info/{userId}")
+    public String viewMyInfo(@PathVariable long userId, Model model) {
+        User user = userService.getById(userId);
+        model.addAttribute("user", user);
+        model.addAttribute("isInfo", true);
         return "my-profile-feed";
     }
 
@@ -161,6 +179,7 @@ public class UserController {
         model.addAttribute("user", user);
         return "user-settings";
     }
+
 
     @PostMapping("/updateProfile")
     public String updateUserProfile(@RequestParam("firstName") String firstName,
