@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" href="../static/css/animate.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome.css}" href="../static/css/line-awesome.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}"
+          href="../static/css/line-awesome-font-awesome.min.css">
+    <link th:href="@{/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css"
+          rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"
+          href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/ib/slick/slick-theme.css}"
+          href="../static/lib/slick/slick-theme.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../static/css/responsive.css">
+</head>
+
+<body class="sign-in">
+
+<div class="wrapper">
+
+    <div class="sign-in-page">
+        <div class="signin-popup">
+            <div class="signin-pop">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="cmp-info">
+                            <div class="cm-logo">
+                                <img th:href="@{/static/images/cm-logo.png}" alt="">
+                                <h2>Oops! Something was happened!</h2>
+
+                                <div class="lines">
+                                    <p th:text="${errorCode}+' '+${errorMessage}" class="message">Error</p>
+                                </div>
+                                <p class="quality">Social Network</p>
+                                <p class="description">
+                                    The page you requested could not be found.
+                                </p>
+                            </div><!--cm-logo end-->
+                            <img src="../images/cm-main-img.png" alt="">
+                        </div><!--cmp-info end-->
+                        <a th:href="@{/}" >Home Page</a>
+                    </div>
+                </div>
+            </div><!--signin-pop end-->
+        </div><!--signin-popup end-->
+    </div><!--sign-in-page end-->
+
+</div><!--theme-layout end-->
+
+<script type="text/javascript" src="../static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/js/popper.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../static/lib/slick/slick.min.js"></script>
+<script type="text/javascript" src="../static/js/script.js"></script>
+</body>
+</html>
