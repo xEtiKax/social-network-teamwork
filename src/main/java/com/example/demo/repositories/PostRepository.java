@@ -16,10 +16,22 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     @Query(value = "select * from social_network.posts join social_network.users u on posts.created_by = u.id where u.id = ?1 AND posts.enabled != 0 ORDER BY created_at DESC ", nativeQuery = true)
     List<Post> getPostsByUserId(long userId);
 
-    @Query(value = "SELECT * FROM social_network.posts WHERE is_public != 0 AND enabled != 0 ORDER BY created_at DESC ", nativeQuery = true)
+    @Query(value = "SELECT *\n" +
+            "FROM social_network.posts p\n" +
+            "         LEFT JOIN social_network.comments c ON p.id = c.post_id\n" +
+            "         LEFT JOIN social_network.likes l ON p.id = l.post_id\n" +
+            "WHERE p.is_public != 0 AND p.enabled != 0\n" +
+            "GROUP BY p.id, p.created_at\n" +
+            "ORDER BY COUNT(DISTINCT l.like_id) DESC, COUNT(DISTINCT c.id) DESC, p.created_at DESC;", nativeQuery = true)
     List<Post> getAllPublicPosts();
 
-    @Query(value = "SELECT * FROM social_network.posts WHERE enabled != 0 AND created_by IN (:friendIds) ORDER BY posts.created_at DESC", nativeQuery = true)
+
+    @Query(value = "SELECT * FROM social_network.posts p\n" +
+            "LEFT JOIN social_network.comments c ON p.id = c.post_id\n" +
+            "LEFT JOIN social_network.likes l ON p.id = l.post_id\n" +
+            "WHERE p.enabled != 0 AND created_by IN (:friendIds)\n" +
+            "GROUP BY p.id, p.created_at\n" +
+            "ORDER BY COUNT(DISTINCT l.like_id) DESC, COUNT(DISTINCT c.id) DESC, p.created_at DESC;", nativeQuery = true)
     List<Post> getMyFeed(@Param("friendIds") List<Long> friendIds);
 
 }

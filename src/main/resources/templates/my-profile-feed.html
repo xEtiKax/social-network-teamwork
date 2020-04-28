@@ -167,6 +167,7 @@
 										<div>
 											<h3 th:text=" ${user.getFirstName()}" ></h3>
 											<h3 th:text=" ${user.getLastName()}" ></h3>
+											<span th:text=" ${user.getJobTitle()}" >Graphic Designer at Self Employed</span>
                                             <div class="tab-feed st2 settingjb">
 											<ul>
 												<li data-tab="feed-dd" class="active">
@@ -193,14 +194,14 @@
 													<img th:if="${user.getPhoto()}" style="height: 50px;width: 50px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
 													<img th:if="${user.getPhoto() == null or user == null}" style="height: 50px;width: 50px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
 												</div>
-											<div class="post-st">
-												<ul>
-													<li>
-														<a class="active" th:href="@{/user/post/new}" title="">Post</a>
-													</li>
-												</ul>
-											</div><!--post-st end-->
-										</div><!--post-topbar end-->
+												<div class="post-st">
+													<ul>
+														<li>
+															<a class="active" th:href="@{/user/post/new}" title="">Post</a>
+														</li>
+													</ul>
+												</div><!--post-st end-->
+											</div><!--post-topbar end-->
 											<div class="posts-section">
 												<div class="posty" th:each="post, iter : ${myPosts}" style="margin-bottom: 10px;">
 													<div class="post-bar no-margin">
@@ -228,7 +229,7 @@
 														</div>
 														<div class="epi-sec">
 															<ul class="descp">
-																<li><img th:src="@{/images/icon9.png}" alt=""><span>Bulgaria</span>
+																<li><img th:src="@{/images/icon9.png}" alt=""><span>Bulgaria</span></li>
 															</ul>
 														</div>
 														<div class="job_descp">
@@ -259,7 +260,7 @@
 																		<div class="comment">
 																			<img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/public/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
 																			<img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-																			<h3><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h3>
+																			<h5><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h5>
 																			<span th:text="${#temporals.format(comment.getDateTime(), 'dd-MM-yyyy HH:mm')}"><img th:src="@{/images/clock.png}" alt=""></span>
 																			<p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
 																		</div>
@@ -323,7 +324,6 @@
 				</div>
 			</div>
 		</main>
-
 		<div th:if="${post}" class="post-popup job_post" th:classappend="${post} ? active : ''">
 			<div class="post-project">
 				<h3 th:text="${post.id > 0} ? 'Edit post' : 'Create new post'">Create new post</h3>

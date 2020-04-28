@@ -200,7 +200,7 @@
                                             </div>
                                         </div><!--post-bar end-->
                                         <div class="comment-section">
-                                            <div th:if="${post.getComments().size() > 0} and ${user != null}">
+                                            <div th:if="${post.getComments().size() > 0}">
                                                 <ul>
                                                     <li th:each="comment,iter : ${post.getComments()}">
                                                         <div class="comment-list">
