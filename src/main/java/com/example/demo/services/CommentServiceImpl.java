@@ -29,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment getById(long commentId) {
+        throwIfCommentDoesNotExists(commentId);
         return commentRepository.getByCommentId(commentId);
     }
 
@@ -58,6 +59,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(long commentId, String username) {
+        throwIfCommentDoesNotExists(commentId);
         User user = userService.getByUsername(username);
         Comment comment = commentRepository.getByCommentId(commentId);
         Post post = comment.getPost();

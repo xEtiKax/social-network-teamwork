@@ -1,10 +1,9 @@
 package com.example.demo;
 
+import com.example.demo.models.*;
+import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.DTO.UserDTO;
-import com.example.demo.models.Picture;
-import com.example.demo.models.Post;
-import com.example.demo.models.User;
 
 import java.io.IOException;
 
@@ -26,6 +25,7 @@ public class Factory {
         user.setPasswordConfirmation("pass");
         return user;
     }
+
     public static Post createPost() {
         Post post = new Post();
         post.setId(1);
@@ -33,6 +33,7 @@ public class Factory {
         post.setEnabled(true);
         return post;
     }
+
     public static PostDTO createPostDTO() {
         PostDTO postDTO = new PostDTO();
         postDTO.setIsPublic(true);
@@ -55,5 +56,29 @@ public class Factory {
         picture.setData(multiPartToByteArr());
         picture.setPublic(false);
         return picture;
+    }
+
+    public static Comment createComment() {
+        Comment comment = new Comment();
+        comment.setId(1);
+        comment.setDescription("description");
+        return comment;
+    }
+
+    public static CommentDTO createCommentDTO() {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setDescription("description");
+        commentDTO.setPostId(1);
+        return commentDTO;
+    }
+
+    public static Like createLike() {
+        Like like = new Like();
+        Post post = new Post();
+        User user = new User();
+        like.setId(1);
+        like.setPost(post);
+        like.setUser(user);
+        return like;
     }
 }
