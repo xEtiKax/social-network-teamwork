@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class UserServiceImpl implements UserService {
     public static final String USER_DOES_NOT_EXIST = "User does not exist";
     public static final String WRONG_EMAIL_FORMAT = "Wrong email format";
     public static final String Е_MAIL_ALREADY_EXIST = "Е-mail already exist";
+    public static final String Е_MAIL_DOESNT_EXIST = "Е-mail does not exist";
     public static final String PASSWORDS_DOESNT_MATCH = "Passwords does not match";
     public static final String WRONG_PASSWORD = "Wrong password";
 
@@ -64,6 +64,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUserByUsername(username);
     }
 
+    @Override
+    public User getByEmail(String email) {
+        throwIfEmailDoesNotExists(email);
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public List<User> getAll() {
         return new ArrayList<>(userRepository.findAll());
     }
@@ -180,8 +187,15 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(Е_MAIL_ALREADY_EXIST);
         }
     }
+
+    private void throwIfEmailDoesNotExists(String email) {
+        if (!checkEmailExist(email)) {
+            throw new EntityNotFoundException(Е_MAIL_DOESNT_EXIST);
+        }
+    }
+
     private void throwIfUsernameDoesNotExist(String username) {
-        if (!checkUserExist(username)){
+        if (!checkUserExist(username)) {
             throw new EntityNotFoundException(USER_DOES_NOT_EXIST);
         }
     }

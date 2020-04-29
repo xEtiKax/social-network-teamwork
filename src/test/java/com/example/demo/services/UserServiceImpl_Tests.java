@@ -147,6 +147,21 @@ public class UserServiceImpl_Tests {
         mockUserService.getByUsername(anyString());
     }
 
+    @Test(expected = EntityNotFoundException.class)
+    public void getUserByEmailShouldThrow_WhenUserDoesNotExist() {
+        mockUserService.getByEmail("email@email.com");
+    }
+    @Test
+    public void getEmailShould_ReturnUser_When_UserEmailExists() {
+        User user = createUser();
+        Mockito.when(mockUserRepository.findUserByEmail("user@email.com")).thenReturn(user);
+
+        User returnedUser = mockUserService.getByEmail("user@email.com");
+
+        Assert.assertSame(user, returnedUser);
+
+    }
+
     @Test
     public void getUserByUsernameShould_ReturnUser_When_UserExists() {
         User user = createUser();

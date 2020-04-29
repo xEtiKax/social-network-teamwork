@@ -5,7 +5,6 @@ import com.example.demo.models.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -35,6 +34,8 @@ public interface UserService {
     void addCoverPhoto(String username, MultipartFile profilePicture) throws IOException;
 
     void removeFriend(User me, User friend);
+
+    User getByEmail(String email);
 
 
 }
