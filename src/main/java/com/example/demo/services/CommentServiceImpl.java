@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -66,24 +65,28 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(long commentId, String username) {
+    public void deleteComment(long commentId, String username, boolean isAdmin) {
         throwIfCommentDoesNotExists(commentId);
         User user = userService.getByUsername(username);
         Comment comment = commentRepository.getByCommentId(commentId);
+        canUserDeleteUpdateComment(comment, user, isAdmin);
         Post post = comment.getPost();
-        if (user.getUsername().equals(comment.getUser().getUsername())) {
-           user.removeComment(comment);
-           post.removeComment(comment);
-           commentRepository.deleteById(commentId);
-        } else {
-            throw new AuthorizationException("You have not permissions to delete this comment");
-        }
+
+        user.removeComment(comment);
+        post.removeComment(comment);
+        commentRepository.deleteById(commentId);
     }
 
     private void throwIfCommentDoesNotExists(long id) {
         if (!checkIfCommentExist(id)) {
             throw new EntityNotFoundException(
                     String.format(COMMENT_DOES_NOT_EXISTS, id));
+        }
+    }
+
+    private void canUserDeleteUpdateComment(Comment comment, User user, boolean isAdmin) {
+        if (!user.getUsername().equals(comment.getUser().getUsername()) && !isAdmin) {
+            throw new AuthorizationException();
         }
     }
 

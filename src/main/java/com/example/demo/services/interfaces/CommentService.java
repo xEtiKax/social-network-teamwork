@@ -19,7 +19,7 @@ public interface CommentService {
 
     List<Comment> getCommentsByUserId(long userId);
 
-    void deleteComment(long id, String username);
+    void deleteComment(long id, String username, boolean isAdmin);
 
     boolean checkIfCommentExist(long id);
 

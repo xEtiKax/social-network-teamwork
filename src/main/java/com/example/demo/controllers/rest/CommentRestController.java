@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -85,11 +86,11 @@ public class CommentRestController {
     }
 
     @DeleteMapping("/delete/{commentId}")
-    public void deleteComment(@PathVariable long commentId, @RequestHeader String user) {
+    public void deleteComment(@PathVariable long commentId, @RequestHeader String user, HttpServletRequest request) {
         User requestUser = userService.getByUsername(user);
         Comment comment = commentService.getById(commentId);
         try {
-            commentService.deleteComment(comment.getId(), requestUser.getUsername());
+            commentService.deleteComment(comment.getId(), requestUser.getUsername(),request.isUserInRole("ROLE_ADMIN"));
         } catch (AuthorizationException a) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, a.getMessage());
         }

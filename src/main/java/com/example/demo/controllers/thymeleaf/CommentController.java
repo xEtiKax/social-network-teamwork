@@ -18,10 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/comment")
@@ -73,9 +72,9 @@ public class CommentController {
     }
 
     @PostMapping("/delete/{commentId}")
-    public String deleteComment(@PathVariable long commentId, Model model, Principal principal) {
+    public String deleteComment(@PathVariable long commentId, Model model, Principal principal, HttpServletRequest request) {
         try {
-            commentService.deleteComment(commentId, principal.getName());
+            commentService.deleteComment(commentId, principal.getName(), request.isUserInRole("ROLE_ADMIN"));
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
@@ -118,9 +117,9 @@ public class CommentController {
     }
 
     @PostMapping("/delete/myprofile/{commentId}")
-    public String deleteCommentMyProfile(@PathVariable long commentId, Model model, Principal principal) {
+    public String deleteCommentMyProfile(@PathVariable long commentId, Model model, Principal principal, HttpServletRequest request) {
         try {
-            commentService.deleteComment(commentId, principal.getName());
+            commentService.deleteComment(commentId, principal.getName(), request.isUserInRole("ROLE_ADMIN"));
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
@@ -157,10 +156,10 @@ public class CommentController {
     }
 
     @PostMapping("/delete/profile/{commentId}")
-    public String deleteCommentProfile(@PathVariable long commentId, Model model, Principal principal) {
+    public String deleteCommentProfile(@PathVariable long commentId, Model model, Principal principal, HttpServletRequest request) {
         long userId = commentService.getById(commentId).getPost().getCreatedBy().getId();
         try {
-            commentService.deleteComment(commentId, principal.getName());
+            commentService.deleteComment(commentId, principal.getName(), request.isUserInRole("ROLE_ADMIN"));
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e);
             return "error";
@@ -171,7 +170,7 @@ public class CommentController {
     }
 
     @GetMapping("/list/{postId}")
-    public String showPostComments(@PathVariable long postId, Model model, @RequestParam int si, @RequestParam int cs, @RequestParam int eid ) {
+    public String showPostComments(@PathVariable long postId, Model model, @RequestParam int si, @RequestParam int cs, @RequestParam int eid) {
         Post post = postService.getPostById(postId);
         model.addAttribute("commentsSize", post.getComments().size());
         Slice<Comment> comments = commentService.getCommentsByPostIdWithPage(postId, PageRequest.of(si, cs, Sort.by("dateTime").ascending()));
