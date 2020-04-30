@@ -10,9 +10,12 @@ import com.example.demo.repositories.CommentRepository;
 import com.example.demo.services.interfaces.CommentService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Service
@@ -34,8 +37,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getCommentsByPostId(long postId) {
+    public LinkedHashSet<Comment> getCommentsByPostId(long postId) {
         return commentRepository.getCommentsByPostId(postId);
+    }
+
+    @Override
+    public Slice<Comment> getCommentsByPostIdWithPage(long postId, Pageable page) {
+        return commentRepository.findAllByPostId(postId, page);
     }
 
     @Override

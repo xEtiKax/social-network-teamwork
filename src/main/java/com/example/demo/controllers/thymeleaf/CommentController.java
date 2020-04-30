@@ -11,11 +11,17 @@ import com.example.demo.services.interfaces.CommentService;
 import com.example.demo.services.interfaces.PostService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/comment")
@@ -162,6 +168,17 @@ public class CommentController {
             model.addAttribute("auth", auth);
         }
         return "redirect:/user/showUserProfile/" + userId;
+    }
+
+    @GetMapping("/list/{postId}")
+    public String showPostComments(@PathVariable long postId, Model model, @RequestParam int si, @RequestParam int ps ) {
+        Post post = postService.getPostById(postId);
+        Slice<Comment> comments = commentService.getCommentsByPostIdWithPage(postId, PageRequest.of(si, ps, Sort.by("dateTime").ascending()));
+        LinkedHashSet<Comment> linkedComments = new LinkedHashSet(comments.getContent());
+        post.setComments(linkedComments);
+        model.addAttribute("post", post);
+        model.addAttribute("newComment", new CommentDTO());
+        return "comments :: commentsList";
     }
 
     private void createCommentPattern(long postId, CommentDTO commentDTO, Principal principal) {

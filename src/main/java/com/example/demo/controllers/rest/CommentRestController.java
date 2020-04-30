@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @RestController
@@ -51,7 +52,7 @@ public class CommentRestController {
     }
 
     @GetMapping("/post/{postId}")
-    public List<Comment> getCommentsByPostId(@PathVariable long postId) {
+    public LinkedHashSet<Comment> getCommentsByPostId(@PathVariable long postId) {
         try {
             return commentService.getCommentsByPostId(postId);
         } catch (EntityNotFoundException e) {
