@@ -1,347 +1,387 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<meta charset="UTF-8">
-	<title>WorkWise</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	<link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" href="../static/css/animate.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/flatpickr.min.css}" href="../static/css/flatpickr.min.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome.css}" href="../static/css/line-awesome.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}" href="../static/css/line-awesome-font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" href="../static/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}" href="../static/lib/slick/slick-theme.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../static/css/responsive.css">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>WorkWise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" href="../static/css/animate.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/flatpickr.min.css}" href="../static/css/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome.css}" href="../static/css/line-awesome.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/line-awesome-font-awesome.min.css}"
+          href="../static/css/line-awesome-font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+          href="../static/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"
+          href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick.css}" href="../static/lib/slick/slick.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/lib/slick/slick-theme.css}"
+          href="../static/lib/slick/slick-theme.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" href="../static/css/responsive.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 
 </head>
 
 
 <body>
-	<div class="wrapper" th:classappend="${comment} ? overlay : ''" style="height: 100vh">
-		<header>
-			<div class="container">
-				<div class="header-data">
-					<div class="logo">
-						<a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
-					</div><!--logo end-->
-					<div class="search-bar">
-						<form th:action="@{/user/searchUser}" th:object="${user}" method="post">
-							<input type="text" name="username" placeholder="Search...">
-							<button type="submit"><i class="la la-search"></i></button>
-						</form>
-					</div><!--search-bar end-->
-					<nav>
-						<ul>
-							<li>
-								<a th:href="@{/}" title="">
-									<span><img th:src="@{/images/icon1.png}" alt=""></span>
-									Home
-								</a>
-							</li>
-							<li>
-								<a th:href="@{/user/showAllUsers}" title="">
-									<span><img th:src="@{/images/icon4.png}" alt=""></span>
-									Profiles
-								</a>
-								<ul>
-									<li><a th:href="@{/user/showMyProfile}" title="">My Profile</a></li>
-								</ul>
-							</li>
-							<li th:if="${user != null}">
-								<a href="#" title="" class="not-box-open">
-									<span><img th:src="@{/images/icon7.png}" alt=""></span>
-									Requests
-								</a>
-								<div class="notification-box noti" id="notification" >
-									<div class="nott-list" th:if="${me.getRequests().size() > 0}" >
-										<div class="notfication-details" th:each="request : ${me.getRequests()}" th:object="${request}">
-											<div class="noty-user-img">
-												<img th:if="${request.getSender().getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${request.getSender().getId()} + '/userImage'}"  alt="">
-												<img th:if="${request.getSender().getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-											</div>
-											<div class="notification-info">
-												<h3><a href="#" title="" th:text="${request.sender.username}">Jassica William</a> Send you a friend request.</h3>
-											</div><!--notification-info -->
-										</div>
-										<div class="view-all-nots">
-											<a th:href="@{request/showRequests}" title="">View Requests</a>
-										</div>
-									</div><!--nott-list end-->
-								</div><!--notification-box end-->
-							</li>
-							<li th:if="${user == null}">
-								<a th:href="@{/login}" title="">
-									<span><img th:src="@{/images/icon3.png}" alt=""></span>
-									Login
-								</a>
-							</li>
-							<li th:if="${user != null}">
-								<a th:href="@{/logout}" title="">
-									<span><img th:src="@{/images/icon3.png}" alt=""></span>
-									Logout
-								</a>
-							</li>
-						</ul>
-					</nav><!--nav end-->
-					<div class="menu-btn">
-						<a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
-					</div><!--menu-btn end-->
-					<div class="user-account">
-							<div class="user-info" th:if="${me != null}">
-								<img th:if="${me.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${me.getId()} + '/userImage'}"  alt="">
-								<img th:if="${me.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-								<a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
-							</div>
-						</div>
-				</div><!--header-data end-->
-			</div>
-		</header><!--header end-->
-		<section class="cover-sec">
-			<img th:if="${user.coverPhoto}" style="height: 450px;width: 1600px;" th:src="@{'/user/' + ${user.getId()} + '/coverImage'}"  alt="">
-			<img th:if="${user.coverPhoto == null}" style="height: 450px;width: 1600px;" th:src="@{/images/resources/cover-default.jpg}" alt="">
-				<div class="container">
-					<div class="row no-gutters">
-						<div class="col-lg-12 col-sm-12">
-						</div>
-					</div>
-				</div>
-		</section>
-		<main>
-			<div class="main-section">
-				<div class="container">
-					<div class="main-section-data">
-						<div class="row">
-							<div class="col-lg-3 col-md-4 pd-left-none no-pd">
-								<div class="main-left-sidebar">
-									<div class="user_profile">
-										<div class="user-pro-img">
-											<img th:if="${isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
-											<img th:if="${!isVisiblePicture}" style="height: 200px;width: 200px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-										</div><!--user-pro-img end-->
-										<div class="user_pro_status">
-											<ul class="flw-hr">
-												<li th:if="${isFriendAndIsSentRequest != null && user.getId() != me.getId()} "><a th:if="${!isFriendAndIsSentRequest}" th:href="@{/request/send?userId={id}(id=${user.id})}" title="" class="flww"><i class="la la-plus"></i> Add friend</a></li>
-												<li><a th:if="${isSentRequest}" th:href="@{'/request/cancel/'+ ${user.getId()}}" title="" method="post" class="flww"><i class="la la-calculator"></i> Cancel request</a></li>
-												<li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${user.getId()}}" title="" th:object="${user}" method="post" class="flww"><i class="la la-minus"></i> Remove friend</a></li>
-											</ul>
-												<ul class="user-fw-status">
-													<li>
-														<span th:text=" ${user.getJobTitle()}">Graphic Designer at Self Employed</span>
-													</li>
-													<li>
-														<span th:text="${friendsCounter + ' Friends'}" >Friends</span>
-													</li>
-													<li>
-														<a th:href="@{/user/showMyFriends/{id}(id=${user.id})}" >Show friends</a>
-													</li>
-												</ul>
-									</div>
-								</div><!--user_profile end-->
-							</div><!--main-left-sidebar end-->
-						</div>
-						<div class="col-lg-6 col-md-8 no-pd">
-							<div class="main-ws-sec">
-								<div class="user-tab-sec">
-								<div>
-								</div>
-									<h3 th:text=" ${user.getFirstName()}" ></h3>
-									<h3 th:text=" ${user.getLastName()}" ></h3>
-									<div class="tab-feed st2 settingjb">
-										<ul>
-											<li data-tab="feed-dd" class="active">
-												<a th:href="@{/user/showUserProfile/{id}(id=${user.id})}" title="">
-													<img th:src="@{/images/ic1.png}" alt="">
-													<span>Feed</span>
-												</a>
-											</li>
-											<li data-tab="info-dd">
-												<a th:href="@{/user/info/{id}(id=${user.id})}" title="">
-													<img th:src="@{/images/ic2.png}" alt="">
-													<span>Info</span>
-												</a>
-											</li>
-										</ul>
-									</div><!-- tab-feed end-->
-								</div><!--user-tab-sec end-->
-								<div th:if="${!isInfo}" class="product-feed-tab current" id="feed-dd">
-									<div class="posts-section">
-										<div class="posty" th:each="post, iter : ${posts}" style="margin-bottom: 10px;">
-											<div class="post-bar no-margin">
-												<div class="post_topbar">
-													<div class="usy-dt">
-														<img th:if="${post.createdBy.getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/public/user/' + ${post.createdBy.id} + '/userImage'}"  alt="">
-														<img th:if="${post.createdBy.getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-														<div class="usy-name">
-															<h3><a th:text="${post.createdBy.username}" th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John Doe</a></h3>
-															<span th:text="${#temporals.format(post.getDateTime(), 'dd-MM-yyyy HH:mm')}">
+<div class="wrapper" th:classappend="${comment} ? overlay : ''" style="height: 100vh">
+    <header>
+        <div class="container">
+            <div class="header-data">
+                <div class="logo">
+                    <a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
+                </div><!--logo end-->
+                <div class="search-bar">
+                    <form th:action="@{/user/searchUser}" th:object="${userProfile}" method="post">
+                        <input type="text" name="username" placeholder="Search...">
+                        <button type="submit"><i class="la la-search"></i></button>
+                    </form>
+                </div><!--search-bar end-->
+                <nav>
+                    <ul>
+                        <li>
+                            <a th:href="@{/}" title="">
+                                <span><img th:src="@{/images/icon1.png}" alt=""></span>
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/user/showAllUsers}" title="">
+                                <span><img th:src="@{/images/icon4.png}" alt=""></span>
+                                Profiles
+                            </a>
+                            <ul>
+                                <li><a th:href="@{/user/showMyProfile}" title="">My Profile</a></li>
+                            </ul>
+                        </li>
+                        <li th:if="${userProfile != null}">
+                            <a href="#" title="" class="not-box-open">
+                                <span><img th:src="@{/images/icon7.png}" alt=""></span>
+                                Requests
+                            </a>
+                            <div class="notification-box noti" id="notification">
+                                <div class="nott-list" th:if="${user.getRequests().size() > 0}">
+                                    <div class="notfication-details" th:each="request : ${user.getRequests()}"
+                                         th:object="${request}">
+                                        <div class="noty-user-img">
+                                            <img th:if="${request.getSender().getPhoto()}"
+                                                 style="height: 30px;width: 30px;"
+                                                 th:src="@{'/user/' + ${request.getSender().getId()} + '/userImage'}"
+                                                 alt="">
+                                            <img th:if="${request.getSender().getPhoto() == null}"
+                                                 style="height: 30px;width: 30px;"
+                                                 th:src="@{/images/resources/anonymous-user.png}" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="#" title="" th:text="${request.sender.username}">Jassica
+                                                William</a> Send you a friend request.</h3>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="view-all-nots">
+                                        <a th:href="@{request/showRequests}" title="">View Requests</a>
+                                    </div>
+                                </div><!--nott-list end-->
+                            </div><!--notification-box end-->
+                        </li>
+                        <li th:if="${userProfile == null}">
+                            <a th:href="@{/login}" title="">
+                                <span><img th:src="@{/images/icon3.png}" alt=""></span>
+                                Login
+                            </a>
+                        </li>
+                        <li th:if="${userProfile != null}">
+                            <a th:href="@{/logout}" title="">
+                                <span><img th:src="@{/images/icon3.png}" alt=""></span>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </nav><!--nav end-->
+                <div class="menu-btn">
+                    <a th:href="@{#}" title=""><i class="fa fa-bars"></i></a>
+                </div><!--menu-btn end-->
+                <div class="user-account">
+                    <div class="user-info" th:if="${user != null}">
+                        <img th:if="${user.getPhoto()}" style="height: 30px;width: 30px;"
+                             th:src="@{'/user/' + ${user.getId()} + '/userImage'}" alt="">
+                        <img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;"
+                             th:src="@{/images/resources/anonymous-user.png}" alt="">
+                        <a href="#"
+                           th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
+                    </div>
+                </div>
+            </div><!--header-data end-->
+        </div>
+    </header><!--header end-->
+    <section class="cover-sec">
+        <img th:if="${userProfile.coverPhoto}" style="height: 450px;width: 1600px;"
+             th:src="@{'/user/' + ${userProfile.getId()} + '/coverImage'}" alt="">
+        <img th:if="${userProfile.coverPhoto == null}" style="height: 450px;width: 1600px;"
+             th:src="@{/images/resources/cover-default.jpg}" alt="">
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col-lg-12 col-sm-12">
+                </div>
+            </div>
+        </div>
+    </section>
+    <main>
+        <div class="main-section">
+            <div class="container">
+                <div class="main-section-data">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 pd-left-none no-pd">
+                            <div class="main-left-sidebar">
+                                <div class="user_profile">
+                                    <div class="user-pro-img">
+                                        <img th:if="${isVisiblePicture}" style="height: 200px;width: 200px;"
+                                             th:src="@{'/user/' + ${userProfile.getId()} + '/userImage'}" alt="">
+                                        <img th:if="${!isVisiblePicture}" style="height: 200px;width: 200px;"
+                                             th:src="@{/images/resources/anonymous-user.png}" alt="">
+                                    </div><!--user-pro-img end-->
+                                    <div class="user_pro_status">
+                                        <ul class="flw-hr">
+                                            <li th:if="${isFriendAndIsSentRequest != null && user.getId() != user.getId()} ">
+                                                <a th:if="${!isFriendAndIsSentRequest}"
+                                                   th:href="@{/request/send?userId={id}(id=${userProfile.id})}" title=""
+                                                   class="flww"><i class="la la-plus"></i> Add friend</a></li>
+                                            <li><a th:if="${isSentRequest}"
+                                                   th:href="@{'/request/cancel/'+ ${userProfile.getId()}}" title=""
+                                                   method="post" class="flww"><i class="la la-calculator"></i> Cancel
+                                                request</a></li>
+                                            <li><a th:if="${isFriend}" th:href="@{'/request/remove/' + ${userProfile.getId()}}"
+                                                   title="" th:object="${userProfile}" method="post" class="flww"><i
+                                                    class="la la-minus"></i> Remove friend</a></li>
+                                        </ul>
+                                        <ul class="user-fw-status">
+                                            <li>
+                                                <span th:text=" ${userProfile.getJobTitle()}">Graphic Designer at Self Employed</span>
+                                            </li>
+                                            <li>
+                                                <span th:text="${friendsCounter + ' Friends'}">Friends</span>
+                                            </li>
+                                            <li>
+                                                <a th:href="@{/user/showMyFriends/{id}(id=${userProfile.id})}">Show friends</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div><!--user_profile end-->
+                            </div><!--main-left-sidebar end-->
+                        </div>
+                        <div class="col-lg-6 col-md-8 no-pd">
+                            <div class="main-ws-sec">
+                                <div class="user-tab-sec">
+                                    <h3 th:text=" ${userProfile.getFirstName()}"></h3>
+                                    <h3 th:text=" ${userProfile.getLastName()}"></h3>
+                                    <div class="tab-feed st2 settingjb">
+                                        <ul>
+                                            <li data-tab="feed-dd" class="active">
+                                                <a th:href="@{/user/showUserProfile/{id}(id=${userProfile.id})}" title="">
+                                                    <img th:src="@{/images/ic1.png}" alt="">
+                                                    <span>Feed</span>
+                                                </a>
+                                            </li>
+                                            <li data-tab="info-dd">
+                                                <a th:href="@{/user/info/{id}(id=${userProfile.id})}" title="">
+                                                    <img th:src="@{/images/ic2.png}" alt="">
+                                                    <span>Info</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div><!-- tab-feed end-->
+                                </div><!--user-tab-sec end-->
+                                <div th:if="${!isInfo}" class="product-feed-tab current" id="feed-dd">
+                                    <div class="posts-section">
+                                        <div class="posty" th:each="post, iter : ${posts}" style="margin-bottom: 10px;">
+                                            <div class="post-bar no-margin">
+                                                <div class="post_topbar">
+                                                    <div class="usy-dt">
+                                                        <img th:if="${post.createdBy.getPhoto()}"
+                                                             style="height: 40px;width: 40px;"
+                                                             th:src="@{'/public/user/' + ${post.createdBy.id} + '/userImage'}"
+                                                             alt="">
+                                                        <img th:if="${post.createdBy.getPhoto() == null}"
+                                                             style="height: 40px;width: 40px;"
+                                                             th:src="@{/images/resources/anonymous-user.png}" alt="">
+                                                        <div class="usy-name">
+                                                            <h3><a th:text="${post.createdBy.username}"
+                                                                   th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John
+                                                                Doe</a></h3>
+                                                            <span th:text="${#temporals.format(post.getDateTime(), 'dd-MM-yyyy HH:mm')}">
                                                             <img th:src="@{/images/clock.png}" alt="">3 min ago
                                                         </span>
-														</div>
-													</div>
-													<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == post.createdBy.username}">
-														<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-														<ul class="ed-options">
-															<li><a th:href="@{'post/edit/' + ${post.id}}" href="#" title="">Edit Post</a></li>
-															<li><a th:onclick="|completeAndRedirect('${post.id}', '*{iter.index}')|" style="margin-top:2px"  href="#" title="">Delete post</a></li>
-															<form style="visibility: hidden; max-height: 0" th:id="*{iter.index}" action="javascript:void(0)" method="post">
-																<button class="btn btn-danger" type="submit">Delete Post</button>
-															</form>
-														</ul>
-													</div>
-												</div>
-												<div class="epi-sec">
-													<ul class="descp">
-														<li><img th:src="@{/images/icon9.png}" alt=""><span>Bulgaria</span>
-														</li>
-													</ul>
-												</div>
-												<div class="job_descp">
-													<p th:text="${post.text}">Lorem ipsum dolor sit amet <a href="#" title="">view more</a></p>
-												</div>
-												<div class="job-status-bar">
-													<ul class="like-com" sec:authorize="hasRole('ROLE_USER')">
-														<li>
-															<a th:if="${!post.isLiked()}" th:href="@{'/likeProfilePost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
-															<a th:if="${post.isLiked()}" th:href="@{'/dislikeProfilePost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
-															<img th:src="@{/images/liked-img.png}" alt="">
-															<span th:text=" ${post.getLikes().size()}">Likes</span>
-														</li>
-														<li><a href="#" th:text=" ${post.getComments().size() + '  Comments'}" class="com"><i class="fas fa-comment-alt"></i> Comment 15</a></li>
-													</ul>
-												</div>
-											</div><!--post-bar end-->
-											<div class="comment-section">
-												<div th:if="${post.getComments().size() > 0}">
-													<ul>
-														<li th:each="comment,iter : ${post.getComments()}">
-															<div class="comment-list">
-																<div class="bg-img">
-																	<img th:src="@{/images/resources/bg-img1.png}"
-																		 alt="">
-																</div>
-																<div class="comment">
-																	<img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;" th:src="@{'/user/' + ${comment.getUser().getId()} + '/userImage'}"  alt="">
-																	<img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-																	<h3><a th:text="${comment.getUser().getUsername()}" th:href="@{/user/showUserProfile/{id}(id=${comment.getUser().getId()})}"></a></h3>
-																	<span th:text="${#temporals.format(comment.getDateTime(), 'dd-MM-yyyy HH:mm')}"><img th:src="@{/images/clock.png}"
-																												  alt=""></span>
-																	<p th:text="${comment.getDescription()}">Lorem ipsum dolor sit amet, </p>
-																</div>
-																<div class="ed-opts" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == comment.getUser().username}">
-																	<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-																	<ul class="ed-options">
-																		<li><a th:href="@{'/comment/edit/profile/' + ${user.id} + '/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
-																		<li><a href="#" th:onclick="|completeAndRedirectComment('${comment.id}', '*{iter.index  + 1000}')|" title="">Delete comment</a></li>
-																		<form style="visibility: hidden; max-height: 0" th:id="*{iter.index  + 1000}" action="javascript:void(0)" method="post">
-																			<button class="btn btn-danger" type="submit">Delete Comment</button>
-																		</form>
-																	</ul>
-																</div>
-															</div><!--comment-list end-->
-														</li>
-													</ul>
-												</div>
-												<div class="comment-sec"
-													th:if="${post.getComments().size() == 0}">
-													<p>No comments</p>
-												</div>
-												<!--comment-sec end-->
-												<div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
-													<div class="comment_box">
-														<form th:action="@{'/comment/profile/add/' + ${post.id}}" method="post" th:object="${newComment}">
-															<input type="text" placeholder="Post a comment" th:field="*{description}">
-															<button type="submit">Send</button>
-														</form>
-													</div>
-												</div><!--post-comment end-->
-											</div><!--comment-section end-->
-										</div>
-									</div><!--posty end-->
-								</div>
-								<div th:else class="product-feed-tab" id="info-dd">
-									<div class="user-profile-ov">
-										<h3>User Information</h3>
-										<h4>Name</h4>
-										<h5 th:text="${user.getUsername()}"></h5>
-										<span></span>
-										<span></span>
-										<h4>Age</h4>
-										<h5 th:text="${user.getAge()}"></h5>
-										<span></span>
-										<span></span>
-										<h4>Job Title</h4>
-										<h5 th:text=" ${user.getJobTitle()}" >Job</h5>
-										<span></span>
-										<span></span>
-										<h4>Email</h4>
-										<h5 th:text=" ${user.getEmail()}" >Email</h5>
-										<span></span>
-										<span></span>
-									</div><!--user-profile-ov end-->
-								</div><!--product-feed-tab end-->
-							</div>
-					</div>
-				</div><!-- main-section-data end-->
-			</div>
-		</div>
-	</div>
-		</main>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ed-opts"
+                                                         th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.name == post.createdBy.username}">
+                                                        <a href="#" title="" class="ed-opts-open"><i
+                                                                class="la la-ellipsis-v"></i></a>
+                                                        <ul class="ed-options">
+                                                            <li><a th:href="@{'post/edit/' + ${post.id}}" href="#"
+                                                                   title="">Edit Post</a></li>
+                                                            <li>
+                                                                <a th:onclick="|completeAndRedirect('${post.id}', '*{iter.index}')|"
+                                                                   style="margin-top:2px" href="#" title="">Delete
+                                                                    post</a></li>
+                                                            <form style="visibility: hidden; max-height: 0"
+                                                                  th:id="*{iter.index}" action="javascript:void(0)"
+                                                                  method="post">
+                                                                <button class="btn btn-danger" type="submit">Delete
+                                                                    Post
+                                                                </button>
+                                                            </form>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="epi-sec">
+                                                    <ul class="descp">
+                                                        <li><img th:src="@{/images/icon9.png}"
+                                                                 alt=""><span>Bulgaria</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="job_descp">
+                                                    <p th:text="${post.text}">Lorem ipsum dolor sit amet <a href="#" title="">view
+                                                        more</a></p>
+                                                </div>
+                                                <div class="job-status-bar">
+                                                    <ul class="like-com" sec:authorize="hasRole('ROLE_USER')">
+                                                        <li>
+                                                            <a th:if="${!post.isLiked()}"
+                                                               th:href="@{'/likeProfilePost/'+ ${post.getId()}}"><i
+                                                                    class="fas fa-heart"></i> Like</a>
+                                                            <a th:if="${post.isLiked()}"
+                                                               th:href="@{'/dislikeProfilePost/'+ ${post.getId()}}"><i
+                                                                    class="fas fa-heart"></i> DisLike</a>
+                                                            <img th:src="@{/images/liked-img.png}" alt="">
+                                                            <span th:text=" ${post.getLikes().size()}">Likes</span>
+                                                        </li>
+                                                        <li>
+                                                            <button th:disabled="${post.getComments().size() le 0}"
+                                                                    th:onclick="|appendComments('*{iter.index}', '${post.id}', '0')|"
+                                                                    th:attr="data-comments=${post.getComments()}"
+                                                                    th:text=" ${post.getComments().size() + '  Comments'}"
+                                                                    class="com clickable"></button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div><!--post-bar end-->
+                                            <div class="comment-section" th:id="'post_' + *{iter.index}">
+                                            </div>
+                                            <div class="comment-section second">
+                                                <div class="comment-sec" th:if="${post.getComments().size() == 0}">
+                                                    <p>No comments</p>
+                                                </div>
+                                                <!--comment-sec end-->
+                                                <div class="post-comment" sec:authorize="hasRole('ROLE_USER')">
+                                                    <div class="comment_box">
+                                                        <form th:action="@{'/comment/profile/add/' + ${post.id}}"
+                                                              method="post" th:object="${newComment}">
+                                                            <input type="text" placeholder="Post a comment"
+                                                                   th:field="*{description}">
+                                                            <button type="submit">Send</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!--post-comment end-->
+                                            </div>
+                                        </div><!--comment-section end-->
+                                    </div>
+                                </div><!--posty end-->
+                            </div>
+                            <div th:else class="product-feed-tab" id="info-dd">
+                                <div class="user-profile-ov">
+                                    <h3>User Information</h3>
+                                    <h4>Name</h4>
+                                    <h5 th:text="${userProfile.getUsername()}"></h5>
+                                    <span></span>
+                                    <span></span>
+                                    <h4>Age</h4>
+                                    <h5 th:text="${userProfile.getAge()}"></h5>
+                                    <span></span>
+                                    <span></span>
+                                    <h4>Job Title</h4>
+                                    <h5 th:text=" ${userProfile.getJobTitle()}">Job</h5>
+                                    <span></span>
+                                    <span></span>
+                                    <h4>Email</h4>
+                                    <h5 th:text=" ${userProfile.getEmail()}">Email</h5>
+                                    <span></span>
+                                    <span></span>
+                                </div><!--user-profile-ov end-->
+                            </div><!--product-feed-tab end-->
+                        </div>
+                    </div>
+                </div>
+            </div><!-- main-section-data end-->
+        </div>
+    </main>
 
-		<div th:if="${comment}" class="post-popup job_post" th:classappend="${comment} ? active : ''">
-			<div class="post-project">
-				<h3 th:text="'Edit comment'">Edit comment</h3>
-				<div class="post-project-fields">
-					<form action="#" th:action=" '/comment/edit/profile/' + ${comment.id}" method="post" th:object="${comment}">
-						<div class="row">
-							<div class="col-lg-12">
-								<textarea name="description" placeholder="Description" th:field="${comment.description}"></textarea>
-							</div>
-							<div class="col-lg-12">
-								<ul>
-									<li>
-										<button class="active" type="submit" value="post" th:text="'Edit'"></button>
-									</li>
-									<li><a href="#" title="" th:href="@{'/user/showUserProfile/' + ${user.id}}">Cancel</a></li>
-								</ul>
-							</div>
-						</div>
-					</form>
-				</div><!--post-project-fields end-->
-			</div><!--post-project end-->
-		</div>
-	</div>
-	<script>
-		function completeAndRedirect(postId, elementId){
-			let r = confirm("Are you sure you want to delete this post?");
-			if (r == true) {
-				document.getElementById(elementId).action = '/post/delete/' + postId;
-				document.getElementById(elementId).submit();
-			}
-		}
-	</script>
+    <div th:if="${comment}" class="post-popup job_post" th:classappend="${comment} ? active : ''">
+        <div class="post-project">
+            <h3 th:text="'Edit comment'">Edit comment</h3>
+            <div class="post-project-fields">
+                <form action="#" th:action=" '/comment/edit/profile/' + ${comment.id}" method="post"
+                      th:object="${comment}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <textarea name="description" placeholder="Description"
+                                      th:field="${comment.description}"></textarea>
+                        </div>
+                        <div class="col-lg-12">
+                            <ul>
+                                <li>
+                                    <button class="active" type="submit" value="post" th:text="'Edit'"></button>
+                                </li>
+                                <li><a href="#" title="" th:href="@{'/user/showUserProfile/' + ${userProfile.id}}">Cancel</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div><!--post-project-fields end-->
+        </div><!--post-project end-->
+    </div>
+</div>
 
-	<script>
-		function completeAndRedirectComment(commentId, elementId){
-			let c = confirm("Are you sure you want to delete this comment?");
-			if (c == true) {
-				document.getElementById(elementId).action = '/comment/delete/profile/' + commentId;
-				document.getElementById(elementId).submit();
-			}
-		}
-
-	</script>
-	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/popper.js}"></script>
-	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" th:src="@{/lib/slick/slick.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/script.js}"></script>
-
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/slick/slick.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+<script>
+    function completeAndRedirect(postId, elementId) {
+        let r = confirm("Are you sure you want to delete this post?");
+        if (r == true) {
+            document.getElementById(elementId).action = '/post/delete/' + postId;
+            document.getElementById(elementId).submit();
+        }
+    }
+</script>
+<script>
+    function completeAndRedirectComment(commentId, elementId) {
+        let c = confirm("Are you sure you want to delete this comment?");
+        if (c == true) {
+            document.getElementById(elementId).action = '/comment/delete/profile/' + commentId;
+            document.getElementById(elementId).submit();
+        }
+    }
+</script>
+<script> function appendComments(postElementIndex, postId, commentsSize) {
+    let postElementId = `#post_${postElementIndex}`;
+    $(postElementId).load(`/comment/list/${postId}?si=0&cs=${parseInt(commentsSize) + 2}&eid=${postElementIndex}`);
+    setTimeout(() => {
+        $(".ed-opts-open.comments").unbind('click');
+        $(".ed-opts-open.comments").on("click", function () {
+            $(this).next(".ed-options").toggleClass("active");
+            return false;
+        });
+    }, 1000)
+}
+</script>
 </body>
 </html>

@@ -233,11 +233,13 @@
                                                         <img th:src="@{images/liked-img.png}" alt="">
                                                         <span th:text=" ${post.getLikes().size()}">Likes</span>
                                                     </li>
-                                                    <li><button th:disabled="${post.getComments().size() le 0}"
-                                                           th:onclick="|appendComments('*{iter.index}', '${post.id}', '0')|"
-                                                           th:attr="data-comments=${post.getComments()}"
-                                                           th:text=" ${post.getComments().size() + '  Comments'}"
-                                                           class="com clickable"></button></li>
+                                                    <li>
+                                                        <button th:disabled="${post.getComments().size() le 0}"
+                                                                th:onclick="|appendComments('*{iter.index}', '${post.id}', '0')|"
+                                                                th:attr="data-comments=${post.getComments()}"
+                                                                th:text=" ${post.getComments().size() + '  Comments'}"
+                                                                class="com clickable"></button>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div><!--post-bar end-->

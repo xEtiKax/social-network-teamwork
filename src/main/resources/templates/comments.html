@@ -34,7 +34,7 @@
                 </div>
                 <div class="comment">
                     <img th:if="${comment.getUser().getPhoto()}" style="height: 40px;width: 40px;"
-                         th:src="@{'public/user/' + ${comment.getUser().getId()} + '/userImage'}" alt="">
+                         th:src="@{'/public/user/' + ${comment.getUser().getId()} + '/userImage'}" alt="">
                     <img th:if="${comment.getUser().getPhoto() == null}" style="height: 40px;width: 40px;"
                          th:src="@{/images/resources/anonymous-user.png}" alt="">
                     <h3><a th:text="${comment.getUser().getUsername()}"

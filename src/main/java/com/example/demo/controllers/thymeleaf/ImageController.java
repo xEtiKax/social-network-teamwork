@@ -40,7 +40,7 @@ public class ImageController {
 
     @GetMapping("user/{userId}/image")
     public String showUserUploadForm(@PathVariable long userId, Model model) {
-        model.addAttribute("user", userService.getById(userId));
+        model.addAttribute("userProfile", userService.getById(userId));
         return "user-profile";
     }
 
@@ -58,7 +58,7 @@ public class ImageController {
 
     @GetMapping("user/{userId}/cover")
     public String showUserCoverUploadForm(@PathVariable long userId, Model model) {
-        model.addAttribute("user", userService.getById(userId));
+        model.addAttribute("userProfile", userService.getById(userId));
         return "user-profile";
     }
 

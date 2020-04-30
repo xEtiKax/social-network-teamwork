@@ -139,8 +139,8 @@ public class CommentController {
 
     @GetMapping("/edit/profile/{userId}/{commentId}")
     public String showEditCommentForm(@PathVariable long userId, @PathVariable long commentId, Model model, Principal principal) {
-        model.addAttribute("me", userService.getByUsername(principal.getName()));
-        model.addAttribute("user", userService.getById(userId));
+        model.addAttribute("user", userService.getByUsername(principal.getName()));
+        model.addAttribute("userProfile", userService.getById(userId));
         model.addAttribute("comment", commentService.getById(commentId));
         return "user-profile";
     }

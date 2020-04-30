@@ -73,8 +73,8 @@ public class UserController {
         List<Post> posts = checkLike(me, postService.getPostsByUserId(userId));
 
         model.addAttribute("isSentRequest", isSentRequest);
-        model.addAttribute("user", user);
-        model.addAttribute("me", me);
+        model.addAttribute("userProfile", user);
+        model.addAttribute("user", me);
         model.addAttribute("isFriend", isFriend);
         model.addAttribute("isFriendAndIsSentRequest", isFriendAndIsSentRequest);
         model.addAttribute("posts", posts);
@@ -105,7 +105,7 @@ public class UserController {
     @GetMapping("/info/{userId}")
     public String viewUserInfo(@PathVariable long userId, Model model) {
         User user = userService.getById(userId);
-        model.addAttribute("user", user);
+        model.addAttribute("userProfile", user);
         model.addAttribute("isInfo", true);
         return "user-profile";
     }
