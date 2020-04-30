@@ -29,7 +29,7 @@
         <div class="container">
             <div class="header-data">
                 <div class="logo">
-                    <a th:href="@{/}" title=""><img src="../images/logo.png" alt=""></a>
+                    <a th:href="@{/}" title=""><img th:src="@{/images/logo.png}" alt=""></a>
                 </div><!--logo end-->
                 <div class="search-bar">
                     <form th:action="@{/user/searchUser}" th:object="${user}" method="post">
@@ -41,18 +41,17 @@
                     <ul>
                         <li>
                             <a th:href="@{/}" title="">
-                                <span><img src="../images/icon1.png" alt=""></span>
+                                <span><img th:src="@{/images/icon1.png}" alt=""></span>
                                 Home
                             </a>
                         </li>
                         <li>
-                            <a href="profiles.html" title="">
-                                <span><img src="../images/icon4.png" alt=""></span>
+                            <a th:href="@{/user/showAllUsers}"  title="">
+                                <span><img th:src="@{/images/icon4.png}" alt=""></span>
                                 Profiles
                             </a>
                             <ul>
-                                <li><a href="user-profile.html" title="">User Profile</a></li>
-                                <li><a href="my-profile-feed.html" title="">my-profile-feed</a></li>
+                                <li><a th:href="@{/user/showMyProfile}" title="">My Profile</a></li>
                             </ul>
                         </li>
                         <li th:if="${user != null}">
@@ -77,6 +76,18 @@
                                 </div><!--nott-list end-->
                             </div><!--notification-box end-->
                         </li>
+                        <li th:if="${user == null}">
+                            <a th:href="@{/login}" title="">
+                                <span><img th:src="@{/images/icon3.png}" alt=""></span>
+                                Login
+                            </a>
+                        </li>
+                        <li th:if="${user != null}">
+                            <a th:href="@{/logout}" title="">
+                                <span><img th:src="@{/images/icon3.png}" alt=""></span>
+                                Logout
+                            </a>
+                        </li>
                     </ul>
                 </nav><!--nav end-->
                 <div class="menu-btn">
@@ -88,49 +99,10 @@
                         <img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
                         <a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
                     </div>
-                    <div class="user-account-settingss">
-                        <h3>Online Status</h3>
-                        <ul class="on-off-status">
-                            <li>
-                                <div class="fgt-sec">
-                                    <input type="radio" name="cc" id="c5">
-                                    <label for="c5">
-                                        <span></span>
-                                    </label>
-                                    <small>Online</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="fgt-sec">
-                                    <input type="radio" name="cc" id="c6">
-                                    <label for="c6">
-                                        <span></span>
-                                    </label>
-                                    <small>Offline</small>
-                                </div>
-                            </li>
-                        </ul>
-                        <h3>Custom Status</h3>
-                        <div class="search_form">
-                            <form>
-                                <input type="text" name="search">
-                                <button type="submit">Ok</button>
-                            </form>
-                        </div><!--search_form end-->
-                        <h3>Setting</h3>
-                        <ul class="us-links">
-                            <li><a href="user-settings.html" title="">Account Setting</a></li>
-                            <li><a href="#" title="">Privacy</a></li>
-                            <li><a href="#" title="">Faqs</a></li>
-                            <li><a href="#" title="">Terms & Conditions</a></li>
-                        </ul>
-                        <h3 class="tc"><a href="sign-in.html" title="">Logout</a></h3>
-                    </div><!--user-account-settingss end-->
                 </div>
             </div><!--header-data end-->
         </div>
     </header><!--header end-->
-
     <section class="profile-account-setting">
         <div class="container">
             <div class="account-tabs-setting">
@@ -138,41 +110,62 @@
                     <div class="col-lg-3">
                         <div class="acc-leftbar">
                             <div class="nav nav-tabs" id="nav-tab">
-                                <a class="nav-item nav-link" id="nav-acc-tab" th:href="@{/user/edit}"
-                                   aria-selected="false"><i class="la la-cogs"></i>Edit Profile</a>
-                                <a class="nav-item nav-link" id="nav-password-tab" th:href="@{/user/changePass}"
-                                   aria-selected="false"><i class="fa fa-lock"></i>Change Password</a>
-                                <a class="nav-item nav-link" id="nav-privcy-tab" th:href="@{/request/showRequests}"
-                                   aria-selected="false"><i class="fa fa-group"></i>Requests</a>
-                                <a class="nav-item nav-link" id="nav-privacy-tab" th:if="${user.getPhoto() != null}" th:href="@{/user/privacy}"
-                                   aria-selected="false"><i class="fa fa-paw"></i>Privacy</a>
-                                <a class="nav-item nav-link active" id="nav-deactivate-tab" th:href="@{/user/deleteProfile}"
-                                   aria-selected="true"><i class="fa fa-random"></i>Deactivate Account</a>
+                                <a class="nav-item nav-link active" id="nav-acc-tab"
+                                   aria-selected="true"><i class="la la-cogs"></i>Edit Profile</a>
                             </div>
                         </div><!--acc-leftbar end-->
                     </div>
                     <div class="col-lg-9">
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-deactivate" role="tabpanel"
-                                 aria-labelledby="nav-deactivate-tab">
+                            <div class="tab-pane fade show active" id="nav-acc" role="tabpanel"
+                                 aria-labelledby="nav-acc-tab">
                                 <div class="acc-setting">
-<!--                                    <label class="error" th:if="${wrongPassword}" text="${error}">Wrong password. Please Try again </label>-->
-                                    <h3>Deactivate Account</h3>
-                                    <form th:action="@{/user/deleteProfile}" th:object="${user}" method="post">
+                                    <h3>Edit Profile Information</h3>
+                                    <form th:action="@{'/admin/updateProfile/' + ${user.id}}" th:object="${user}" method="post">
                                         <div class="cp-field">
-                                            <h5>Password <i class="fa fa-lock"></i></h5>
-
-                                            <div class="cpp-field">
-                                                <input type="password" required name="password" placeholder="Password">
-                                                <label style="color:red;" class="existEmail" th:if="${wrongPassword}" text="${error}">     *Wrong password. Please Try again</label>
-
+                                            <h5>Change First Name</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" required name="firstName" th:field="*{firstName}" placeholder="First Name">
+                                                <i class="fa fa-lock"></i>
                                             </div>
                                         </div>
-                                        <div class="save-stngs pd3">
+                                        <div class="cp-field">
+                                            <h5>Change Last Name</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" required name="lastName" th:field="*{lastName}"placeholder="Last Name">
+                                                <i class="fa fa-lock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="cp-field">
+                                            <h5>Change Email</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" required name="email"th:field="*{email}" placeholder="New Email">
+                                                <i class="fa fa-lock"></i>
+                                            </div>
+                                            <label style="color:red;" class="wrongEmail" th:if="${wrongEmail}" text="${wrongEmail}">     *please input valid e-mail</label>
+                                            <label style="color:red;" class="existEmail" th:if="${error}" text="${wrongEmail}">     *email already exists</label>
+
+                                        </div>
+                                        <div class="cp-field">
+                                            <h5>Change Age</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" required name="age" th:field="*{age}" placeholder="Age">
+                                                <i class="fa fa-lock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="cp-field">
+                                            <h5>Change Job Title</h5>
+                                            <div class="cpp-fiel">
+                                                <input type="text" required name="jobTitle" th:field="*{jobTitle}" placeholder="New Job Title">
+                                                <i class="fa fa-lock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="save-stngs pd2">
                                             <ul>
                                                 <li>
-                                                    <button type="submit">Deactivate</button>
+                                                    <button type="submit">Save Setting</button>
                                                 </li>
+                                                <!--													<li><button type="submit">Restore Setting</button></li>-->
                                             </ul>
                                         </div><!--save-stngs end-->
                                     </form>
@@ -198,14 +191,13 @@
                     <li><a href="#" title="">Language</a></li>
                     <li><a href="#" title="">Copyright Policy</a></li>
                 </ul>
-                <p><img src="../images/copy-icon2.png" alt="">Copyright 2019</p>
-                <img class="fl-rgt" src="../images/logo2.png" alt="">
+                <p><img src="../static/images/copy-icon2.png" alt="">Copyright 2019</p>
+                <img class="fl-rgt" src="../static/images/logo2.png" alt="">
             </div>
         </div>
     </footer>
 
 </div><!--theme-layout end-->
-
 
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/popper.js}"></script>

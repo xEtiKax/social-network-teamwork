@@ -119,7 +119,7 @@
                                    aria-selected="false"><i class="fa fa-lock"></i>Change Password</a>
                                 <a class="nav-item nav-link active" id="nav-privcy-tab" th:href="@{/request/showRequests}"
                                    aria-selected="true"><i class="fa fa-group"></i>Requests</a>
-                                <a class="nav-item nav-link" id="nav-privacy-tab" th:href="@{/user/privacy}"
+                                <a class="nav-item nav-link" id="nav-privacy-tab" th:if="${user.getPhoto() != null}" th:href="@{/user/privacy}"
                                    aria-selected="false"><i class="fa fa-paw"></i>Privacy</a>
                                 <a class="nav-item nav-link" id="nav-deactivate-tab" th:href="@{/user/deleteProfile}"
                                    aria-selected="false"><i class="fa fa-random"></i>Deactivate Account</a>

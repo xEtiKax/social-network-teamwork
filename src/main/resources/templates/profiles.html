@@ -128,6 +128,16 @@
 								<li>
 									<a th:href="@{/user/showUserProfile/{id}(id=${user.id})}" title="">View Profile</a>
 								</li>
+								<li  sec:authorize="hasRole('ADMIN')" >
+									<a th:href="@{'/admin/edit/'+ ${user.id}}" title="" >Edit Profile</a>
+								</li>
+								<li sec:authorize="hasRole('ADMIN')" >
+									<form th:action="@{'/admin/deleteProfile/' + ${user.id}}" th:object="${user}" method="post">
+										<a>
+									<button type="submit">Delete Profile</button>
+										</a>
+									</form>
+								</li>
 							</ul>
 						</div><!--company_profile_info end-->
 					</div>

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -69,7 +70,6 @@ public class UserServiceImpl implements UserService {
         throwIfEmailDoesNotExists(email);
         return userRepository.findUserByEmail(email);
     }
-
     @Override
     public List<User> getAll() {
         return new ArrayList<>(userRepository.findAll());
@@ -187,15 +187,13 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(Е_MAIL_ALREADY_EXIST);
         }
     }
-
     private void throwIfEmailDoesNotExists(String email) {
         if (!checkEmailExist(email)) {
             throw new EntityNotFoundException(Е_MAIL_DOESNT_EXIST);
         }
     }
-
     private void throwIfUsernameDoesNotExist(String username) {
-        if (!checkUserExist(username)) {
+        if (!checkUserExist(username)){
             throw new EntityNotFoundException(USER_DOES_NOT_EXIST);
         }
     }

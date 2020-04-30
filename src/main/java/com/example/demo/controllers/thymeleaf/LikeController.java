@@ -75,5 +75,31 @@ public class LikeController {
         }
         return "redirect:/";
     }
+    @RequestMapping("/likeProfilePost/{postId}")
+    public String likeProfilePost(@PathVariable long postId, Principal principal) {
+        long creatorId = 0;
+        try {
+            User user = userService.getByUsername(principal.getName());
+            Post post = postService.getPostById(postId);
+            creatorId = post.getCreatedBy().getId();
+            likeService.createLike(user, post);
+        } catch (DuplicateEntityException ignored) {
+        }
+        return "redirect:/user/showUserProfile/" + creatorId;
+    }
+
+    @RequestMapping("/dislikeProfilePost/{postId}")
+    public String dislikeProfilePost(@PathVariable long postId, Principal principal) {
+        long creatorId = 0;
+        try {
+            Post post = postService.getPostById(postId);
+            User user = userService.getByUsername(principal.getName());
+            Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
+            creatorId = post.getCreatedBy().getId();
+            likeService.deleteLike(like, post, user);
+        }catch (EntityNotFoundException ignored) {
+        }
+        return "redirect:/user/showUserProfile/" + creatorId;
+    }
 }
 

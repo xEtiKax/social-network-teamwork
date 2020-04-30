@@ -208,8 +208,8 @@
 												<div class="job-status-bar">
 													<ul class="like-com" sec:authorize="hasRole('ROLE_USER')">
 														<li>
-															<a th:if="${!post.isLiked()}" th:href="@{'/likePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
-															<a th:if="${post.isLiked()}" th:href="@{'/dislikePublicPost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
+															<a th:if="${!post.isLiked()}" th:href="@{'/likeProfilePost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> Like</a>
+															<a th:if="${post.isLiked()}" th:href="@{'/dislikeProfilePost/'+ ${post.getId()}}"><i class="fas fa-heart"></i> DisLike</a>
 															<img th:src="@{/images/liked-img.png}" alt="">
 															<span th:text=" ${post.getLikes().size()}">Likes</span>
 														</li>
