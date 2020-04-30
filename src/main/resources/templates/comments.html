@@ -24,7 +24,7 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="commentsList" th:if="${post.getComments().size() > 0}">
+<div th:fragment="commentsList">
     <ul>
         <li th:each="comment,iter : ${post.getComments()}">
             <div class="comment-list">
@@ -60,6 +60,7 @@
                 </div>
             </div><!--comment-list end-->
         </li>
+        <a th:if="${size le commentsSize}" th:onclick="|appendComments('${postElementId}', '${post.id}', '${size}')|" class="clickable">View more</a>
     </ul>
 </div>
 

@@ -171,12 +171,15 @@ public class CommentController {
     }
 
     @GetMapping("/list/{postId}")
-    public String showPostComments(@PathVariable long postId, Model model, @RequestParam int si, @RequestParam int ps ) {
+    public String showPostComments(@PathVariable long postId, Model model, @RequestParam int si, @RequestParam int cs, @RequestParam int eid ) {
         Post post = postService.getPostById(postId);
-        Slice<Comment> comments = commentService.getCommentsByPostIdWithPage(postId, PageRequest.of(si, ps, Sort.by("dateTime").ascending()));
+        model.addAttribute("commentsSize", post.getComments().size());
+        Slice<Comment> comments = commentService.getCommentsByPostIdWithPage(postId, PageRequest.of(si, cs, Sort.by("dateTime").ascending()));
         LinkedHashSet<Comment> linkedComments = new LinkedHashSet(comments.getContent());
         post.setComments(linkedComments);
         model.addAttribute("post", post);
+        model.addAttribute("postElementId", eid);
+        model.addAttribute("size", cs);
         model.addAttribute("newComment", new CommentDTO());
         return "comments :: commentsList";
     }

@@ -233,11 +233,11 @@
                                                         <img th:src="@{images/liked-img.png}" alt="">
                                                         <span th:text=" ${post.getLikes().size()}">Likes</span>
                                                     </li>
-                                                    <li><a href="#"
-                                                           th:onclick="|appendComments('*{iter.index}', '${post.id}')|"
+                                                    <li><button th:disabled="${post.getComments().size() le 0}"
+                                                           th:onclick="|appendComments('*{iter.index}', '${post.id}', '0')|"
                                                            th:attr="data-comments=${post.getComments()}"
                                                            th:text=" ${post.getComments().size() + '  Comments'}"
-                                                           class="com"></a></li>
+                                                           class="com clickable"></button></li>
                                                 </ul>
                                             </div>
                                         </div><!--post-bar end-->
@@ -364,9 +364,9 @@
     }
 
 </script>
-<script> function appendComments(postElementIndex, postId) {
+<script> function appendComments(postElementIndex, postId, commentsSize) {
     let postElementId = `#post_${postElementIndex}`;
-    $(postElementId).load(`/comment/list/${postId}?si=0&ps=2`);
+    $(postElementId).load(`/comment/list/${postId}?si=0&cs=${parseInt(commentsSize) + 2}&eid=${postElementIndex}`);
     setTimeout(() => {
         $(".ed-opts-open.comments").unbind('click');
         $(".ed-opts-open.comments").on("click", function () {
