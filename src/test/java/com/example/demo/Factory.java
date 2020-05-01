@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.models.*;
 import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.DTO.RequestDTO;
 import com.example.demo.models.DTO.UserDTO;
 
 import java.io.IOException;
@@ -80,5 +81,21 @@ public class Factory {
         like.setPost(post);
         like.setUser(user);
         return like;
+    }
+
+    public static RequestDTO createRequestDTO() {
+        RequestDTO requestDTO = new RequestDTO();
+        requestDTO.setSender(1);
+        requestDTO.setReceiver(2);
+        return requestDTO;
+    }
+
+    public static Request createRequest() {
+        Request request = new Request();
+        User sender = new User();
+        User receiver = new User();
+        request.setSender(sender);
+        request.setReceiver(receiver);
+        return request;
     }
 }

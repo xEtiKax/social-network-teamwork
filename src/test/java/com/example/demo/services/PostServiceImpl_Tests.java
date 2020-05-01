@@ -5,6 +5,7 @@ import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.UserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class PostServiceImpl_Tests {
     private PostRepository mockPostRepository;
 
     @Mock
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Mock
     private Principal principal;

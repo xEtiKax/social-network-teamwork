@@ -6,13 +6,11 @@ import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.PostService;
-import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.List;
 
 
@@ -20,12 +18,12 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     public static final String POST_DOES_NOT_EXISTS = "Post does not exists.";
     private PostRepository postRepository;
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, UserService userService) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -79,7 +77,7 @@ public class PostServiceImpl implements PostService {
     private void postMerge(Post post, PostDTO postDTO) {
         post.setText(postDTO.getText());
         post.setIsPublic(postDTO.getIsPublic());
-        User createdBy = userService.getById(postDTO.getCreatedBy());
+        User createdBy = userRepository.getById(postDTO.getCreatedBy());
         post.setCreatedBy(createdBy);
     }
 

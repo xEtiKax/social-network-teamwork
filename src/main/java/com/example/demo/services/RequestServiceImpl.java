@@ -29,6 +29,8 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Request getRequestById(long id) {
+        Request request = requestRepository.getRequestById(id);
+        throwIfRequestDoesNotExists(request.getSender().getId(),request.getReceiver().getId());
         return requestRepository.getRequestById(id);
     }
 
@@ -65,8 +67,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<Request> getUserRequests(User userId) {
-        return requestRepository.findAllByReceiver(userId);
+    public List<Request> getUserRequests(long userId) {
+        User receiver = userRepository.getById(userId);
+        return requestRepository.findAllByReceiver(receiver);
     }
 
     private void requestMerge(Request request, RequestDTO requestDTO) {

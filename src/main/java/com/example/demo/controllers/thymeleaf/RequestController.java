@@ -88,7 +88,7 @@ public class RequestController {
     @GetMapping("/showRequests")
     public String getFriendRequests(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
-        List<Request> friendRequests = requestService.getUserRequests(user);
+        List<Request> friendRequests = requestService.getUserRequests(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("requests", friendRequests);
         return "requests";

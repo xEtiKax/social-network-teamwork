@@ -18,5 +18,5 @@ public interface RequestService {
 
     Request getRequestBySenderAndReceiver(long sender, long receiver);
 
-    List<Request> getUserRequests(User userId);
+    List<Request> getUserRequests(long userId);
 }
