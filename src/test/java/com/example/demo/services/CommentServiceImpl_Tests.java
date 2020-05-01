@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.Comment;
 import com.example.demo.models.DTO.CommentDTO;
@@ -14,10 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -45,11 +43,6 @@ public class CommentServiceImpl_Tests {
         mockCommentServiceImpl.getById(anyLong());
     }
 
-//    @Test
-//    public void getCommentsByPostShould_CallRepository() {
-//        mockCommentServiceImpl.getCommentsByPostIdWithPage(anyLong(), any(Pageable.class));
-//        Mockito.verify(mockCommentRepository, times(1)).findAllByPostId(anyLong(), any(Pageable.class));
-//    }
 
     @Test
     public void getCommentsByPostIdShould_CallRepository() {
@@ -63,6 +56,61 @@ public class CommentServiceImpl_Tests {
         //Assert
         Mockito.verify(mockCommentRepository,
                 times(1)).getCommentsByPostId(post.getId());
+    }
+
+    @Test
+    public void getCommentsByPostIdWithPageShould_CallRepository() {
+        List<Comment> comments = new ArrayList<>();
+        Pageable pageable = new Pageable() {
+            @Override
+            public int getPageNumber() {
+                return 2;
+            }
+
+            @Override
+            public int getPageSize() {
+                return 2;
+            }
+
+            @Override
+            public long getOffset() {
+                return 2;
+            }
+
+            @Override
+            public Sort getSort() {
+                return null;
+            }
+
+            @Override
+            public Pageable next() {
+                return null;
+            }
+
+            @Override
+            public Pageable previousOrFirst() {
+                return null;
+            }
+
+            @Override
+            public Pageable first() {
+                return null;
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return false;
+            }
+        };
+        Post post = createPost();
+        comments.add(createComment());
+
+        //Act
+        mockCommentServiceImpl.getCommentsByPostIdWithPage(post.getId(),pageable);
+
+        //Assert
+        Mockito.verify(mockCommentRepository,
+                times(1)).findAllByPostId(post.getId(),pageable);
     }
 
     @Test
@@ -134,5 +182,21 @@ public class CommentServiceImpl_Tests {
         mockCommentServiceImpl.deleteComment(comment.getId(), user.getUsername(), true);
 
         Mockito.verify(mockCommentRepository, times(1)).deleteById(comment.getId());
+    }
+    @Test(expected = AuthorizationException.class)
+    public void deleteCommentShould_Throw_When_WrongCreator() {
+        Comment comment = createComment();
+        Post post = createPost();
+        User user = createUser();
+        User user2 = createUser();
+        user2.setUsername("gosho");
+
+        Mockito.when(mockCommentRepository.getByCommentId(comment.getId())).thenReturn(comment);
+        Mockito.when(mockCommentRepository.existsById(anyLong())).thenReturn(true);
+        Mockito.when(mockUserRepository.getUserByUsername(user2.getUsername())).thenReturn(user2);
+        comment.setUser(user);
+        comment.setPost(post);
+
+        mockCommentServiceImpl.deleteComment(comment.getId(), user2.getUsername(),false);
     }
 }

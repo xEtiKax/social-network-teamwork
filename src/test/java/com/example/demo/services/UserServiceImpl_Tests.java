@@ -226,6 +226,17 @@ public class UserServiceImpl_Tests {
 
     }
 
+    @Test(expected = DuplicateEntityException.class)
+    public void updateUserDetailsShould_Throw_WhenEmailAlreadyExist() {
+        User expectedUser = createUser();
+        expectedUser.setEmail("user@email.com");
+        Mockito.when(mockUserRepository.existsById(anyLong())).thenReturn(true);
+        Mockito.when(mockUserRepository.findUserByEmail(anyString())).thenReturn(expectedUser);
+
+        mockUserService.updateUserDetails(expectedUser, "firstName", "lastName", "user@email.com", 25, "developer");
+
+    }
+
     @Test
     public void updateUserDetailsShould_UpdateUserDetails() {
         User expectedUser = createUser();
@@ -371,8 +382,10 @@ public class UserServiceImpl_Tests {
     @Test(expected = WrongPasswordException.class)
     public void changeUserPasswordShouldThrow_WhenPassDontMatch() {
         User user = createUser();
+        user.setPassword("parola");
+        Mockito.when(mockUserRepository.getUserByUsername(user.getUsername())).thenReturn(user);
 
-        mockUserService.changePassword(user.getUsername(), "pass", "pass", "pass1");
+        mockUserService.changePassword(user.getUsername(), "pass", "pass", "pass");
 
     }
 

@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
@@ -111,6 +113,19 @@ public class PostServiceImpl_Tests {
         mockPostService.deletePost(post.getId(), createUser(),true);
 
         Mockito.verify(mockPostRepository, times(1)).save(any(Post.class));
+    }
+
+    @Test(expected = AuthorizationException.class)
+    public void deletePostShould_Throw_When_WrongCreator() {
+        Post post = createPost();
+        User user = createUser();
+        User user2 = createUser();
+        user2.setUsername("gosho");
+        post.setCreatedBy(user);
+        Mockito.when(mockPostRepository.getById(post.getId())).thenReturn(post);
+        Mockito.when(mockPostRepository.existsById(anyLong())).thenReturn(true);
+
+        mockPostService.deletePost(post.getId(), user2,false);
     }
 
     @Test(expected = EntityNotFoundException.class)

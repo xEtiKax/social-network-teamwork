@@ -39,15 +39,8 @@ public class ForgottenPasswordServiceImpl implements ForgottenPasswordService {
     @Override
     public boolean userValidation(String username, String email) {
         if (userDetailsManager.userExists(username)) {
-            try {
-                userService.getByEmail(email);
-                return true;
-            } catch (EntityNotFoundException e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
+            return userService.getByEmail(email) != null;
+        } return false;
     }
 
     @Override

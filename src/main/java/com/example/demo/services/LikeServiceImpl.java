@@ -33,7 +33,6 @@ public class LikeServiceImpl implements LikeService {
         likeRepository.save(like);
     }
 
-
     @Override
     public void deleteLike(Like like, Post post, User user) {
         if (!checkLikeExists(user.getId(), post.getId())) {
@@ -42,7 +41,7 @@ public class LikeServiceImpl implements LikeService {
         if (like.getUser().getUsername().equals(user.getUsername())) {
             post.removeLike(like);
             likeRepository.delete(like);
-        }else{
+        } else {
             throw new AuthorizationException("You have no permissions to dislike post");
         }
     }
@@ -52,7 +51,6 @@ public class LikeServiceImpl implements LikeService {
         Like like = likeRepository.getLikeByUser_IdAndPost_Id(userId, potsId);
         return like != null;
     }
-
 
     @Override
     public Like getLikeByUserIdAndPostId(long userId, long postId) {

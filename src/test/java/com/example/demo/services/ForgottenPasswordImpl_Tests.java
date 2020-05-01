@@ -38,7 +38,9 @@ public class ForgottenPasswordImpl_Tests {
 
     @Test
     public void userValidation_Should_ReturnTrue_When_EmailAndUsernameIsValid() {
+        User user = new User();
         when(userDetailsManager.userExists("user")).thenReturn(true);
+        when(userService.getByEmail("user@email.com")).thenReturn(user);
 
         boolean result = forgottenPasswordService.userValidation("user", "user@email.com");
 
