@@ -29,8 +29,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Request getRequestById(long id) {
-        Request request = requestRepository.getRequestById(id);
-        throwIfRequestDoesNotExists(request.getSender().getId(),request.getReceiver().getId());
+        throwIfRequestDoesNotExists(id);
         return requestRepository.getRequestById(id);
     }
 
@@ -40,9 +39,6 @@ public class RequestServiceImpl implements RequestService {
         Request request = new Request();
         requestMerge(request, requestDTO);
         User receiver = request.getReceiver();
-        if (receiver.getRequests().contains(request)) {
-            throw new DuplicateEntityException(REQUEST_SENT);
-        }
         receiver.addRequest(request);
         requestRepository.save(request);
     }
@@ -50,20 +46,18 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void deleteRequest(long id) {
         Request requestToDelete = requestRepository.getRequestById(id);
-        throwIfRequestDoesNotExists(requestToDelete.getSender().getId(), requestToDelete.getReceiver().getId());
-        User receiver = requestToDelete.getReceiver();
-        receiver.deleteRequest(requestToDelete);
+        throwIfUniqueDoesNotExists(requestToDelete.getSender().getId(), requestToDelete.getReceiver().getId());
         requestRepository.delete(requestToDelete);
     }
 
     @Override
     public boolean checkIfRequestExist(long sender, long receiver) {
-        return requestRepository.existsByUniquePair(sender, receiver) != null;
+        return requestRepository.findRequestByReceiverAndSender(sender, receiver) != null;
     }
 
     @Override
     public Request getRequestBySenderAndReceiver(long sender, long receiver) {
-        return requestRepository.findAllByReceiverAndSender(sender, receiver);
+        return requestRepository.findRequestByReceiverAndSender(sender, receiver);
     }
 
     @Override
@@ -80,7 +74,7 @@ public class RequestServiceImpl implements RequestService {
         request.setSender(sender);
     }
 
-    private void throwIfRequestDoesNotExists(long sender, long receiver) {
+    private void throwIfUniqueDoesNotExists(long sender, long receiver) {
         if (!checkIfRequestExist(sender, receiver)) {
             throw new EntityNotFoundException(REQUEST_DOES_NOT_EXISTS);
         }
@@ -89,6 +83,12 @@ public class RequestServiceImpl implements RequestService {
     private void throwIfRequestExists(long sender, long receiver) {
         if (checkIfRequestExist(sender, receiver)) {
             throw new DuplicateEntityException(REQUEST_ALREADY_WAS_SEND);
+        }
+    }
+
+    private void throwIfRequestDoesNotExists(long id) {
+        if (!requestRepository.existsById(id)) {
+            throw new EntityNotFoundException(REQUEST_DOES_NOT_EXISTS);
         }
     }
 }

@@ -146,7 +146,7 @@
                                     </div><!--user-pro-img end-->
                                     <div class="user_pro_status">
                                         <ul class="flw-hr">
-                                            <li th:if="${isFriendAndIsSentRequest != null && user.getId() != user.getId()} ">
+                                            <li th:if="${user.getId() != userProfile.getId()} ">
                                                 <a th:if="${!isFriendAndIsSentRequest}"
                                                    th:href="@{/request/send?userId={id}(id=${userProfile.id})}" title=""
                                                    class="flww"><i class="la la-plus"></i> Add friend</a></li>

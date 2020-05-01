@@ -3,13 +3,10 @@ package com.example.demo.services;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.Comment;
 import com.example.demo.models.DTO.CommentDTO;
-import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CommentRepository;
-import com.example.demo.services.interfaces.CommentService;
-import com.example.demo.services.interfaces.PostService;
-import com.example.demo.services.interfaces.UserService;
+import com.example.demo.repositories.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static com.example.demo.Factory.*;
@@ -33,10 +35,7 @@ public class CommentServiceImpl_Tests {
     private CommentRepository mockCommentRepository;
 
     @Mock
-    private UserService mockUserService;
-
-    @Mock
-    private PostService postService;
+    private UserRepository mockUserRepository;
 
     @InjectMocks
     private CommentServiceImpl mockCommentServiceImpl;
@@ -45,6 +44,12 @@ public class CommentServiceImpl_Tests {
     public void getCommentByIdShouldThrow_WhenCommentDoesNotExist() {
         mockCommentServiceImpl.getById(anyLong());
     }
+
+//    @Test
+//    public void getCommentsByPostShould_CallRepository() {
+//        mockCommentServiceImpl.getCommentsByPostIdWithPage(anyLong(), any(Pageable.class));
+//        Mockito.verify(mockCommentRepository, times(1)).findAllByPostId(anyLong(), any(Pageable.class));
+//    }
 
     @Test
     public void getCommentsByPostIdShould_CallRepository() {
@@ -112,22 +117,22 @@ public class CommentServiceImpl_Tests {
 
     @Test(expected = EntityNotFoundException.class)
     public void deleteComment_ShouldThrow_WhenCommentDoesNotExist() {
-        mockCommentServiceImpl.deleteComment(anyLong(), createUser().getUsername());
+        mockCommentServiceImpl.deleteComment(anyLong(), createUser().getUsername(), true);
     }
 
-//    @Test
-//    public void deleteCommentShould_CallRepository() {
-//        Comment comment = createComment();
-//        User user = createUser();
-//        Post post = createPost();
-//        Mockito.when(mockCommentRepository.getByCommentId(comment.getId())).thenReturn(comment);
-//        Mockito.when(mockCommentRepository.existsById(anyLong())).thenReturn(true);
-//        Mockito.when(mockCommentRepository.save(any(Comment.class))).thenReturn(comment);
-//        comment.setUser(user);
-//        comment.setPost(post);
-//
-//        mockCommentServiceImpl.deleteComment(comment.getId(), createUser().getUsername());
-//
-//        Mockito.verify(mockCommentRepository, times(1)).save(any(Comment.class));
-//    }
+    @Test
+    public void deleteCommentShould_CallRepository() {
+        Comment comment = createComment();
+        User user = createUser();
+        Post post = createPost();
+        Mockito.when(mockCommentRepository.existsById(anyLong())).thenReturn(true);
+        Mockito.when(mockCommentRepository.getByCommentId(comment.getId())).thenReturn(comment);
+        Mockito.when(mockUserRepository.getUserByUsername(user.getUsername())).thenReturn(user);
+        comment.setUser(user);
+        comment.setPost(post);
+
+        mockCommentServiceImpl.deleteComment(comment.getId(), user.getUsername(), true);
+
+        Mockito.verify(mockCommentRepository, times(1)).deleteById(comment.getId());
+    }
 }

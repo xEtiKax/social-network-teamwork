@@ -7,6 +7,7 @@ import com.example.demo.models.DTO.CommentDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CommentRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.CommentService;
 import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,12 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     public static final String COMMENT_DOES_NOT_EXISTS = "Comment does not exists.";
     private CommentRepository commentRepository;
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, UserService userService) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(long commentId, String username, boolean isAdmin) {
         throwIfCommentDoesNotExists(commentId);
-        User user = userService.getByUsername(username);
+        User user = userRepository.getUserByUsername(username);
         Comment comment = commentRepository.getByCommentId(commentId);
         canUserDeleteUpdateComment(comment, user, isAdmin);
         Post post = comment.getPost();

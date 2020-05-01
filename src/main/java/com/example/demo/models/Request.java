@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "requests")
@@ -21,6 +22,19 @@ public class Request {
 
     @Column(name = "is_accepted")
     private int isAccepted;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Request request = (Request) o;
+        return id == request.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     public long getId() {
         return id;
@@ -49,4 +63,6 @@ public class Request {
     public void setAccepted(int accepted) {
         isAccepted = accepted;
     }
+
+
 }

@@ -14,12 +14,9 @@ public interface RequestRepository extends CrudRepository<Request, Serializable>
     @Query(value = "SELECT * FROM social_network.requests WHERE id = ?1", nativeQuery = true)
     Request getRequestById(long id);
 
-    @Query(value = "SELECT * FROM social_network.requests WHERE sender_id = ?1 AND receiver_id = ?2", nativeQuery = true)
-    Request existsByUniquePair(long sender, long receiver);
-
-    List<Request> findAllByReceiver(User userId);
+    List<Request> findAllByReceiver(User user);
 
     @Query(value = "SELECT * FROM social_network.requests WHERE sender_id = ?1 AND receiver_id = ?2", nativeQuery = true)
-    Request findAllByReceiverAndSender(long sender, long receiver);
+    Request findRequestByReceiverAndSender(long sender, long receiver);
 
 }

@@ -85,8 +85,11 @@ public class Factory {
 
     public static RequestDTO createRequestDTO() {
         RequestDTO requestDTO = new RequestDTO();
+        User sender = new User();
+        User receiver = new User();
         requestDTO.setSender(1);
         requestDTO.setReceiver(2);
+
         return requestDTO;
     }
 
