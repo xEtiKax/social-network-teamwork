@@ -169,7 +169,7 @@ public class UserController {
         } catch (WrongPasswordException e) {
             model.addAttribute("error", "Wrong password");
         }
-        return "change-password";
+        return "redirect:/user/changePass";
     }
 
     @GetMapping("/edit")
@@ -227,7 +227,7 @@ public class UserController {
             model.addAttribute("wrongPassword", "Wrong password");
             return "deactivate-account";
         }
-        return "index";
+        return "redirect:/logout";
     }
 
     @GetMapping("/post/new")
