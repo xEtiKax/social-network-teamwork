@@ -23,5 +23,5 @@ public interface CommentService {
 
     boolean checkIfCommentExist(long id);
 
-    void updateComment(long id,CommentDTO commentDTO);
+    void updateComment(long id, CommentDTO commentDTO);
 }

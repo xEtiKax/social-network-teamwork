@@ -138,22 +138,19 @@ public class UserController {
     @GetMapping("/showAllUsers")
     public String showUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getAll());
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getByUsername(principal.getName()));
         return "profiles";
     }
 
     @GetMapping("/changePass")
     public String changeUserPassword(Model model, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getByUsername(principal.getName()));
         return "change-password";
     }
 
     @GetMapping("/privacy")
     public String showPrivacy(Model model, Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getByUsername(principal.getName()));
         return "privacy";
     }
 
@@ -175,8 +172,7 @@ public class UserController {
     @GetMapping("/edit")
     public String editUserDetails(Model model,
                                   Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getByUsername(principal.getName()));
         return "user-settings";
     }
 
@@ -205,8 +201,7 @@ public class UserController {
     @GetMapping("/deleteProfile")
     public String deleteUserProfile(Model model,
                                     Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getByUsername(principal.getName()));
         return "deactivate-account";
     }
 

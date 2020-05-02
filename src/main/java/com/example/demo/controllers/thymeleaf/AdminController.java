@@ -23,6 +23,7 @@ public class AdminController {
         this.userService = userService;
         this.postService = postService;
     }
+
     @GetMapping("/edit/{userId}")
     public String editUserDetails(@PathVariable long userId, Model model) {
         User user = userService.getById(userId);
@@ -38,11 +39,12 @@ public class AdminController {
                 postService.deletePost(post.getId(), user, request.isUserInRole("ROLE_ADMIN"));
             }
             userService.deleteUser(user.getId());
-        }else{
-            model.addAttribute("error","You have not permissions");
+        } else {
+            model.addAttribute("error", "You have not permissions");
         }
         return "redirect:/user/showAllUsers";
     }
+
     @PostMapping("/updateProfile/{userId}")
     public String updateUserProfile(@PathVariable long userId,
                                     @RequestParam("firstName") String firstName,
@@ -65,7 +67,7 @@ public class AdminController {
             model.addAttribute("user", user);
             return "user-settings";
         }
-        model.addAttribute("no permissions","You are not Admin");
+        model.addAttribute("no permissions", "You are not Admin");
         return "redirect:/user/showAllUsers";
     }
 }

@@ -35,28 +35,6 @@ public class ImageServiceImpl implements ImageService {
         userRepository.save(user);
     }
 
-//    @Override
-//    public void savePostPhoto(long postId, MultipartFile file) {
-//        try {
-//            Post post = postRepository.getById(postId);
-//
-//            Byte[] byteObjects = multiPartToByteArr(file);
-//            post.setPicture(byteObjects);
-//            postRepository.save(post);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public Byte[] multiPartToByteArr(MultipartFile file) throws IOException {
-//        Byte[] byteObjects = new Byte[file.getBytes().length];
-//        int i = 0;
-//        for (byte b : file.getBytes()) {
-//            byteObjects[i++] = b;
-//        }
-//        return byteObjects;
-//    }
-
     @Override
     public void setPrivacy(Picture picture, boolean isPublic) {
         picture.setPublic(isPublic);

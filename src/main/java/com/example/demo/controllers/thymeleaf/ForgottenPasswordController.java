@@ -31,20 +31,20 @@ public class ForgottenPasswordController {
     @PostMapping("/password/forgotten")
     public String forgottenPasswordSend(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errorEmail","Wrong email");
+            model.addAttribute("errorEmail", "Wrong email");
             return "forgotten-password";
         }
-        if (!forgottenPasswordService.userValidation(user.getUsername(),user.getEmail())) {
-            model.addAttribute("error","Details doesn't match");
+        if (!forgottenPasswordService.userValidation(user.getUsername(), user.getEmail())) {
+            model.addAttribute("error", "Details doesn't match");
             return "forgotten-password";
         }
         try {
             forgottenPasswordService.sendEmailForPassword(user.getUsername());
-        }catch (EntityNotFoundException e) {
-            model.addAttribute("error",e.getMessage());
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
             return "forgotten-password";
         }
-        model.addAttribute("success","New password was sent!");
+        model.addAttribute("success", "New password was sent!");
         return "forgotten-password";
     }
 }

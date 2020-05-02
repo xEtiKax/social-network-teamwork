@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.EmailSenderService;
@@ -40,7 +39,8 @@ public class ForgottenPasswordServiceImpl implements ForgottenPasswordService {
     public boolean userValidation(String username, String email) {
         if (userDetailsManager.userExists(username)) {
             return userService.getByEmail(email) != null;
-        } return false;
+        }
+        return false;
     }
 
     @Override

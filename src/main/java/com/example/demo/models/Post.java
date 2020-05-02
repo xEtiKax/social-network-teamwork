@@ -34,9 +34,6 @@ public class Post {
     @Column(name = "created_at")
     private LocalDateTime dateTime;
 
-    @Column(name = "picture")
-    private Byte[] picture;
-
     @Column(name = "enabled")
     private boolean enabled = true;
 
@@ -110,16 +107,8 @@ public class Post {
         return new HashSet<>(likes);
     }
 
-    public Byte[] getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Byte[] picture) {
-        this.picture = picture;
-    }
-
     public LinkedHashSet<Comment> getComments() {
-        LinkedHashSet<Comment> sortedComments = new LinkedHashSet<>();
+        LinkedHashSet<Comment> sortedComments;
         sortedComments = sortByDate(this.comments);
         return sortedComments;
     }

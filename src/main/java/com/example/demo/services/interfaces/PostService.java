@@ -4,8 +4,6 @@ import com.example.demo.models.DTO.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.List;
 
 public interface PostService {
