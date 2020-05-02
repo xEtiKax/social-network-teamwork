@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -72,15 +69,8 @@ public class UserController {
         if (user.getFriends().contains(me)) {
             isFriend = true;
         }
-        List<Long> userFriends = getFriendIds(user);
-        List<Long> myFriends = getFriendIds(me);
-        List<Long> commonFriends = new ArrayList<>();
-        for (long id : userFriends) {
-            if(myFriends.contains(id)){
-                commonFriends.add(id);
-            }
-        }
-        List<Post> posts = checkLike(me, postService.getFeedByUsersIds(commonFriends));
+
+        List<Post> posts = checkLike(me, postService.getFeedByCommonFriendsIds(user,me));
 
         model.addAttribute("isSentRequest", isSentRequest);
         model.addAttribute("userProfile", user);
@@ -101,8 +91,7 @@ public class UserController {
         User user = userService.getByUsername(principal.getName());
         int friendsCounter = user.getFriends().size();
 
-        List<Long> friendIds = getFriendIds(user);
-        List<Post> posts = checkLike(user, postService.getFeedByUsersIds(friendIds));
+        List<Post> posts = checkLike(user, postService.getFeedByUsersIds(user));
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
@@ -250,15 +239,6 @@ public class UserController {
         return "my-profile-feed";
     }
 
-    public List<Long> getFriendIds(User user) {
-        List<Long> friendIds = new ArrayList<>();
-        friendIds.add(user.getId());
-        for (User u : user.getFriends()) {
-            friendIds.add(u.getId());
-        }
-        return friendIds;
-    }
-
     public List<Post> checkLike(User user, List<Post> posts) {
         for (Post post : posts) {
             for (Like like : post.getLikes()) {
@@ -269,8 +249,7 @@ public class UserController {
         }
         return posts;
     }
-
-
+    
     @GetMapping("/photoPrivacy")
     public String photoPrivacy(Principal principal) {
         User user = userService.getByUsername(principal.getName());

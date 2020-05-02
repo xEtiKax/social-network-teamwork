@@ -11,6 +11,7 @@ import com.example.demo.services.interfaces.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -94,8 +95,36 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getFeedByUsersIds(List<Long> friendIds) {
-
+    public List<Post> getFeedByUsersIds(User user) {
+        List<Long> friendIds = getFriendIds(user);
         return postRepository.getMyFeed(friendIds);
     }
+
+    @Override
+    public List<Post> getFeedByCommonFriendsIds(User user, User me) {
+        List<Long> commonFriendsIds = getFriendIds(user);
+        return postRepository.getMyFeed(commonFriendsIds);
+    }
+
+    private List<Long> getCommonFriends(User user, User me){
+        List<Long> userFriends = getFriendIds(user);
+        List<Long> myFriends = getFriendIds(me);
+        List<Long> commonFriendsIds = new ArrayList<>();
+        for (long id : userFriends) {
+            if(myFriends.contains(id)){
+                commonFriendsIds.add(id);
+            }
+        }
+        return commonFriendsIds;
+    }
+
+    private List<Long> getFriendIds(User user) {
+        List<Long> friendIds = new ArrayList<>();
+        friendIds.add(user.getId());
+        for (User u : user.getFriends()) {
+            friendIds.add(u.getId());
+        }
+        return friendIds;
+    }
+
 }
