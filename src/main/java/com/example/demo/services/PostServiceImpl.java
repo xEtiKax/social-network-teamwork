@@ -102,23 +102,23 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getFeedByCommonFriendsIds(User user, User me) {
-        List<Long> commonFriendsIds = getFriendIds(user);
+        List<Long> commonFriendsIds = getCommonFriends(user, me);
         return postRepository.getMyFeed(commonFriendsIds);
     }
 
-    private List<Long> getCommonFriends(User user, User me){
+    private List<Long> getCommonFriends(User user, User me) {
         List<Long> userFriends = getFriendIds(user);
         List<Long> myFriends = getFriendIds(me);
         List<Long> commonFriendsIds = new ArrayList<>();
         for (long id : userFriends) {
-            if(myFriends.contains(id)){
+            if (myFriends.contains(id)) {
                 commonFriendsIds.add(id);
             }
         }
         return commonFriendsIds;
     }
 
-    private List<Long> getFriendIds(User user) {
+    public List<Long> getFriendIds(User user) {
         List<Long> friendIds = new ArrayList<>();
         friendIds.add(user.getId());
         for (User u : user.getFriends()) {
@@ -126,5 +126,4 @@ public class PostServiceImpl implements PostService {
         }
         return friendIds;
     }
-
 }

@@ -58,11 +58,6 @@ public class UserController {
         if (user.getPhoto() == null || !user.getFriends().contains(me) || !user.getPhoto().isPublic()) {
             isVisiblePicture = false;
         }
-//        assert user.getPhoto() != null;
-//        if (user.getPhoto().isPublic()) {
-//            isVisiblePicture = true;
-//        }
-
         if (!user.getFriends().contains(me) && !isSentRequest) {
             isFriendAndIsSentRequest = false;
         }
@@ -70,7 +65,7 @@ public class UserController {
             isFriend = true;
         }
 
-        List<Post> posts = checkLike(me, postService.getFeedByCommonFriendsIds(user,me));
+        List<Post> posts = userService.checkLike(me, postService.getFeedByCommonFriendsIds(user, me));
 
         model.addAttribute("isSentRequest", isSentRequest);
         model.addAttribute("userProfile", user);
@@ -91,7 +86,7 @@ public class UserController {
         User user = userService.getByUsername(principal.getName());
         int friendsCounter = user.getFriends().size();
 
-        List<Post> posts = checkLike(user, postService.getFeedByUsersIds(user));
+        List<Post> posts = userService.checkLike(user, postService.getFeedByUsersIds(user));
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
@@ -239,17 +234,6 @@ public class UserController {
         return "my-profile-feed";
     }
 
-    public List<Post> checkLike(User user, List<Post> posts) {
-        for (Post post : posts) {
-            for (Like like : post.getLikes()) {
-                if (like.getUser().getId() == user.getId()) {
-                    post.setLiked(true);
-                }
-            }
-        }
-        return posts;
-    }
-    
     @GetMapping("/photoPrivacy")
     public String photoPrivacy(Principal principal) {
         User user = userService.getByUsername(principal.getName());

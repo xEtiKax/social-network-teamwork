@@ -54,7 +54,6 @@ public class PostServiceImpl_Tests {
         List<Post> posts = new ArrayList<>();
         User user = createUser();
         posts.add(createPost());
-//        Mockito.when(mockPostRepository.findAll()).thenReturn(posts);
 
         //Act
         mockPostService.getPostsByUserId(user.getId());
@@ -77,12 +76,41 @@ public class PostServiceImpl_Tests {
 
     @Test
     public void getMyFeedShould_CallRepository() {
+        User user = createUser();
         List<Post> feed = new ArrayList<>();
         feed.add(createPost());
         List<Long> friendIds = new ArrayList<>();
         friendIds.add(anyLong());
 
-        mockPostService.getFeedByUsersIds(friendIds);
+        mockPostService.getFeedByUsersIds(user);
+
+        Mockito.verify(mockPostRepository,
+                times(1)).getMyFeed(friendIds);
+    }
+    @Test
+    public void getMyFeedByCommonFriendIdsShould_CallRepository() {
+        User user = createUser();
+        User user2 = createUser();
+        List<Post> feed = new ArrayList<>();
+        feed.add(createPost());
+        List<Long> friendIds = new ArrayList<>();
+        friendIds.add(anyLong());
+
+        mockPostService.getFeedByCommonFriendsIds(user,user2);
+
+        Mockito.verify(mockPostRepository,
+                times(1)).getMyFeed(friendIds);
+    }
+    @Test
+    public void getMyCommonFriendIdsShould_CallRepository() {
+        User user = createUser();
+        User user2 = createUser();
+        List<Post> posts = new ArrayList<>();
+        posts.add(createPost());
+        List<Long> friendIds = new ArrayList<>();
+        friendIds.add(anyLong());
+
+        mockPostService.getFeedByCommonFriendsIds(user,user2);
 
         Mockito.verify(mockPostRepository,
                 times(1)).getMyFeed(friendIds);

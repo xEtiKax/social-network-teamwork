@@ -1,6 +1,7 @@
 package com.example.demo.services.interfaces;
 
 import com.example.demo.models.DTO.UserDTO;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +37,8 @@ public interface UserService {
     void removeFriend(User me, User friend);
 
     User getByEmail(String email);
+
+    List<Post> checkLike(User user, List<Post> posts);
 
 
 }

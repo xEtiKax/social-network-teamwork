@@ -5,6 +5,7 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PictureRepository;
 import com.example.demo.repositories.UserRepository;
@@ -24,8 +25,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.demo.Factory.createUser;
-import static com.example.demo.Factory.createUserDTO;
+import static com.example.demo.Factory.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -110,6 +110,20 @@ public class UserServiceImpl_Tests {
         List<User> actual = mockUserService.getAll();
 
         Assert.assertEquals(users, actual);
+
+    }
+
+    @Test
+    public void checkLike_Should_checkLike() {
+        User user = createUser();
+        Post post = createPost();
+        post.addLike(createLike());
+        List<Post> posts = new ArrayList<>();
+        posts.add(post);
+
+        List<Post> actual = mockUserService.checkLike(user,posts);
+
+        Assert.assertEquals(posts, actual);
 
     }
 

@@ -5,7 +5,9 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.UserDTO;
+import com.example.demo.models.Like;
 import com.example.demo.models.Picture;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PictureRepository;
 import com.example.demo.repositories.UserRepository;
@@ -70,6 +72,7 @@ public class UserServiceImpl implements UserService {
         throwIfEmailDoesNotExists(email);
         return userRepository.findUserByEmail(email);
     }
+
     @Override
     public List<User> getAll() {
         return new ArrayList<>(userRepository.findAll());
@@ -163,7 +166,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     private boolean checkUserExist(String username) {
         User user = userRepository.getUserByUsername(username);
         return user != null;
@@ -189,13 +191,15 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(Е_MAIL_ALREADY_EXIST);
         }
     }
+
     private void throwIfEmailDoesNotExists(String email) {
         if (!checkEmailExist(email)) {
             throw new EntityNotFoundException(Е_MAIL_DOESNT_EXIST);
         }
     }
+
     private void throwIfUsernameDoesNotExist(String username) {
-        if (!checkUserExist(username)){
+        if (!checkUserExist(username)) {
             throw new EntityNotFoundException(USER_DOES_NOT_EXIST);
         }
     }
@@ -212,5 +216,16 @@ public class UserServiceImpl implements UserService {
     public static boolean validate(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         return matcher.find();
+    }
+
+    public List<Post> checkLike(User user, List<Post> posts) {
+        for (Post post : posts) {
+            for (Like like : post.getLikes()) {
+                if (like.getUser().getId() == user.getId()) {
+                    post.setLiked(true);
+                }
+            }
+        }
+        return posts;
     }
 }
