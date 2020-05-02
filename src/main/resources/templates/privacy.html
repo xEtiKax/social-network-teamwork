@@ -98,7 +98,7 @@
                     <div class="user-info" th:if="${user != null}">
                         <img th:if="${user.getPhoto()}" style="height: 30px;width: 30px;" th:src="@{'/user/' + ${user.getId()} + '/userImage'}"  alt="">
                         <img th:if="${user.getPhoto() == null}" style="height: 30px;width: 30px;" th:src="@{/images/resources/anonymous-user.png}" alt="">
-                        <a href="#" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
+                        <a href="#" th:href="@{/user/showMyProfile}" th:text="${#authentication.name == 'anonymousUser' ? '' : #authentication.name}"></a>
                     </div>
                 </div>
             </div><!--header-data end-->
