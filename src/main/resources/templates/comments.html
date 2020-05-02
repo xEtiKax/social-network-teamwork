@@ -49,8 +49,7 @@
                     <a href="#" title="" class="ed-opts-open comments"><i class="la la-ellipsis-v"></i></a>
                     <ul class="ed-options">
                         <li><a th:href="@{'comment/edit/' + ${comment.id}}" href="#" title="">Edit Comment</a></li>
-                        <li><a href="#"
-                               th:onclick="|completeAndRedirectComment('${comment.id}', '*{iter.index  + 1000}')|"
+                        <li style="cursor: pointer"><a th:onclick="|completeAndRedirectComment('${comment.id}', '*{iter.index  + 1000}')|"
                                title="">Delete comment</a></li>
                         <form style="visibility: hidden; max-height: 0" th:id="*{iter.index  + 1000}"
                               action="javascript:void(0)" method="post">

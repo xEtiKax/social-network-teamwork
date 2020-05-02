@@ -94,7 +94,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getMyFeed(List<Long> friendIds) {
+    public List<Post> getFeedByUsersIds(List<Long> friendIds) {
+
         return postRepository.getMyFeed(friendIds);
     }
 }

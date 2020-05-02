@@ -24,6 +24,7 @@ public interface PostService {
 
     List<Post> getAllPublicPosts();
 
-    List<Post> getMyFeed(List<Long> friendIds);
+    List<Post> getFeedByUsersIds(List<Long> friendIds);
+
 
 }

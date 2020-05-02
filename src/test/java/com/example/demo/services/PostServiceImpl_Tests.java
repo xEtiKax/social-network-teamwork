@@ -3,12 +3,10 @@ package com.example.demo.services;
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
-import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostRepository;
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.services.interfaces.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,7 +82,7 @@ public class PostServiceImpl_Tests {
         List<Long> friendIds = new ArrayList<>();
         friendIds.add(anyLong());
 
-        mockPostService.getMyFeed(friendIds);
+        mockPostService.getFeedByUsersIds(friendIds);
 
         Mockito.verify(mockPostRepository,
                 times(1)).getMyFeed(friendIds);

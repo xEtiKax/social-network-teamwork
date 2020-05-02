@@ -32,11 +32,6 @@ public class ImageController {
         this.userService = userService;
     }
 
-    @GetMapping("post/{id}/postImage")
-    public void renderPostImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
-        Post post = postService.getPostById(id);
-        renderImage(response, post.getPicture());
-    }
 
     @GetMapping("user/{userId}/image")
     public String showUserUploadForm(@PathVariable long userId, Model model) {

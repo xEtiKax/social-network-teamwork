@@ -162,6 +162,8 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteUser(id);
     }
 
+
+
     private boolean checkUserExist(String username) {
         User user = userRepository.getUserByUsername(username);
         return user != null;

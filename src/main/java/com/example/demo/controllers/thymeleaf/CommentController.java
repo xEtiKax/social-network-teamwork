@@ -23,7 +23,6 @@ import java.security.Principal;
 import java.util.LinkedHashSet;
 
 @Controller
-@RequestMapping("/comment")
 public class CommentController {
 
     PostService postService;
@@ -37,13 +36,13 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/add/{postId}")
+    @PostMapping("/comment/add/{postId}")
     public String createComment(@PathVariable long postId, CommentDTO commentDTO, Principal principal) {
         createCommentPattern(postId, commentDTO, principal);
         return "redirect:/";
     }
 
-    @GetMapping("/edit/{commentId}")
+    @GetMapping("/comment/edit/{commentId}")
     public String showEditCommentForm(@PathVariable int commentId, Model model, Principal principal) {
         try {
             User user = userService.getByUsername(principal.getName());
@@ -60,7 +59,7 @@ public class CommentController {
         return "index";
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/comment/edit/{id}")
     public String updateComment(@PathVariable long id, @ModelAttribute CommentDTO commentDTO, Model model) {
         try {
             commentService.updateComment(id, commentDTO);
@@ -71,7 +70,7 @@ public class CommentController {
         return "redirect:/";
     }
 
-    @PostMapping("/delete/{commentId}")
+    @PostMapping("/comment/delete/{commentId}")
     public String deleteComment(@PathVariable long commentId, Model model, Principal principal, HttpServletRequest request) {
         try {
             commentService.deleteComment(commentId, principal.getName(), request.isUserInRole("ROLE_ADMIN"));
@@ -84,13 +83,13 @@ public class CommentController {
         return "redirect:/";
     }
 
-    @PostMapping("/user/add/{postId}")
+    @PostMapping("/comment/user/add/{postId}")
     public String createUserComment(@PathVariable long postId, CommentDTO commentDTO, Principal principal) {
         createCommentPattern(postId, commentDTO, principal);
         return "redirect:/user/showMyProfile";
     }
 
-    @GetMapping("/edit/myprofile/{commentId}")
+    @GetMapping("user/comment/edit/{commentId}")
     public String showEditCommentFormMyProfile(@PathVariable long commentId, Model model, Principal principal) {
         try {
             User user = userService.getByUsername(principal.getName());
@@ -105,7 +104,7 @@ public class CommentController {
         return "my-profile-feed";
     }
 
-    @PostMapping("/edit/myprofile/{id}")
+    @PostMapping("/comment/edit/myprofile/{id}")
     public String updateCommentMyProfile(@PathVariable long id, @ModelAttribute CommentDTO commentDTO, Model model) {
         try {
             commentService.updateComment(id, commentDTO);
@@ -116,7 +115,7 @@ public class CommentController {
         return "redirect:/user/showMyProfile";
     }
 
-    @PostMapping("/delete/myprofile/{commentId}")
+    @PostMapping("/comment/delete/myprofile/{commentId}")
     public String deleteCommentMyProfile(@PathVariable long commentId, Model model, Principal principal, HttpServletRequest request) {
         try {
             commentService.deleteComment(commentId, principal.getName(), request.isUserInRole("ROLE_ADMIN"));
@@ -129,22 +128,26 @@ public class CommentController {
         return "redirect:/user/showMyProfile";
     }
 
-    @PostMapping("/profile/add/{postId}")
+    @PostMapping("/comment/profile/add/{postId}")
     public String createUserProfileComment(@PathVariable long postId, CommentDTO commentDTO, Principal principal) {
         createCommentPattern(postId, commentDTO, principal);
         long userId = postService.getPostById(postId).getCreatedBy().getId();
         return "redirect:/user/showUserProfile/" + userId;
     }
 
-    @GetMapping("/edit/profile/{userId}/{commentId}")
-    public String showEditCommentForm(@PathVariable long userId, @PathVariable long commentId, Model model, Principal principal) {
+    @GetMapping("user/showUserProfile/comment/edit/{commentId}")
+    public String showEditCommentForm(@PathVariable long commentId, Model model, Principal principal) {
+        Comment commentToEdit =  commentService.getById(commentId);
         model.addAttribute("user", userService.getByUsername(principal.getName()));
-        model.addAttribute("userProfile", userService.getById(userId));
-        model.addAttribute("comment", commentService.getById(commentId));
+        model.addAttribute("userProfile", commentToEdit.getPost().getCreatedBy());
+        model.addAttribute("isVisiblePicture", true);
+        model.addAttribute("isFriendAndIsSentRequest", false);
+        model.addAttribute("isInfo", false);
+        model.addAttribute("comment", commentToEdit);
         return "user-profile";
     }
 
-    @PostMapping("/edit/profile/{id}")
+    @PostMapping("/comment/edit/profile/{id}")
     public String updateCommentProfile(@PathVariable long id, @ModelAttribute CommentDTO commentDTO, Model model) {
         try {
             commentService.updateComment(id, commentDTO);
@@ -155,7 +158,7 @@ public class CommentController {
         return "redirect:/user/showUserProfile/" + commentService.getById(id).getPost().getCreatedBy().getId();
     }
 
-    @PostMapping("/delete/profile/{commentId}")
+    @PostMapping("/comment/delete/profile/{commentId}")
     public String deleteCommentProfile(@PathVariable long commentId, Model model, Principal principal, HttpServletRequest request) {
         long userId = commentService.getById(commentId).getPost().getCreatedBy().getId();
         try {
@@ -169,7 +172,7 @@ public class CommentController {
         return "redirect:/user/showUserProfile/" + userId;
     }
 
-    @GetMapping("/list/{postId}")
+    @GetMapping("/comment/list/{postId}")
     public String showPostComments(@PathVariable long postId, Model model, @RequestParam int si, @RequestParam int cs, @RequestParam int eid) {
         Post post = postService.getPostById(postId);
         model.addAttribute("commentsSize", post.getComments().size());

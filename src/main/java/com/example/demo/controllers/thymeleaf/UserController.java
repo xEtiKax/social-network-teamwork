@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -70,7 +72,15 @@ public class UserController {
         if (user.getFriends().contains(me)) {
             isFriend = true;
         }
-        List<Post> posts = checkLike(me, postService.getPostsByUserId(userId));
+        List<Long> userFriends = getFriendIds(user);
+        List<Long> myFriends = getFriendIds(me);
+        List<Long> commonFriends = new ArrayList<>();
+        for (long id : userFriends) {
+            if(myFriends.contains(id)){
+                commonFriends.add(id);
+            }
+        }
+        List<Post> posts = checkLike(me, postService.getFeedByUsersIds(commonFriends));
 
         model.addAttribute("isSentRequest", isSentRequest);
         model.addAttribute("userProfile", user);
@@ -92,7 +102,7 @@ public class UserController {
         int friendsCounter = user.getFriends().size();
 
         List<Long> friendIds = getFriendIds(user);
-        List<Post> posts = checkLike(user, postService.getMyFeed(friendIds));
+        List<Post> posts = checkLike(user, postService.getFeedByUsersIds(friendIds));
 
         model.addAttribute("user", user);
         model.addAttribute("myPosts", posts);
