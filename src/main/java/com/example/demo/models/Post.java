@@ -108,7 +108,7 @@ public class Post {
     }
 
     public LinkedHashSet<Comment> getComments() {
-        LinkedHashSet<Comment> sortedComments = new LinkedHashSet<>();
+        LinkedHashSet<Comment> sortedComments;
         sortedComments = sortByDate(this.comments);
         return sortedComments;
     }

@@ -5,8 +5,5 @@ public interface ForgottenPasswordService {
 
     void sendEmailForPassword(String username);
 
-//    void sendInformationEmail(User user, String subject, String text);
-
-//    void sendEmail(SimpleMailMessage email);
 }
 

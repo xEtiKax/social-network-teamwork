@@ -9,7 +9,6 @@ import com.example.demo.models.User;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.CommentService;
-import com.example.demo.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -20,7 +19,9 @@ import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
+
     public static final String COMMENT_DOES_NOT_EXISTS = "Comment does not exists.";
+
     private CommentRepository commentRepository;
     private UserRepository userRepository;
 
@@ -55,7 +56,6 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getCommentsByUserId(long userId) {
         return commentRepository.getCommentsByUserId(userId);
     }
-
 
     @Override
     public void updateComment(long id, CommentDTO commentDTO) {

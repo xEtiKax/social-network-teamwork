@@ -76,7 +76,7 @@ public class RequestController {
         return "redirect:/request/showRequests";
     }
 
-    @RequestMapping( "/cancel/{userId}")
+    @RequestMapping("/cancel/{userId}")
     public String cancelRequest(@PathVariable long userId, Principal principal) {
         User sender = userService.getByUsername(principal.getName());
         Request request = requestService.getRequestBySenderAndReceiver(sender.getId(), userId);

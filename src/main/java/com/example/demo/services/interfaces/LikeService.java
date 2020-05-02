@@ -4,8 +4,6 @@ import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 
-import java.security.Principal;
-
 
 public interface LikeService {
     void createLike(User user, Post post);
@@ -16,6 +14,6 @@ public interface LikeService {
 
     int getPostLikes(long postId);
 
-    boolean checkLikeExists(long  userId, long potsId);
+    boolean checkLikeExists(long userId, long potsId);
 
 }

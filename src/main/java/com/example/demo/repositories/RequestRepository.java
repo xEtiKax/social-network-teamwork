@@ -2,7 +2,6 @@ package com.example.demo.repositories;
 
 import com.example.demo.models.Request;
 import com.example.demo.models.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

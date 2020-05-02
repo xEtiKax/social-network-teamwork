@@ -9,13 +9,10 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
-
 public interface UserRepository extends JpaRepository<User, Serializable> {
 
     @Query("SELECT u FROM User u where u.username = ?1")
     User getUserByUsername(String username);
-
-    User findUserByUsername(String username);
 
     @Query("SELECT u FROM User u WHERE u.id =?1")
     User getById(long id);

@@ -37,7 +37,6 @@ public class Picture {
         isPublic = aPublic;
     }
 
-
     public int getId() {
         return id;
     }

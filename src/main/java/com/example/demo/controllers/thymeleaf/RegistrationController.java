@@ -34,8 +34,7 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
-        UserDTO userDTO = new UserDTO();
-        model.addAttribute("user", userDTO);
+        model.addAttribute("user", new UserDTO());
         model.addAttribute("isRegister", true);
         return "sign-in";
     }

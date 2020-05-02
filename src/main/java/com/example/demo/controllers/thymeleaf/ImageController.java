@@ -32,13 +32,6 @@ public class ImageController {
         this.userService = userService;
     }
 
-
-    @GetMapping("user/{userId}/image")
-    public String showUserUploadForm(@PathVariable long userId, Model model) {
-        model.addAttribute("userProfile", userService.getById(userId));
-        return "user-profile";
-    }
-
     @GetMapping("user/{id}/userImage")
     public void renderUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
@@ -49,12 +42,6 @@ public class ImageController {
     public void renderPublicUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
         renderImage(response, user.getPhoto().getData());
-    }
-
-    @GetMapping("user/{userId}/cover")
-    public String showUserCoverUploadForm(@PathVariable long userId, Model model) {
-        model.addAttribute("userProfile", userService.getById(userId));
-        return "user-profile";
     }
 
     @GetMapping("user/{id}/coverImage")

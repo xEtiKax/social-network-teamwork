@@ -86,7 +86,6 @@ public class User {
         this.username = username;
     }
 
-
     public String getEmail() {
         return email;
     }
