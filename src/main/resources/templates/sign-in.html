@@ -41,6 +41,7 @@
                                 <label class="errorPass" th:if="${errorPass}" text="${errorPass}">Password confirmation is wrong </label>
                                 <label class="err" th:if="${err}" text="${err}">Wrong username or password </label>
                                 <label class="errorLength" th:if="${errorLength}" text="${errorLength}">Password must be least 6 symbols </label>
+                                <label class="errorLength" th:if="${errorLengthName}" text="${errorLengthName}">Username must be least 6 symbols </label>
 
 
                                 <p>Workwise, is a global freelancing platform and social networking where businesses and
