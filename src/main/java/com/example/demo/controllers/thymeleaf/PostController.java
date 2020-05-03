@@ -106,9 +106,12 @@ public class PostController {
     }
 
     @GetMapping("/user/edit/{id}")
-    public String showUserEditPostForm(@PathVariable long id, Model model) {
+    public String showUserEditPostForm(@PathVariable long id, Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("friendsCounter", user.getFriends().size());
         model.addAttribute("post", postService.getPostById(id));
-        return "redirect:/user/showMyProfile";
+        return "my-profile-feed";
     }
 
     @PostMapping("/user/update/{id}")

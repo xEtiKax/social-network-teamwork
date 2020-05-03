@@ -209,7 +209,10 @@
                                                              style="height: 40px;width: 40px;"
                                                              th:src="@{/images/resources/anonymous-user.png}" alt="">
                                                         <div class="usy-name">
-                                                            <h3><a th:text="${post.createdBy.username}"
+                                                            <h3><a th:if="${post.createdBy.getFirstName() == null or post.createdBy.getLastName() == null}" th:text="${post.createdBy.getUsername()}"
+                                                                   th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John
+                                                                Doe</a></h3>
+                                                            <h3><a th:if="${post.createdBy.getFirstName() != null or post.createdBy.getLastName() != null}" th:text="${post.createdBy.getFirstName() + ' ' + post.createdBy.getLastName()}"
                                                                    th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John
                                                                 Doe</a></h3>
                                                             <span th:text="${#temporals.format(post.getDateTime(), 'dd-MM-yyyy HH:mm')}">

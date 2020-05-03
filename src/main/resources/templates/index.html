@@ -136,7 +136,8 @@
                                             </div>
                                         </div><!--username-dt end-->
                                         <div class="user-specs" th:if="${user != null}">
-                                            <h3 th:text=" ${user.getUsername()}"></h3>
+                                            <h3 th:if="${user.getFirstName() == null or user.getLastName() == null}" th:text="${user.getUsername()}"></h3>
+                                            <h3 th:if="${user.getFirstName() != null or user.getLastName() != null}" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h3>
                                             <span th:text=" ${user.getJobTitle()}">Graphic Designer at Self Employed</span>
                                         </div>
                                     </div><!--user-profile end-->
@@ -183,7 +184,10 @@
                                                          style="height: 40px;width: 40px;"
                                                          th:src="@{/images/resources/anonymous-user.png}" alt="">
                                                     <div class="usy-name">
-                                                        <h3><a th:text="${post.createdBy.username}"
+                                                        <h3><a th:if="${post.createdBy.getFirstName() == null or post.createdBy.getLastName() == null}" th:text="${post.createdBy.getUsername()}"
+                                                               th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John
+                                                            Doe</a></h3>
+                                                        <h3><a th:if="${post.createdBy.getFirstName() != null or post.createdBy.getLastName() != null}" th:text="${post.createdBy.getFirstName() + ' ' + post.createdBy.getLastName()}"
                                                                th:href="@{/user/showUserProfile/{id}(id=${post.createdBy.id})}">John
                                                             Doe</a></h3>
                                                         <span th:text="${#temporals.format(post.getDateTime(), 'dd-MM-yyyy HH:mm')}">
@@ -266,7 +270,7 @@
                         </div>
                         <div class="col-lg-3 pd-right-none no-pd">
                             <div class="right-sidebar">
-                                <div class="widget widget-about">
+                                <div class="widget widget-about" th:if="${user == null}">
                                     <img th:src="@{/images/wd-logo.png}" alt="">
                                     <h3>Track Time on Workwise</h3>
                                     <div class="sign_link">
