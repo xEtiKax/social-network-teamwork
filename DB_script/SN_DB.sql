@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   KEY `comments_users_id_fk` (`user_id`),
   CONSTRAINT `comments_posts_id_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
   CONSTRAINT `comments_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -52,17 +52,17 @@ CREATE TABLE IF NOT EXISTS `likes` (
   KEY `likes_posts_id_fk` (`post_id`),
   CONSTRAINT `likes_posts_id_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
   CONSTRAINT `likes_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
--- Dumping structure for table social_network.	tures
+-- Dumping structure for table social_network.pictures
 CREATE TABLE IF NOT EXISTS `pictures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `data` longblob DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -70,7 +70,6 @@ CREATE TABLE IF NOT EXISTS `pictures` (
 CREATE TABLE IF NOT EXISTS `posts` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `text` varchar(300) DEFAULT NULL,
-  `picture` blob DEFAULT NULL,
   `created_by` bigint(20) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -78,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   PRIMARY KEY (`id`),
   KEY `posts_users_id_fk` (`created_by`),
   CONSTRAINT `posts_users_id_fk` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -93,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
   KEY `requests_users_id_fk_2` (`receiver_id`),
   CONSTRAINT `requests_users_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
   CONSTRAINT `requests_users_id_fk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -106,14 +105,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `picture` longblob DEFAULT NULL,
   `enabled` tinyint(4) NOT NULL DEFAULT 1,
   `age` int(11) NOT NULL DEFAULT 0,
-  `is_public` tinyint(1) DEFAULT 0,
   `job_title` varchar(255) DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `cover_photo` longblob DEFAULT NULL,
+  `picture_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_authorities_username_fk` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
