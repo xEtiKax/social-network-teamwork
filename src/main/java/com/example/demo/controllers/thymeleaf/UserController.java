@@ -54,10 +54,10 @@ public class UserController {
         boolean isVisiblePicture = true;
         int friendsCounter = user.getFriends().size();
 
-
-        if (user.getPhoto() == null || !user.getFriends().contains(me) || !user.getPhoto().isPublic()) {
+        if (user.getPhoto() == null ||!user.getPhoto().isPublic()) {
             isVisiblePicture = false;
         }
+
         if (!user.getFriends().contains(me) && !isSentRequest) {
             isFriendAndIsSentRequest = false;
         }
@@ -156,11 +156,14 @@ public class UserController {
         try {
             User user = userService.getByUsername(principal.getName());
             userService.changePassword(user.getUsername(), oldPassword, newPassword, passwordConfirm);
-            model.addAttribute("success", "Password changes successful");
+            model.addAttribute("success", "Password changed successful");
+            model.addAttribute("user", userService.getByUsername(principal.getName()));
+            return "change-password";
         } catch (WrongPasswordException e) {
             model.addAttribute("error", "Wrong password");
+            model.addAttribute("user", userService.getByUsername(principal.getName()));
+            return "change-password";
         }
-        return "redirect:/user/changePass";
     }
 
     @GetMapping("/edit")

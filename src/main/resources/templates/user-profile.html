@@ -200,8 +200,8 @@
                                         <div class="posty" th:each="post, iter : ${posts}" style="margin-bottom: 10px;">
                                             <div class="post-bar no-margin">
                                                 <div class="post_topbar">
-                                                    <div class="usy-dt">
-                                                        <img th:if="${post.createdBy.getPhoto()}"
+                                                    <div class="usy-dt" th:if="${post.createdBy}">
+                                                        <img th:if="${post.createdBy.getPhoto() != null}"
                                                              style="height: 40px;width: 40px;"
                                                              th:src="@{'/public/user/' + ${post.createdBy.id} + '/userImage'}"
                                                              alt="">

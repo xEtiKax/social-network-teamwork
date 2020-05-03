@@ -127,8 +127,8 @@
                         <form action="#" th:action="@{/user/changeCoverPhoto}" th:object="${user}" method="post"
                               enctype="multipart/form-data">
                             <input name="coverPhoto" type="file" id="coverPhoto">
-                            <label for="coverPhoto">Browse</label>
-                            <button type="submit" class="btn btn-primary"><i></i>Update</button>
+                            <label for="coverPhoto">Update</label>
+                            <button type="submit" class="btn btn-primary"><i></i>Save</button>
                         </form>
                     </div>
                 </div>
@@ -158,12 +158,12 @@
                                                         <div class="col-lg-10">
                                                             <input name="profilePicture" type="file"
                                                                    id="profilePicture">
-                                                            <label for="profilePicture">Browse</label>
+                                                            <label for="profilePicture">Update</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary"><i></i>Update</button>
+                                            <button type="submit" class="btn btn-primary"><i></i>Save</button>
                                         </form>
                                         <div class="user-specs">
                                             <ul class="user-fw-status">
@@ -234,8 +234,8 @@
                                                  style="margin-bottom: 10px;">
                                                 <div class="post-bar no-margin">
                                                     <div class="post_topbar">
-                                                        <div class="usy-dt">
-                                                            <img th:if="${post.createdBy.getPhoto()}"
+                                                        <div class="usy-dt" th:if="${post.createdBy}">
+                                                            <img th:if="${post.createdBy.getPhoto() != null}"
                                                                  style="height: 50px;width: 50px;"
                                                                  th:src="@{'/user/' + ${post.createdBy.getId()} + '/userImage'}"
                                                                  alt="">

@@ -131,21 +131,21 @@
                                     <h3>Edit Profile Information</h3>
                                     <form th:action="@{/user/updateProfile}" th:object="${user}" method="post">
                                         <div class="cp-field">
-                                            <h5>Change First Name</h5>
+                                            <h5>First Name</h5>
                                             <div class="cpp-fiel">
                                                 <input type="text" required name="firstName" th:field="*{firstName}" placeholder="First Name">
                                                 <i class="fa fa-lock"></i>
                                             </div>
                                         </div>
                                         <div class="cp-field">
-                                            <h5>Change Last Name</h5>
+                                            <h5>Last Name</h5>
                                             <div class="cpp-fiel">
                                                 <input type="text" required name="lastName" th:field="*{lastName}"placeholder="Last Name">
                                                 <i class="fa fa-lock"></i>
                                             </div>
                                         </div>
                                         <div class="cp-field">
-                                            <h5>Change Email</h5>
+                                            <h5>Email</h5>
                                             <div class="cpp-fiel">
                                                 <input type="text" required name="email"th:field="*{email}" placeholder="New Email">
                                                 <i class="fa fa-lock"></i>
@@ -155,14 +155,14 @@
 
                                         </div>
                                         <div class="cp-field">
-                                            <h5>Change Age</h5>
+                                            <h5>Age</h5>
                                             <div class="cpp-fiel">
                                                 <input type="text" required name="age" th:field="*{age}" placeholder="Age">
                                                 <i class="fa fa-lock"></i>
                                             </div>
                                         </div>
                                         <div class="cp-field">
-                                            <h5>Change Job Title</h5>
+                                            <h5>Job Title</h5>
                                             <div class="cpp-fiel">
                                                 <input type="text" required name="jobTitle" th:field="*{jobTitle}" placeholder="New Job Title">
                                                 <i class="fa fa-lock"></i>
@@ -173,7 +173,6 @@
                                                 <li>
                                                     <button type="submit">Save Setting</button>
                                                 </li>
-                                                <!--													<li><button type="submit">Restore Setting</button></li>-->
                                             </ul>
                                         </div><!--save-stngs end-->
                                     </form>

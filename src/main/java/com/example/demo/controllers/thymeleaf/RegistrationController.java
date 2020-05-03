@@ -58,6 +58,10 @@ public class RegistrationController {
             model.addAttribute("errorPass", "Password does't match!");
             return "sign-in";
         }
+        if (userDTO.getPassword().length() < 6) {
+            model.addAttribute("errorLength", "Password length must be least 6 symbols");
+            return "sign-in";
+        }
 
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
         org.springframework.security.core.userdetails.User newUser =

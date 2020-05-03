@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
     public void updateUserDetails(User user, String firstName, String lastName, String email, int age, String jobTitle) {
         throwIfUserDoesNotExists(user.getId());
         throwIfEmailAlreadyExists(email);
-        if (!validate(email)) {
+        if (!validate(email.trim())) {
             throw new WrongEmailException(WRONG_EMAIL_FORMAT);
         } else {
             user.setFirstName(firstName);
