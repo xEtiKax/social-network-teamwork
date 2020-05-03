@@ -150,57 +150,6 @@ public class ImageServiceImpl_Tests {
         Mockito.verify(repository, times(1)).save(user);
     }
 
-//    @Test(expected = NullPointerException.class)
-//    public void savePostPhotoShouldThrow_When_PictureIsNull(){
-//        Post post = createPost();
-//
-//        MultipartFile file = new MultipartFile() {
-//            @Override
-//            public String getName() {
-//                return "fileName";
-//            }
-//
-//            @Override
-//            public String getOriginalFilename() {
-//                return "originalName";
-//            }
-//
-//            @Override
-//            public String getContentType() {
-//                return "jpg";
-//            }
-//
-//            @Override
-//            public boolean isEmpty() {
-//                return false;
-//            }
-//
-//            @Override
-//            public long getSize() {
-//                return 0;
-//            }
-//
-//            @Override
-//            public byte[] getBytes() throws IOException {
-//                return "Picture bytes".getBytes();
-//            }
-//
-//            @Override
-//            public InputStream getInputStream() throws IOException {
-//                return null;
-//            }
-//
-//            @Override
-//            public void transferTo(File dest) throws IOException, IllegalStateException {
-//
-//            }
-//        };
-//
-//        imageService.savePostPhoto(post.getId(), file);
-//
-//        Mockito.verify(mockPostRepository, times(1)).save(post);
-//    }
-
     @Test
     public void setPrivacyShould_SetPrivacy() throws IOException {
         User user = createUser();

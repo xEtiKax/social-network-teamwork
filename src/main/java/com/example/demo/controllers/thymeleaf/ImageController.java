@@ -77,7 +77,7 @@ public class ImageController {
     }
 
     private void renderImage(HttpServletResponse response, Byte[] photo) throws IOException {
-        if (photo != null) {
+//        if (photo != null) {
             byte[] byteArray = new byte[photo.length];
 
             int i = 0;
@@ -90,4 +90,4 @@ public class ImageController {
             IOUtils.copy(is, response.getOutputStream());
         }
     }
-}
+//}

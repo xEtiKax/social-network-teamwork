@@ -87,20 +87,7 @@ public class PostServiceImpl_Tests {
         Mockito.verify(mockPostRepository,
                 times(1)).getMyFeed(friendIds);
     }
-    @Test
-    public void getMyFeedByCommonFriendIdsShould_CallRepository() {
-        User user = createUser();
-        User user2 = createUser();
-        List<Post> feed = new ArrayList<>();
-        feed.add(createPost());
-        List<Long> friendIds = new ArrayList<>();
-        friendIds.add(anyLong());
 
-        mockPostService.getFeedByCommonFriendsIds(user,user2);
-
-        Mockito.verify(mockPostRepository,
-                times(1)).getMyFeed(friendIds);
-    }
     @Test
     public void getMyCommonFriendIdsShould_CallRepository() {
         User user = createUser();
@@ -110,7 +97,7 @@ public class PostServiceImpl_Tests {
         List<Long> friendIds = new ArrayList<>();
         friendIds.add(anyLong());
 
-        mockPostService.getFeedByCommonFriendsIds(user,user2);
+        mockPostService.getFeedByCommonFriendsIds(user, user2);
 
         Mockito.verify(mockPostRepository,
                 times(1)).getMyFeed(friendIds);
@@ -136,7 +123,7 @@ public class PostServiceImpl_Tests {
         Mockito.when(mockPostRepository.save(any(Post.class))).thenReturn(post);
         post.setCreatedBy(user);
 
-        mockPostService.deletePost(post.getId(), createUser(),true);
+        mockPostService.deletePost(post.getId(), createUser(), true);
 
         Mockito.verify(mockPostRepository, times(1)).save(any(Post.class));
     }
@@ -151,12 +138,12 @@ public class PostServiceImpl_Tests {
         Mockito.when(mockPostRepository.getById(post.getId())).thenReturn(post);
         Mockito.when(mockPostRepository.existsById(anyLong())).thenReturn(true);
 
-        mockPostService.deletePost(post.getId(), user2,false);
+        mockPostService.deletePost(post.getId(), user2, false);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void deletePost_ShouldThrow_WhenPostDoesNotExist() {
-        mockPostService.deletePost(anyLong(), createUser(),true);
+        mockPostService.deletePost(anyLong(), createUser(), true);
     }
 
     @Test

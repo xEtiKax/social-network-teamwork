@@ -80,8 +80,7 @@ public class CommentServiceImpl implements CommentService {
 
     private void throwIfCommentDoesNotExists(long id) {
         if (!checkIfCommentExist(id)) {
-            throw new EntityNotFoundException(
-                    String.format(COMMENT_DOES_NOT_EXISTS, id));
+            throw new EntityNotFoundException(COMMENT_DOES_NOT_EXISTS);
         }
     }
 
