@@ -128,12 +128,12 @@
 								<li>
 									<a th:href="@{/user/showUserProfile/{id}(id=${user.id})}" title="">View Profile</a>
 								</li>
-								<li  sec:authorize="hasRole('ADMIN')" >
+								<li  sec:authorize="hasRole('ROLE_ADMIN')" >
 									<a th:href="@{'/admin/edit/'+ ${user.id}}" title="" >Edit Profile</a>
 								</li>
-								<li><a href="#"
+								<li sec:authorize="hasRole('ROLE_ADMIN')" ><a href="#"
 									   th:onclick="|completeAndRedirectUser('${user.id}', '*{iter.index}')|"
-									   title="">Delete post</a></li>
+									   title="">Delete Profile</a></li>
 								<form style="visibility: hidden; max-height: 0"
 									  th:id="*{iter.index}" action="javascript:void(0)"
 									  method="post">

@@ -35,19 +35,19 @@ public class ImageController {
     @GetMapping("user/{id}/userImage")
     public void renderUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
-        renderImage(response, user.getPhoto().getData());
+        imageService.renderImage(response, user.getPhoto().getData());
     }
 
     @GetMapping("public/user/{id}/userImage")
     public void renderPublicUserImageFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
-        renderImage(response, user.getPhoto().getData());
+        imageService.renderImage(response, user.getPhoto().getData());
     }
 
     @GetMapping("user/{id}/coverImage")
     public void renderUserCoverFormDB(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = userService.getById(id);
-        renderImage(response, user.getCoverPhoto());
+        imageService.renderImage(response, user.getCoverPhoto());
     }
 
     @PostMapping("/user/changeProfilePicture")
@@ -75,19 +75,6 @@ public class ImageController {
         }
         return "redirect:/user/showMyProfile";
     }
+}
 
-    private void renderImage(HttpServletResponse response, Byte[] photo) throws IOException {
-//        if (photo != null) {
-            byte[] byteArray = new byte[photo.length];
 
-            int i = 0;
-
-            for (Byte wrappedByte : photo) {
-                byteArray[i++] = wrappedByte;
-            }
-            response.setContentType("image/jpeg");
-            InputStream is = new ByteArrayInputStream(byteArray);
-            IOUtils.copy(is, response.getOutputStream());
-        }
-    }
-//}

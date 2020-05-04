@@ -71,10 +71,11 @@ public class LikeController {
             User user = userService.getByUsername(principal.getName());
             Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
             likeService.deleteLike(like, post, user);
-        }catch (EntityNotFoundException ignored) {
+        } catch (EntityNotFoundException ignored) {
         }
         return "redirect:/";
     }
+
     @RequestMapping("/likeProfilePost/{postId}")
     public String likeProfilePost(@PathVariable long postId, Principal principal) {
         long creatorId = 0;
@@ -97,7 +98,7 @@ public class LikeController {
             Like like = likeService.getLikeByUserIdAndPostId(user.getId(), postId);
             creatorId = post.getCreatedBy().getId();
             likeService.deleteLike(like, post, user);
-        }catch (EntityNotFoundException ignored) {
+        } catch (EntityNotFoundException ignored) {
         }
         return "redirect:/user/showUserProfile/" + creatorId;
     }

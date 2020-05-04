@@ -1,6 +1,5 @@
 package com.example.demo.controllers.thymeleaf;
 
-
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -4,7 +4,6 @@ import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 
-
 public interface LikeService {
     void createLike(User user, Post post);
 

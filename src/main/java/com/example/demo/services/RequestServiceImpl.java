@@ -15,9 +15,10 @@ import java.util.List;
 
 @Service
 public class RequestServiceImpl implements RequestService {
+
     public static final String REQUEST_DOES_NOT_EXISTS = "Request does not exists.";
     public static final String REQUEST_ALREADY_WAS_SEND = "Request already was send";
-    public static final String REQUEST_SENT = "You have already sent a request";
+
     private RequestRepository requestRepository;
     private UserRepository userRepository;
 
