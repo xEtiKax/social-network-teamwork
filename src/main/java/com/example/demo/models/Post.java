@@ -51,14 +51,6 @@ public class Post {
     public Post() {
     }
 
-    public LinkedHashSet<Comment> sortByDate(Set<Comment> sortByDate) {
-
-        Comparator<Comment> byDate = Comparator.comparing(Comment::getDateTime);
-
-        List<Comment> comments = sortByDate.stream().sorted(byDate).collect(Collectors.toList());
-        return new LinkedHashSet<>(comments);
-    }
-
     public long getId() {
         return id;
     }
@@ -143,5 +135,12 @@ public class Post {
 
     public void setLiked(boolean liked) {
         isLiked = liked;
+    }
+
+    public LinkedHashSet<Comment> sortByDate(Set<Comment> sortByDate) {
+
+        Comparator<Comment> byDate = Comparator.comparing(Comment::getDateTime);
+
+        return sortByDate.stream().sorted(byDate).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

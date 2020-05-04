@@ -129,6 +129,7 @@
                                  aria-labelledby="nav-acc-tab">
                                 <div class="acc-setting">
                                     <h3>Edit Profile Information</h3>
+                                    <label style="color:#048e04;" class="success" th:if="${success}" text="${success}">     *Profile updated successfully!</label>
                                     <form th:action="@{/user/updateProfile}" th:object="${user}" method="post">
                                         <div class="cp-field">
                                             <h5>First Name</h5>
@@ -152,7 +153,6 @@
                                             </div>
                                             <label style="color:red;" class="wrongEmail" th:if="${wrongEmail}" text="${wrongEmail}">     *please input valid e-mail</label>
                                             <label style="color:red;" class="existEmail" th:if="${error}" text="${wrongEmail}">     *email already exists</label>
-
                                         </div>
                                         <div class="cp-field">
                                             <h5>Age</h5>

@@ -1,12 +1,9 @@
 package com.example.demo.controllers.thymeleaf;
 
 import com.example.demo.exceptions.DuplicateEntityException;
-import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.WrongEmailException;
 import com.example.demo.exceptions.WrongPasswordException;
 import com.example.demo.models.DTO.CommentDTO;
-import com.example.demo.models.DTO.PostDTO;
-import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.interfaces.ImageService;
@@ -54,7 +51,7 @@ public class UserController {
         boolean isVisiblePicture = true;
         int friendsCounter = user.getFriends().size();
 
-        if (user.getPhoto() == null ||!user.getPhoto().isPublic()) {
+        if (user.getPhoto() == null || !user.getPhoto().isPublic()) {
             isVisiblePicture = false;
         }
 
@@ -209,32 +206,17 @@ public class UserController {
                                 HttpServletRequest request) {
         User user = userService.getByUsername(principal.getName());
 
-        for (Post post : postService.getPostsByUserId(user.getId())) {
-            postService.deletePost(post.getId(), user, request.isUserInRole("ROLE_ADMIN"));
-        }
         boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
         if (passwordMatch) {
+            for (Post post : postService.getPostsByUserId(user.getId())) {
+                postService.deletePost(post.getId(), user, request.isUserInRole("ROLE_ADMIN"));
+            }
             userService.deleteUser(user.getId());
         } else {
             model.addAttribute("wrongPassword", "Wrong password");
             return "deactivate-account";
         }
         return "redirect:/logout";
-    }
-
-    @GetMapping("/post/new")
-    public String showUserPosts(Model model, Principal principal) {
-        try {
-            User user = userService.getByUsername(principal.getName());
-            model.addAttribute("user", user);
-            model.addAttribute("friendsCounter", user.getFriends().size());
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("error", e);
-            return "error";
-        }
-        model.addAttribute("post", new PostDTO());
-
-        return "my-profile-feed";
     }
 
     @GetMapping("/photoPrivacy")
