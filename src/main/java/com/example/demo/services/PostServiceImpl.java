@@ -3,8 +3,10 @@ package com.example.demo.services;
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.DTO.PostDTO;
+import com.example.demo.models.Like;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
+import com.example.demo.repositories.LikeRepository;
 import com.example.demo.repositories.PostRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.interfaces.PostService;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -20,11 +24,13 @@ public class PostServiceImpl implements PostService {
     public static final String POST_DOES_NOT_EXISTS = "Post does not exists.";
     private PostRepository postRepository;
     private UserRepository userRepository;
+    private LikeRepository likeRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, LikeRepository likeRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.likeRepository = likeRepository;
     }
 
     @Override
@@ -61,6 +67,8 @@ public class PostServiceImpl implements PostService {
         throwIfPostDoesNotExists(id);
         Post post = postRepository.getById(id);
         canUserDeleteUpdatePost(post, user, isAdmin);
+        post.setLikes(new HashSet<>());
+        likeRepository.deleteLikesByPostId(id);
         post.setEnabled(false);
         postRepository.save(post);
     }

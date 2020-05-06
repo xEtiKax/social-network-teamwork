@@ -146,7 +146,7 @@
                                             <b th:text="${friendsCounter + ' Friends'}">Friends</b>
                                         </li>
                                         <li>
-                                            <a th:href="@{/user/showMyFriends/{id}(id=${user.id})}">Show friends</a>
+                                            <a th:href="@{'/user/showMyFriends/' + ${user.id}}">Show friends</a>
                                         </li>
                                         <li>
                                             <a th:href="@{/user/showMyProfile}" title="">View Profile</a>

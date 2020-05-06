@@ -99,6 +99,10 @@ public class Post {
         return new HashSet<>(likes);
     }
 
+    public void setLikes(Set<Like> likes) {
+        this.likes = new HashSet<>(likes);
+    }
+
     public LinkedHashSet<Comment> getComments() {
         LinkedHashSet<Comment> sortedComments;
         sortedComments = sortByDate(this.comments);
