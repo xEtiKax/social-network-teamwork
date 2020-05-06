@@ -96,6 +96,19 @@ public class PostController {
     }
 
     //myProfile
+    @GetMapping("user/new")
+    public String showUserNewPostForm(Model model, Principal principal) {
+        model.addAttribute("post", new PostDTO());
+        try {
+            User user = userService.getByUsername(principal.getName());
+            model.addAttribute("user", user);
+            model.addAttribute("friendsCounter", user.getFriends().size());
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e);
+            return "error";
+        }
+        return "my-profile-feed";
+    }
     @PostMapping("/user/add")
     public String addUserPost(@Valid @ModelAttribute("post") PostDTO postDTO, Model model, Principal principal) {
         try {
