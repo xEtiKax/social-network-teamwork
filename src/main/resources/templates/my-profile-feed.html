@@ -235,12 +235,12 @@
                                                 <div class="post-bar no-margin">
                                                     <div class="post_topbar">
                                                         <div class="usy-dt" th:if="${post.createdBy}">
-                                                            <img th:if="${post.createdBy.getPhoto() != null}"
-                                                                 style="height: 50px;width: 50px;"
-                                                                 th:src="@{'/user/' + ${post.createdBy.getId()} + '/userImage'}"
+                                                            <img th:if="${post.createdBy.getPhoto() != null and post.createdBy.getPhoto().isPublic()}"
+                                                                 style="height: 40px;width: 40px;"
+                                                                 th:src="@{'public/user/' + ${post.createdBy.id} + '/userImage'}"
                                                                  alt="">
-                                                            <img th:if="${post.createdBy.getPhoto() == null or user == null}"
-                                                                 style="height: 50px;width: 50px;"
+                                                            <img th:if="${post.createdBy.getPhoto() == null or !post.createdBy.getPhoto().isPublic() and post.createdBy.getPhoto() != null}"
+                                                                 style="height: 40px;width: 40px;"
                                                                  th:src="@{/images/resources/anonymous-user.png}"
                                                                  alt="">
                                                             <div class="usy-name">

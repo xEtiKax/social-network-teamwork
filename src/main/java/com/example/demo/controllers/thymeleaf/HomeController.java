@@ -39,6 +39,7 @@ public class HomeController {
     public String showHomePage(Model model, Principal principal) {
         model.addAttribute("posts", postService.getAllPublicPosts());
         int friendsCounter = 0;
+
         try {
             User user = userService.getByUsername(principal.getName());
             friendsCounter = user.getFriends().size();

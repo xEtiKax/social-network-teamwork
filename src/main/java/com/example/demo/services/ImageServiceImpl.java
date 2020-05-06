@@ -45,6 +45,7 @@ public class ImageServiceImpl implements ImageService {
         picture.setPublic(isPublic);
         pictureRepository.save(picture);
     }
+
     public void renderImage(HttpServletResponse response, Byte[] photo) throws IOException {
         byte[] byteArray = new byte[photo.length];
 
